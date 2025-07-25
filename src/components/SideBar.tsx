@@ -1,6 +1,82 @@
+import { useContext, createContext, useState } from "react";
 import { MdSpaceDashboard } from "react-icons/md";
 import { FaMoneyBillTransfer } from "react-icons/fa6";
 import { IoSettings } from "react-icons/io5";
+
+const SidebarContext = createContext<boolean>(true);
+
+function SideBar() {
+  const [expanded, setExpanded] = useState<boolean>(true);
+
+  return (
+    <SidebarContext.Provider value={expanded}>
+      <div
+        className={`transition-all duration-300 ${
+          expanded ? "lg:items-start items-center" : "items-center"
+        }
+        flex flex-col bg-secondary border  border-secondary text-primary gap-y-4 py-6`}
+      >
+        {/* Header */}
+        <div className="flex flex-row items-center px-4">
+          <img className="w-8 h-8" src="https://placehold.co/16x16" />
+          {expanded && (
+            <div
+              className={`transition-all text-md tracking-wide font-bold hidden lg:block ml-4 `}
+            >
+              <p> Acme Finance </p>
+              <p> Customer Portal </p>
+            </div>
+          )}
+        </div>
+
+        <div className="w-full border-t border-secondary-100/70" />
+
+        {/* Overview */}
+
+        <div className="flex flex-col gap-y-2 px-4">
+          {expanded && (
+            <p
+              className={`transition-all text-md uppercase tracking-wide font-bold hidden lg:block`}
+            >
+              Overview
+            </p>
+          )}
+          <ui>
+            <SideBarItem icon={<MdSpaceDashboard />}> Dashboard </SideBarItem>
+            <SideBarItem icon={<MdSpaceDashboard />}> Deals </SideBarItem>
+            <SideBarItem icon={<MdSpaceDashboard />}> Orders </SideBarItem>
+            <SideBarItem icon={<MdSpaceDashboard />}> Invoices </SideBarItem>
+            <SideBarItem icon={<FaMoneyBillTransfer />}>
+              Transactions
+            </SideBarItem>
+            <SideBarItem icon={<IoSettings />}> Settings </SideBarItem>
+          </ui>
+        </div>
+
+        <div className="w-full border-t border-secondary-100/70" />
+
+        {/* Account Management */}
+        <div className="flex flex-col gap-y-4 px-4 ">
+          {expanded && (
+            <p
+              className={`transition-all text-md uppercase tracking-wide font-bold hidden lg:block`}
+            >
+              Account Management
+            </p>
+          )}
+          <ui>
+            <SideBarItem icon={<MdSpaceDashboard />}>
+              Make a payment
+            </SideBarItem>
+            <SideBarItem icon={<MdSpaceDashboard />}>
+              Place an order
+            </SideBarItem>
+          </ui>
+        </div>
+      </div>
+    </SidebarContext.Provider>
+  );
+}
 
 const SideBarItem = ({
   children,
@@ -8,52 +84,21 @@ const SideBarItem = ({
 }: {
   children: string;
   icon: React.ReactNode;
-}) => (
-  <div className="flex items-center text-xl font-medium space-x-4">
-    {icon}
-    <a>
-      <span>{children}</span>
-    </a>
-  </div>
-);
+}) => {
+  const expanded = useContext(SidebarContext);
 
-function SideBar() {
   return (
-    <div className="w-72 flex flex-col bg-secondary border rounded-l-2xl border-secondary text-primary gap-y-4 px-6 py-12">
-      {/* Header */}
-      <div className="flex flex-row items-center space-x-4 px-4">
-        <img className="w-8 h-8" src="https://placehold.co/16x16" />
-        <div className="text-md tracking-wide font-bold">
-          <p> Acme Finance </p>
-          <p> Customer Portal </p>
-        </div>
-      </div>
-
-      <div className="-mx-6 border-t border-secondary-100/70" />
-
-      {/* Overview */}
-      <div className="flex flex-col gap-y-4 px-4">
-        <p className="text-md uppercase tracking-wide font-bold ">Overview</p>
-        <SideBarItem icon={<MdSpaceDashboard />}> Dashboard </SideBarItem>
-        <SideBarItem icon={<MdSpaceDashboard />}> Deals </SideBarItem>
-        <SideBarItem icon={<MdSpaceDashboard />}> Orders </SideBarItem>
-        <SideBarItem icon={<MdSpaceDashboard />}> Invoices </SideBarItem>
-        <SideBarItem icon={<FaMoneyBillTransfer />}> Transactions </SideBarItem>
-        <SideBarItem icon={<IoSettings />}> Settings </SideBarItem>
-      </div>
-
-      <div className="-mx-6 border-t border-secondary-100/70" />
-
-      {/* Account Management */}
-      <div className="flex flex-col gap-y-4 px-4 ">
-        <p className="text-md uppercase tracking-wide font-bold ">
-          Account Management
-        </p>
-        <SideBarItem icon={<MdSpaceDashboard />}> Make a payment </SideBarItem>
-        <SideBarItem icon={<MdSpaceDashboard />}> Place an order </SideBarItem>
-      </div>
-    </div>
+    <li className="relative flex items-center py-2 my-1 text-xl font-medium">
+      {icon}
+      <span
+        className={`transition-all ml-4 ${
+          expanded ? "lg:inline hidden " : "hidden"
+        }`}
+      >
+        {children}
+      </span>
+    </li>
   );
-}
+};
 
 export default SideBar;
