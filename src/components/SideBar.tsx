@@ -9,7 +9,7 @@ const SideBarItem = ({
   children: string;
   icon: React.ReactNode;
 }) => (
-  <div className="flex items-center text-2xl space-x-2">
+  <div className="flex items-center text-xl font-medium space-x-4">
     {icon}
     <a>
       <span>{children}</span>
@@ -19,21 +19,21 @@ const SideBarItem = ({
 
 function SideBar() {
   return (
-    <div className="w-72 flex flex-col bg-blue-600 border rounded-l-2xl">
+    <div className="w-72 flex flex-col bg-secondary border rounded-l-2xl border-secondary text-primary gap-y-4 px-6 py-12">
       {/* Header */}
-      <div className="flex flex-row items-center space-x-2 p-8">
-        <img className="w-16 h-16" src="https://placehold.co/16x16" />
-        <div>
+      <div className="flex flex-row items-center space-x-4 px-4">
+        <img className="w-8 h-8" src="https://placehold.co/16x16" />
+        <div className="text-md tracking-wide font-bold">
           <p> Acme Finance </p>
           <p> Customer Portal </p>
         </div>
       </div>
 
-      <div className="border-t border-white" />
+      <div className="-mx-6 border-t border-secondary-100/70" />
 
       {/* Overview */}
-      <div className="flex flex-col gap-y-4 p-8">
-        <p>Overview</p>
+      <div className="flex flex-col gap-y-4 px-4">
+        <p className="text-md uppercase tracking-wide font-bold ">Overview</p>
         <SideBarItem icon={<MdSpaceDashboard />}> Dashboard </SideBarItem>
         <SideBarItem icon={<MdSpaceDashboard />}> Deals </SideBarItem>
         <SideBarItem icon={<MdSpaceDashboard />}> Orders </SideBarItem>
@@ -42,11 +42,13 @@ function SideBar() {
         <SideBarItem icon={<IoSettings />}> Settings </SideBarItem>
       </div>
 
-      <div className="border-t border-white" />
+      <div className="-mx-6 border-t border-secondary-100/70" />
 
       {/* Account Management */}
-      <div className="flex flex-col gap-y-4 p-8">
-        <p> Account Management </p>
+      <div className="flex flex-col gap-y-4 px-4 ">
+        <p className="text-md uppercase tracking-wide font-bold ">
+          Account Management
+        </p>
         <SideBarItem icon={<MdSpaceDashboard />}> Make a payment </SideBarItem>
         <SideBarItem icon={<MdSpaceDashboard />}> Place an order </SideBarItem>
       </div>
