@@ -6,9 +6,9 @@ function App() {
     <div className="flex min-h-screen ">
       <SideBar />
 
-      <div className="flex flex-col flex-1 border-secondary bg-bg">
+      <div className="flex flex-col flex-1 bg-background">
         <TopBar />
-        <div className="h-full flex items-center justify-between flex-col border text-secondary gap-y-4 px-6 py-12">
+        <div className="h-16 flex items-center justify-between flex-col border text-text gap-y-4 px-6 py-12 bg-white">
           <p> Main Content </p>
         </div>
       </div>
