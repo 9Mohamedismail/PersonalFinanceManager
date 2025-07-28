@@ -1,11 +1,11 @@
+import TransactionsGrid from "./TransactionsGrid";
+
 export default function BentoGrid() {
   return (
     <div className="bg-gray-50 py-10 px-4 lg:px-8">
       <div className=" grid lg:grid-cols-3 lg:grid-rows-2 gap-4">
         {/* Card 1 */}
-        <div className="bg-amber-300  rounded shadow p-6 lg:col-start-1 lg:row-start-1">
-          <p className="text-lg font-semibold text-gray-900">Card 1</p>
-        </div>
+        <TransactionsGrid />
 
         {/* Card 2 */}
         <div className="bg-amber-300  rounded shadow p-6 lg:col-start-2 lg:row-start-1">
@@ -25,7 +25,7 @@ export default function BentoGrid() {
           </div>
 
           {/* Card 5 (Short, fixed height) */}
-          <div className="bg-amber-300 rounded shadow p-6 h-[225px]">
+          <div className="bg-amber-300 rounded shadow p-6 lg: h-[225px]">
             <p className="text-lg font-semibold text-gray-900">
               Card 5 (Short)
             </p>
