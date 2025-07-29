@@ -26,7 +26,6 @@ function SideBar() {
               className={`transition-all text-base tracking-wide font-bold hidden lg:block ml-4 `}
             >
               <p> Acme Finance </p>
-              <p> Customer Portal </p>
             </div>
           )}
         </div>
