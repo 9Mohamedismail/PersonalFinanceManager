@@ -1,4 +1,5 @@
 import TransactionsGrid from "./TransactionsGrid";
+import WeekTransactionsGrid from "./WeeklyTransactionsGrid/WeekTransactions";
 
 export default function BentoGrid() {
   return (
@@ -8,9 +9,7 @@ export default function BentoGrid() {
         <TransactionsGrid />
 
         {/* Card 2 */}
-        <div className="bg-amber-300  rounded shadow p-6 lg:col-start-2 lg:row-start-1">
-          <p className="text-lg font-semibold text-gray-900">2</p>
-        </div>
+        <WeekTransactionsGrid />
 
         {/* Card 4 (Wide) */}
         <div className="bg-amber-300 rounded shadow p-6 lg:col-start-1 lg:row-start-2 lg:col-span-2">
@@ -25,7 +24,7 @@ export default function BentoGrid() {
           </div>
 
           {/* Card 5 (Short, fixed height) */}
-          <div className="bg-amber-300 rounded shadow p-6 lg: h-[225px]">
+          <div className="bg-amber-300 rounded shadow p-6 lg:h-[225px]">
             <p className="text-lg font-semibold text-gray-900">
               Card 5 (Short)
             </p>

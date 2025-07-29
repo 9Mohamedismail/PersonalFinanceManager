@@ -23,7 +23,7 @@ function SideBar() {
           <img className="w-8 h-8" src="https://placehold.co/16x16" />
           {expanded && (
             <div
-              className={`transition-all text-md tracking-wide font-bold hidden lg:block ml-4 `}
+              className={`transition-all text-base tracking-wide font-bold hidden lg:block ml-4 `}
             >
               <p> Acme Finance </p>
               <p> Customer Portal </p>
@@ -38,7 +38,7 @@ function SideBar() {
         <div className="flex flex-col gap-y-2 px-4">
           {expanded && (
             <p
-              className={`transition-all text-md uppercase tracking-wide font-bold hidden lg:block`}
+              className={`transition-all text-base uppercase tracking-wide font-bold hidden lg:block`}
             >
               Overview
             </p>
@@ -69,7 +69,7 @@ function SideBar() {
         <div className="flex flex-col gap-y-4 px-4 ">
           {expanded && (
             <p
-              className={`transition-all text-md uppercase tracking-wide font-bold hidden lg:block`}
+              className={`transition-all text-base uppercase tracking-wide font-bold hidden lg:block`}
             >
               Account Management
             </p>
