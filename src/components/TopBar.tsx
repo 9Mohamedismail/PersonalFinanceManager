@@ -1,14 +1,19 @@
 import { FiChevronDown } from "react-icons/fi";
 import { IoMdNotificationsOutline } from "react-icons/io";
+import { useLocation } from "react-router-dom";
+
+type Pages = "/Dashboard"; // fix
 
 function TopBar() {
+  const location: Pages = useLocation();
+
   return (
     <div className="flex items-center justify-between text-primary font-bold py-4 px-4 lg:px-8">
       <h1 className="text-lg tracking-wide px-4 py-1 border rounded-full">
         Good morning Alan!
       </h1>
       <h1 className="text-lg tracking-wide px-4 py-1 border rounded-full uppercase">
-        Dashboard
+        {location.pathname.toUpperCase()}
       </h1>
       <div className="flex items-center space-x-4 px-4 py-1 font-bold border rounded-full">
         <IoMdNotificationsOutline size="2rem" />

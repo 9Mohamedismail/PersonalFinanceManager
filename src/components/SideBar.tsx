@@ -5,9 +5,13 @@ import { IoSettingsOutline } from "react-icons/io5";
 import { AiOutlineDashboard } from "react-icons/ai";
 import { LiaFileInvoiceDollarSolid } from "react-icons/lia";
 import { TbReportMoney } from "react-icons/tb";
+import { useNavigate, useLocation } from "react-router";
+
 const SidebarContext = createContext<boolean>(true);
 
 function SideBar() {
+  const navigate = useNavigate();
+  const location = useLocation();
   const [expanded, setExpanded] = useState<boolean>(true);
 
   return (
@@ -43,10 +47,18 @@ function SideBar() {
             </p>
           )}
           <ul>
-            <SideBarItem icon={<AiOutlineDashboard size={32} />}>
+            <SideBarItem
+              icon={<AiOutlineDashboard size={32} />}
+              onClick={() => navigate("/dashboard")}
+            >
               Dashboard
             </SideBarItem>
-            <SideBarItem icon={<RiCoupon2Line size={32} />}>Deals</SideBarItem>
+            <SideBarItem
+              icon={<RiCoupon2Line size={32} />}
+              onClick={() => navigate("/")}
+            >
+              Deals
+            </SideBarItem>
             <SideBarItem icon={<RiShoppingCart2Line size={32} />}>
               Orders
             </SideBarItem>
@@ -90,14 +102,19 @@ function SideBar() {
 const SideBarItem = ({
   children,
   icon,
+  onClick,
 }: {
   children: string;
   icon: React.ReactNode;
+  onClick?: () => void;
 }) => {
   const expanded = useContext(SidebarContext);
 
   return (
-    <li className="relative flex items-center py-4 my-1 text-xl font-medium">
+    <li
+      className="relative flex items-center py-4 my-1 text-xl font-medium"
+      onClick={onClick}
+    >
       {icon}
       <span
         className={`transition-all ml-4 ${
