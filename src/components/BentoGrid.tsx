@@ -4,7 +4,7 @@ import WeekTransactionsGrid from "./WeeklyTransactionsGrid/WeekTransactions";
 export default function BentoGrid() {
   return (
     <div className="bg-gray-50 py-10 px-4 lg:px-8">
-      <div className=" grid lg:grid-cols-3 lg:grid-rows-2 gap-4">
+      <div className="grid lg:grid-cols-3 lg:grid-rows-2 gap-4">
         {/* Card 1 */}
         <TransactionsGrid />
 
