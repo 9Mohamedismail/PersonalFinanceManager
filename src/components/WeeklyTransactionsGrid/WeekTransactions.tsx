@@ -24,11 +24,11 @@ ChartJS.register(
 
 function WeekTransactionsGrid() {
   return (
-    <div className="bg-secondary-100 rounded shadow p-6 lg:col-start-2 lg:row-start-1 w-full h-full text-start ">
+    <div className="bg-secondary-100 rounded shadow p-6 w-full text-start">
       <p className="text-lg font-semibold text-gray-900">
         Last Week Transactions
       </p>
-      <div className="w-full h-full mt-4">
+      <div className="mt-4 w-full h-[210px] ">
         <Line options={options} data={data} />
       </div>
     </div>

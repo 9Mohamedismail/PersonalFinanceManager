@@ -2,7 +2,7 @@ import { FiChevronDown } from "react-icons/fi";
 
 function TransactionsGrid() {
   return (
-    <div className="bg-secondary-100 rounded shadow p-6 max-w-xs lg:col-start-1 lg:row-start-1 ">
+    <div className="bg-secondary-100 rounded shadow p-6 lg:col-start-1 lg:row-start-1 ">
       <div className="flex flex-col gap-y-10">
         <section className="text-center space-y-2">
           <p className="text-lg font-semibold text-gray-900 uppercase">

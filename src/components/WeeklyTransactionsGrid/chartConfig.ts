@@ -2,6 +2,7 @@ import type { ChartOptions } from "chart.js";
 
 const options: ChartOptions<"line"> = {
   responsive: true,
+  maintainAspectRatio: false,
   plugins: {
     legend: {
       display: false,

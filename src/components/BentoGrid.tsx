@@ -3,13 +3,17 @@ import WeekTransactionsGrid from "./WeeklyTransactionsGrid/WeekTransactions";
 
 export default function BentoGrid() {
   return (
-    <div className="bg-gray-50 py-10 px-4 lg:px-8">
+    <div className="bg-gray-50 py-10 px-4 lg:px-8 ">
       <div className="grid lg:grid-cols-3 lg:grid-rows-2 gap-4">
         {/* Card 1 */}
-        <TransactionsGrid />
-
-        {/* Card 2 */}
-        <WeekTransactionsGrid />
+        <div className="flex flex-col lg:col-span-2 lg:flex-row items-start gap-4 min-w-0">
+          <div className="lg:w-[300px] w-full shrink min-w-0">
+            <TransactionsGrid />
+          </div>
+          <div className="w-full lg:flex-1 shrink min-w-0">
+            <WeekTransactionsGrid />
+          </div>
+        </div>
 
         {/* Card 4 (Wide) */}
         <div className="bg-amber-300 rounded shadow p-6 lg:col-start-1 lg:row-start-2 lg:col-span-2">
