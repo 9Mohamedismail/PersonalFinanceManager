@@ -1,14 +1,14 @@
 import { FiChevronDown } from "react-icons/fi";
 
-function TransactionsGrid() {
+function BalanceGrid() {
   return (
-    <div className="bg-secondary-100 rounded shadow p-6 lg:col-start-1 lg:row-start-1 ">
+    <div className="bg-secondary-100 rounded p-6 lg:col-start-1 lg:row-start-1 ">
       <div className="flex flex-col gap-y-10">
         <section className="text-center space-y-2">
           <p className="text-lg font-semibold text-gray-900 uppercase">
             Your Balance
           </p>
-          <p className="text-4xl font-semibold text-primary tracking-wide">
+          <p className="text-4xl font-bold text-primary tracking-wide">
             $3090.00
           </p>
           <div className="flex justify-center items-center gap-4">
@@ -45,4 +45,4 @@ function TransactionsGrid() {
   );
 }
 
-export default TransactionsGrid;
+export default BalanceGrid;
