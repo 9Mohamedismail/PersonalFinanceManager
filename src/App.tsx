@@ -1,9 +1,10 @@
 import { useState } from "react";
-import BentoGrid from "./components/BentoGrid";
 import SideBar from "./components/SideBar";
 import TopBar from "./components/TopBar";
 import SidebarContext from "./Context/SideBarContext";
 import { Route, Routes } from "react-router-dom";
+import MainBentoGrid from "./components/MainBentoGrid";
+import TransactionsPage from "./Pages/TransactionsPage";
 
 function App() {
   const [expanded, setExpanded] = useState<boolean>(false);
@@ -16,7 +17,8 @@ function App() {
           <TopBar />
           <div className="flex-1">
             <Routes>
-              <Route path="/dashboard" element={<BentoGrid />} />
+              <Route path="/dashboard" element={<MainBentoGrid />} />\
+              <Route path="/transactions" element={<TransactionsPage />} />
             </Routes>
           </div>
         </div>

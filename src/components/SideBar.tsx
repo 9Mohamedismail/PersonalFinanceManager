@@ -64,7 +64,10 @@ function SideBar() {
           <SideBarItem icon={<LiaFileInvoiceDollarSolid size={32} />}>
             Invoices
           </SideBarItem>
-          <SideBarItem icon={<TbReportMoney size={32} />}>
+          <SideBarItem
+            icon={<TbReportMoney size={32} />}
+            onClick={() => navigate("/transactions")}
+          >
             Transactions
           </SideBarItem>
           <SideBarItem icon={<IoSettingsOutline size={32} />}>

@@ -1,8 +1,8 @@
 import BalanceGrid from "./BalanceGrid";
-import TransactionsTableGrid from "./TransactionsTableGrid";
+import PreviousTransactionsGrid from "./PreviousTransactionsGrid";
 import WeekTransactionsGrid from "./WeeklyTransactionsGrid/WeekTransactions";
 
-export default function BentoGrid() {
+function MainBentoGrid() {
   return (
     <div className="bg-gray-50 py-10 px-4 lg:px-8">
       <div className="grid lg:grid-cols-3 lg:grid-rows-[auto,auto] gap-4">
@@ -19,15 +19,15 @@ export default function BentoGrid() {
             Previous Transactions
           </p>
           <div>
-            <TransactionsTableGrid />
+            <PreviousTransactionsGrid />
           </div>
         </div>
 
         <div className="lg:col-start-3 lg:row-start-1 lg:row-span-2 flex flex-col gap-4">
-          <div className="bg-amber-300 rounded p-6 lg:flex-1">
+          <div className="bg-secondary-100 rounded p-6 lg:flex-1">
             <p className="text-lg font-semibold text-gray-900">Card 3 (Tall)</p>
           </div>
-          <div className="bg-amber-300 rounded p-6 lg:h-[225px]">
+          <div className="bg-secondary-100 rounded p-6 lg:h-[225px]">
             <p className="text-lg font-semibold text-gray-900">
               Card 5 (Short)
             </p>
@@ -37,3 +37,5 @@ export default function BentoGrid() {
     </div>
   );
 }
+
+export default MainBentoGrid;
