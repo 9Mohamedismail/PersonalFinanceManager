@@ -23,18 +23,18 @@ function Transactions() {
           backgroundColor: "#c4dad2",
         },
         "& .MuiDataGrid-columnHeaderTitle": {
-          color: "#16423c",
+          color: "#c4dad2",
           fontSize: "1rem",
           fontWeight: 700,
           letterSpacing: "0.025em",
         },
         "& .MuiDataGrid-columnHeader": {
-          backgroundColor: "#6a9c89",
+          backgroundColor: "#16423c",
           borderBottom: "none !important",
           borderRight: "none !important",
         },
         "& .MuiDataGrid-columnSeparator": {
-          color: "#6a9c89",
+          color: "#c4dad2",
         },
         border: "1px solid #c4dad2",
         borderRadius: "0.25rem",

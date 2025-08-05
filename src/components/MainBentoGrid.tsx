@@ -1,5 +1,7 @@
 import BalanceGrid from "./BalanceGrid";
+import LinearProgressWithLabel from "./BudgetProgressBarGrid/BudgetProgress";
 import PreviousTransactionsGrid from "./PreviousTransactionsGrid";
+import TransactionsPie from "./TransactionsPieGrid/TransactionsPie";
 import WeekTransactionsGrid from "./WeeklyTransactionsGrid/WeekTransactions";
 
 function MainBentoGrid() {
@@ -23,15 +25,10 @@ function MainBentoGrid() {
           </div>
         </div>
 
-        <div className="lg:col-start-3 lg:row-start-1 lg:row-span-2 flex flex-col gap-4">
-          <div className="bg-secondary-100 rounded p-6 lg:flex-1">
-            <p className="text-lg font-semibold text-gray-900">Card 3 (Tall)</p>
-          </div>
-          <div className="bg-secondary-100 rounded p-6 lg:h-[225px]">
-            <p className="text-lg font-semibold text-gray-900">
-              Card 5 (Short)
-            </p>
-          </div>
+        <div className="lg:col-start-3 lg:row-start-1 lg:row-span-2 flex flex-col gap-4 min-w-0">
+          <TransactionsPie />
+
+          <LinearProgressWithLabel />
         </div>
       </div>
     </div>
