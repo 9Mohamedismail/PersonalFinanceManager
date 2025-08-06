@@ -1,44 +1,45 @@
 import * as React from "react";
-import LinearProgress, {
-  type LinearProgressProps,
-} from "@mui/material/LinearProgress";
+import LinearProgress from "@mui/material/LinearProgress";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 
-function LinearProgressWithLabel(
-  props: LinearProgressProps & { value: number }
-) {
-  return (
-    <Box sx={{ display: "flex", alignItems: "center" }}>
-      <Box sx={{ width: "100%", mr: 1 }}>
-        <LinearProgress variant="determinate" {...props} />
-      </Box>
-      <Box sx={{ minWidth: 35 }}>
-        <Typography
-          variant="body2"
-          sx={{ color: "text.secondary" }}
-        >{`${Math.round(props.value)}%`}</Typography>
-      </Box>
-    </Box>
-  );
-}
+type Props = {
+  number: number;
+  total: number;
+};
 
-export default function LinearWithValueLabel() {
-  const [progress, setProgress] = React.useState(10);
+export default function BasicProgressBar({ number, total }: Props) {
+  const value = total === 0 ? 0 : (number / total) * 100;
 
-  React.useEffect(() => {
-    const timer = setInterval(() => {
-      setProgress((prevProgress) =>
-        prevProgress >= 100 ? 10 : prevProgress + 10
-      );
-    }, 800);
-    return () => {
-      clearInterval(timer);
-    };
-  }, []);
   return (
-    <Box sx={{ width: "100%" }}>
-      <LinearProgressWithLabel value={progress} />
-    </Box>
+    <div className="flex flex-col">
+      <p className="text-lg font-semibold text-gray-900 mb-2">
+        Last Week Transactions
+      </p>
+      <div className="flex justify-between">
+        <p className="text-lg font-semibold text-gray-900 tracking-wide mb-2">
+          {`$${value}.00`}
+        </p>
+
+        <p className="text-lg font-semibold text-gray-900 tracking-wide mb-2">{`$${total}.00`}</p>
+      </div>
+      <div className="relative">
+        <LinearProgress
+          variant="determinate"
+          value={value}
+          sx={{
+            height: 100,
+            backgroundColor: "#6a9c89",
+            borderRadius: 5,
+            "& .MuiLinearProgress-bar": {
+              backgroundColor: "#16423c",
+            },
+          }}
+        />
+        <p className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-4xl font-bold text-text tracking-wide">
+          {`${Math.round(value)}%`}
+        </p>
+      </div>
+    </div>
   );
 }
