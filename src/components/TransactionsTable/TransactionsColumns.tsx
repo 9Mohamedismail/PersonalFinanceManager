@@ -1,24 +1,14 @@
 import type { GridColDef } from "@mui/x-data-grid";
 
 const columns: GridColDef[] = [
-  {
-    field: "id",
-    headerName: "Brand",
-    headerAlign: "center",
-    align: "center",
-    flex: 1,
-  },
-  { field: "date", headerName: "Date" },
-  { field: "vendor", headerName: "Vendor", flex: 1 },
-  {
-    field: "detail",
-    headerName: "Purchased Detail",
-    flex: 1,
-  },
-  { field: "cost", headerName: "Cost" },
+  { field: "date", headerName: "Date", width: 120 },
+  { field: "description", headerName: "Description", flex: 1, minWidth: 200 },
+  { field: "amount", headerName: "Amount", width: 100 },
+  { field: "category", headerName: "Category", width: 200 },
   {
     field: "action",
     headerName: "Details",
+    width: 100,
     renderCell: () => (
       <button className="border rounded-md px-3 text-base font-semibold text-secondary">
         Details

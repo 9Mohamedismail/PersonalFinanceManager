@@ -1,7 +1,4 @@
-import * as React from "react";
 import LinearProgress from "@mui/material/LinearProgress";
-import Typography from "@mui/material/Typography";
-import Box from "@mui/material/Box";
 
 type Props = {
   number: number;
@@ -14,7 +11,7 @@ export default function BasicProgressBar({ number, total }: Props) {
   return (
     <div className="flex flex-col">
       <p className="text-lg font-semibold text-gray-900 mb-2">
-        Last Week Transactions
+        Budget Progress
       </p>
       <div className="flex justify-between">
         <p className="text-lg font-semibold text-gray-900 tracking-wide mb-2">
