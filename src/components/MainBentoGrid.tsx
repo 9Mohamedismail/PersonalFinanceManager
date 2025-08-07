@@ -1,5 +1,5 @@
 import BalanceGrid from "./BalanceGrid";
-import BasicProgressBar from "./BudgetProgressBarGrid/BudgetProgress";
+import BudgetProgressBar from "./BudgetProgressBarGrid/BudgetProgress";
 import PreviousTransactionsGrid from "./PreviousTransactionsGrid";
 import TransactionsPie from "./TransactionsPieGrid/TransactionsPie";
 import WeekTransactionsGrid from "./WeeklyTransactionsGrid/WeekTransactions";
@@ -28,7 +28,7 @@ function MainBentoGrid() {
         <div className="lg:col-start-3 lg:row-start-1 lg:row-span-2 flex flex-col gap-4 min-w-0">
           <TransactionsPie />
           <div className="bg-secondary-100 rounded p-6 lg:h-[225px]">
-            <BasicProgressBar number={70} total={100} />
+            <BudgetProgressBar number={70} total={100} />
           </div>
         </div>
       </div>

@@ -2,17 +2,22 @@ import { DataGrid } from "@mui/x-data-grid";
 import columns from "./TransactionsColumns";
 import rows from "./TransactionsRows";
 
-function Transactions() {
+type TransactionsProps = {
+  grid: boolean;
+};
+
+function Transactions({ grid }: TransactionsProps) {
   return (
     <DataGrid
-      rows={rows}
+      rows={!grid ? rows : rows.slice(-5)}
       columns={columns.map((col) => ({
         ...col,
-        sortable: false,
-        filterable: false,
-        disableColumnMenu: true,
+        sortable: !grid,
+        filterable: !grid,
+        disableColumnMenu: grid,
       }))}
-      hideFooter={true}
+      hideFooter={grid}
+      disableColumnResize={grid}
       disableRowSelectionOnClick
       sx={{
         "& .MuiDataGrid-cell": {

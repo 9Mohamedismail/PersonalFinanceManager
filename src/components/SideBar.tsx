@@ -54,9 +54,9 @@ function SideBar() {
           </SideBarItem>
           <SideBarItem
             icon={<RiCoupon2Line size={32} />}
-            onClick={() => navigate("/")}
+            onClick={() => navigate("/metrics")}
           >
-            Deals
+            Metrics
           </SideBarItem>
           <SideBarItem icon={<RiShoppingCart2Line size={32} />}>
             Orders

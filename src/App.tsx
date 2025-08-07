@@ -5,6 +5,7 @@ import SidebarContext from "./Context/SideBarContext";
 import { Route, Routes } from "react-router-dom";
 import MainBentoGrid from "./components/MainBentoGrid";
 import TransactionsPage from "./Pages/TransactionsPage";
+import MetricsPage from "./Pages/MetricsPage";
 
 function App() {
   const [expanded, setExpanded] = useState<boolean>(false);
@@ -19,6 +20,7 @@ function App() {
             <Routes>
               <Route path="/dashboard" element={<MainBentoGrid />} />\
               <Route path="/transactions" element={<TransactionsPage />} />
+              <Route path="/metrics" element={<MetricsPage />} />
             </Routes>
           </div>
         </div>

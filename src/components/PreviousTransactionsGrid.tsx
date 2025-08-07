@@ -1,7 +1,7 @@
 import Transactions from "./TransactionsTable/Transactions";
 
 function PreviousTransactionsGrid() {
-  return <Transactions />;
+  return <Transactions grid />;
 }
 
 export default PreviousTransactionsGrid;
