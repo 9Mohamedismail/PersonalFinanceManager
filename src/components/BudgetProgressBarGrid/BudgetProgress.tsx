@@ -5,11 +5,11 @@ type Props = {
   total: number;
 };
 
-export default function BasicProgressBar({ number, total }: Props) {
+export default function BudgetProgressBar({ number, total }: Props) {
   const value = total === 0 ? 0 : (number / total) * 100;
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col bg-secondary-100 rounded p-6">
       <p className="text-lg font-semibold text-gray-900 mb-2">
         Budget Progress
       </p>
@@ -40,3 +40,4 @@ export default function BasicProgressBar({ number, total }: Props) {
     </div>
   );
 }
+BudgetProgressBar;

@@ -26,8 +26,8 @@ function MainBentoGrid() {
         </div>
 
         <div className="lg:col-start-3 lg:row-start-1 lg:row-span-2 flex flex-col gap-4 min-w-0">
-          <TransactionsPie />
-          <div className="bg-secondary-100 rounded p-6 lg:h-[225px]">
+          <TransactionsPie grid />
+          <div className="lg:h-[225px]">
             <BudgetProgressBar number={70} total={100} />
           </div>
         </div>

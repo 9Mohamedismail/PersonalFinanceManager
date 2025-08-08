@@ -6,7 +6,14 @@ import data from "./pieData";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-function TransactionsPie() {
+type TransactionsPieProps = {
+  grid: boolean;
+};
+
+function TransactionsPie({ grid }: TransactionsPieProps) {
+  const labels = data.labels as string[];
+  const values = data.datasets[0].data as number[];
+
   return (
     <div className="bg-secondary-100 rounded p-6 lg:flex-1">
       <p className="text-lg font-semibold text-gray-900 mb-2">
@@ -15,6 +22,18 @@ function TransactionsPie() {
       <div className="mt-4 w-full h-[400px] min-w-0">
         <Doughnut options={options} data={data} />
       </div>
+      {!grid &&
+        labels.map((label, i) => (
+          <p
+            key={label}
+            className="text-lg font-semibold text-gray-900 mb-2 flex gap-x-2 "
+          >
+            {label}:
+            <p className="text-lg font-semibold text-gray-900 tracking-wide">
+              ${values[i]}
+            </p>
+          </p>
+        ))}
     </div>
   );
 }
