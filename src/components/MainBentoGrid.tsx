@@ -17,7 +17,7 @@ function MainBentoGrid() {
           </div>
         </div>
         <div className="bg-secondary-100 rounded p-6 lg:col-start-1 lg:row-start-2 lg:col-span-2 h-full min-w-0">
-          <p className="text-lg font-semibold text-gray-900 mb-2">
+          <p className="text-2xl font-semibold text-gray-900 mb-2">
             Previous Transactions
           </p>
           <div>

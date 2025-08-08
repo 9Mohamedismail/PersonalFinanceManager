@@ -10,7 +10,7 @@ export default function BudgetProgressBar({ number, total }: Props) {
 
   return (
     <div className="flex flex-col bg-secondary-100 rounded p-6">
-      <p className="text-lg font-semibold text-gray-900 mb-2">
+      <p className="text-2xl font-semibold text-gray-900 mb-2">
         Budget Progress
       </p>
       <div className="flex justify-between">

@@ -16,7 +16,7 @@ function TransactionsPie({ grid }: TransactionsPieProps) {
 
   return (
     <div className="bg-secondary-100 rounded p-6 lg:flex-1">
-      <p className="text-lg font-semibold text-gray-900 mb-2">
+      <p className="text-2xl font-semibold text-gray-900 mb-2">
         Weekly Spending by Category
       </p>
       <div className="mt-4 w-full h-[400px] min-w-0">
