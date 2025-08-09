@@ -1,18 +1,34 @@
 import LinearProgress from "@mui/material/LinearProgress";
+import { useNavigate } from "react-router";
 
-type Props = {
+type BudgetProgressProps = {
   number: number;
   total: number;
+  grid: boolean;
 };
 
-export default function BudgetProgressBar({ number, total }: Props) {
+export default function BudgetProgressBar({
+  number,
+  total,
+  grid,
+}: BudgetProgressProps) {
   const value = total === 0 ? 0 : (number / total) * 100;
-
+  const navigate = useNavigate();
   return (
     <div className="flex flex-col bg-secondary-100 rounded p-6">
-      <p className="text-2xl font-semibold text-gray-900 mb-2">
-        Budget Progress
-      </p>
+      <div className="flex justify-between">
+        <p className="text-2xl font-semibold text-gray-900 mb-2">
+          Budget Progress
+        </p>
+        {grid && (
+          <p
+            className="text-secondary font-bold mb-2 align-center cursor-pointer"
+            onClick={() => navigate("/metrics")}
+          >
+            View Details
+          </p>
+        )}
+      </div>
       <div className="flex justify-between">
         <p className="text-lg font-semibold text-gray-900 tracking-wide mb-2">
           {`$${value}.00`}

@@ -13,22 +13,17 @@ function MainBentoGrid() {
             <BalanceGrid />
           </div>
           <div className="w-full lg:flex-1 shrink min-w-0">
-            <WeekTransactionsGrid />
+            <WeekTransactionsGrid grid />
           </div>
         </div>
-        <div className="bg-secondary-100 rounded p-6 lg:col-start-1 lg:row-start-2 lg:col-span-2 h-full min-w-0">
-          <p className="text-2xl font-semibold text-gray-900 mb-2">
-            Previous Transactions
-          </p>
-          <div>
-            <PreviousTransactionsGrid />
-          </div>
+        <div className="bg-secondary-100 rounded p-6 lg:col-start-1 lg:row-start-2 lg:col-span-2 h-full min-w-0 justify-between">
+          <PreviousTransactionsGrid />
         </div>
 
         <div className="lg:col-start-3 lg:row-start-1 lg:row-span-2 flex flex-col gap-4 min-w-0">
           <TransactionsPie grid />
           <div className="lg:h-[225px]">
-            <BudgetProgressBar number={70} total={100} />
+            <BudgetProgressBar number={70} total={100} grid />
           </div>
         </div>
       </div>
