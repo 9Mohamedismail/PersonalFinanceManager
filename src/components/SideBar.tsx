@@ -58,17 +58,20 @@ function SideBar() {
           >
             Metrics
           </SideBarItem>
-          <SideBarItem icon={<RiShoppingCart2Line size={32} />}>
-            Orders
-          </SideBarItem>
-          <SideBarItem icon={<LiaFileInvoiceDollarSolid size={32} />}>
-            Invoices
+          <SideBarItem
+            icon={<RiShoppingCart2Line size={32} />}
+            onClick={() => navigate("/addtransaction")}
+          >
+            Add Transaction
           </SideBarItem>
           <SideBarItem
             icon={<TbReportMoney size={32} />}
             onClick={() => navigate("/transactions")}
           >
             Transactions
+          </SideBarItem>
+          <SideBarItem icon={<LiaFileInvoiceDollarSolid size={32} />}>
+            Invoices
           </SideBarItem>
           <SideBarItem icon={<IoSettingsOutline size={32} />}>
             Settings

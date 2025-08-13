@@ -11,17 +11,19 @@ function Transactions({ grid }: TransactionsProps) {
   const navigate = useNavigate();
   return (
     <div>
-      <div className="flex justify-between">
-        <p className="text-2xl font-semibold text-gray-900 mb-2">
-          Previous Transactions
-        </p>
-        <p
-          className="text-secondary font-bold mb-2 align-center cursor-pointer"
-          onClick={() => navigate("/transactions")}
-        >
-          View Details
-        </p>
-      </div>
+      {grid && (
+        <div className="flex justify-between">
+          <p className="text-2xl font-semibold text-gray-900 mb-2">
+            Previous Transactions
+          </p>
+          <p
+            className="text-secondary font-bold mb-2 align-center cursor-pointer"
+            onClick={() => navigate("/transactions")}
+          >
+            View Details
+          </p>
+        </div>
+      )}
       <DataGrid
         rows={!grid ? rows : rows.slice(-5)}
         columns={columns.map((col) => ({
@@ -31,7 +33,7 @@ function Transactions({ grid }: TransactionsProps) {
           disableColumnMenu: grid,
         }))}
         hideFooter={grid}
-        disableColumnResize={grid}
+        disableColumnResize={true}
         disableRowSelectionOnClick
         sx={{
           "& .MuiDataGrid-cell": {
@@ -54,6 +56,26 @@ function Transactions({ grid }: TransactionsProps) {
           },
           "& .MuiDataGrid-columnSeparator": {
             color: "#c4dad2",
+          },
+          "& .MuiDataGrid-footerContainer": {
+            backgroundColor: "#c4dad2",
+            color: "#c4dad2",
+            borderColor: "#c4dad2",
+          },
+          "& .MuiTablePagination-root": {
+            fontSize: "1rem",
+            fontWeight: 700,
+            letterSpacing: "0.025em",
+          },
+          "& .MuiTablePagination-displayedRows": {
+            fontSize: "1rem",
+            fontWeight: 700,
+            letterSpacing: "0.025em",
+          },
+          "& .MuiTablePagination-selectLabel": {
+            fontSize: "1rem",
+            fontWeight: 700,
+            letterSpacing: "0.025em",
           },
           border: "1px solid #c4dad2",
           borderRadius: "0.25rem",
