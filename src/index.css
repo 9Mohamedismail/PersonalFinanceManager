@@ -6,5 +6,6 @@
   --color-secondary-100: #c4dad2;
   --color-text: #e9efec;
   --color-background: #f5f6f8;
-  /* ... more custom colors */
+
+  --font-receipt: "Courier New", Courier, monospace;
 }

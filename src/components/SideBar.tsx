@@ -21,7 +21,6 @@ function SideBar() {
       }
         flex flex-col bg-primary border  border-primary text-text gap-y-6 py-8`}
     >
-      {/* Header */}
       <div className="flex flex-row items-center px-4">
         <img className="w-8 h-8" src="https://placehold.co/16x16" />
         {expanded && (
@@ -34,8 +33,6 @@ function SideBar() {
       </div>
 
       <div className="w-full border-t border-secondary-100" />
-
-      {/* Overview */}
 
       <div className="flex flex-col gap-y-2 px-4">
         {expanded && (
@@ -81,7 +78,6 @@ function SideBar() {
 
       <div className="w-full border-t border-secondary-100" />
 
-      {/* Account Management */}
       <div className="flex flex-col gap-y-4 px-4 ">
         {expanded && (
           <p
