@@ -4,11 +4,9 @@ import { FiChevronDown } from "react-icons/fi";
 import { IoMdNotificationsOutline, IoIosMenu } from "react-icons/io";
 import { useLocation } from "react-router-dom";
 
-type Pages = "/Dashboard"; // fix
-
 function TopBar() {
   const { expanded, setExpanded } = useContext(SidebarContext);
-  const location: Pages = useLocation();
+  const location = useLocation();
 
   return (
     <div className="flex items-center justify-between text-primary font-bold py-4 px-4 md:px-8">
@@ -19,7 +17,7 @@ function TopBar() {
         </h1>
       </div>
       <h1 className="text-base md:text-lg tracking-wide px-2 py-1 md:px-4 border rounded-full uppercase">
-        {location.pathname}
+        {location.pathname.replace("/", "")}
       </h1>
 
       <div className="flex items-center space-x-4 px-2 py-1 md:px-4 font-bold border rounded-full">
