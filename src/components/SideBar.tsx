@@ -16,7 +16,7 @@ function SideBar() {
 
   return (
     <div
-      className={`transition-all duration-300 ${
+      className={`transition-all duration-300 shrink-0 ${
         expanded ? "xl:items-start items-center" : "items-center"
       }
         flex flex-col bg-primary border  border-primary text-text gap-y-6 py-8`}
