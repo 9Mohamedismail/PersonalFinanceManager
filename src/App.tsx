@@ -8,6 +8,7 @@ import TransactionsPage from "./Pages/TransactionsPage";
 import MetricsPage from "./Pages/MetricsPage";
 import AddTransactionPage from "./Pages/AddTransactionPage";
 import SignUpForm from "./Pages/SignUpForm";
+import LoginForm from "./Pages/LoginForm";
 
 function App() {
   const [expanded, setExpanded] = useState<boolean>(false);
@@ -21,6 +22,7 @@ function App() {
           <div className="flex-1">
             <Routes>
               <Route path="/signup" element={<SignUpForm />} />
+              <Route path="/login" element={<LoginForm />} />
               <Route path="/dashboard" element={<MainBentoGrid />} />
               <Route path="/transactions" element={<TransactionsPage />} />
               <Route path="/addtransaction" element={<AddTransactionPage />} />
