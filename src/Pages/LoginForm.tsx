@@ -1,6 +1,8 @@
 import { FcMoneyTransfer } from "react-icons/fc";
+import { useNavigate } from "react-router-dom";
 
 function LoginForm() {
+  const navigate = useNavigate();
   return (
     <div className="py-10 px-4 lg:px-8">
       <div className="h-full flex flex-col max-w-sm sm:max-w-md mx-auto">
@@ -13,7 +15,7 @@ function LoginForm() {
         <p className="text-lg text-gray-900 text-center">
           Need a NAME account?
           <a
-            href="signup"
+            onClick={() => navigate("/signup")}
             className="cursor-pointer font-bold text-secondary ml-1"
           >
             Create an account.
@@ -50,10 +52,16 @@ function LoginForm() {
         </form>
 
         <div className="flex flex-row gap-2 mt-2">
-          <button className="border-2 border-primary rounded py-1 w-full px-2 text-base font-semibold text-primary  tracking-wide">
+          <button
+            className="border-2 border-primary rounded py-1 w-full px-2 text-base font-semibold text-primary  tracking-wide"
+            onClick={() => navigate("/login/forgot-username")}
+          >
             Forgot Username?
           </button>
-          <button className="border-2 border-primary rounded py-1 w-full px-2 text-base font-semibold text-primary tracking-wide">
+          <button
+            className="border-2 border-primary rounded py-1 w-full px-2 text-base font-semibold text-primary tracking-wide"
+            onClick={() => navigate("/login/forgot")}
+          >
             Forgot Password?
           </button>
         </div>

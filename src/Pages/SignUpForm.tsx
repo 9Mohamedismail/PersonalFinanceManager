@@ -1,6 +1,7 @@
 import { FcMoneyTransfer } from "react-icons/fc";
-
+import { useNavigate } from "react-router-dom";
 function SignUpForm() {
+  const navigate = useNavigate();
   return (
     <div className="py-10 px-4 lg:px-8">
       <div className="h-full flex flex-col max-w-sm sm:max-w-md md:max-w-xl mx-auto">
@@ -16,7 +17,7 @@ function SignUpForm() {
           <span className="block sm:inline mt-1 sm:mt-0 sm:ml-1">
             Already have an account?
             <a
-              href="login"
+              onClick={() => navigate("/login")}
               className="cursor-pointer font-bold text-secondary ml-1"
             >
               Log in.

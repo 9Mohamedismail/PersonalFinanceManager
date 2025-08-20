@@ -1,4 +1,7 @@
+import { useNavigate } from "react-router-dom";
+
 function ForgotPasswordForm() {
+  const navigate = useNavigate();
   return (
     <div className="py-10 px-4 lg:px-8">
       <div className="h-full flex flex-col max-w-sm sm:max-w-md md:max-w-lg mx-auto">
@@ -38,7 +41,10 @@ function ForgotPasswordForm() {
             <button className="border-2 border-primary rounded py-2 w-full px-4 text-lg font-bold text-primary uppercase tracking-wide">
               Reset Password
             </button>
-            <button className="border-primary rounded w-full px-4 underline text-center lg:text-left text-base cursor-pointer font-bold text-secondary tracking-wide">
+            <button
+              className="border-primary rounded w-full px-4 underline text-center lg:text-left text-base cursor-pointer font-bold text-secondary tracking-wide"
+              onClick={() => navigate("/login")}
+            >
               Return to login
             </button>
           </div>
