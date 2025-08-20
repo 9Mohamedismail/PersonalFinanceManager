@@ -38,7 +38,7 @@ function SignUpForm() {
             </div>
             <div className="    ">
               <label className="block text-lg font-bold text-primary uppercase tracking-wide mb-2">
-                Name
+                Username
               </label>
               <input
                 className="appearance-none block w-full bg-background border border-secondary rounded py-3 px-4 mb-3 leading-tight 

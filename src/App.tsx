@@ -9,6 +9,7 @@ import MetricsPage from "./Pages/MetricsPage";
 import AddTransactionPage from "./Pages/AddTransactionPage";
 import SignUpForm from "./Pages/SignUpForm";
 import LoginForm from "./Pages/LoginForm";
+import ForgotPasswordForm from "./Pages/ForgotPassword";
 
 function App() {
   const [expanded, setExpanded] = useState<boolean>(false);
@@ -23,6 +24,7 @@ function App() {
             <Routes>
               <Route path="/signup" element={<SignUpForm />} />
               <Route path="/login" element={<LoginForm />} />
+              <Route path="/login/forgot" element={<ForgotPasswordForm />} />
               <Route path="/dashboard" element={<MainBentoGrid />} />
               <Route path="/transactions" element={<TransactionsPage />} />
               <Route path="/addtransaction" element={<AddTransactionPage />} />
