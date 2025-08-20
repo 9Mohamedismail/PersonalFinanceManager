@@ -7,6 +7,7 @@ import MainBentoGrid from "./components/MainBentoGrid";
 import TransactionsPage from "./Pages/TransactionsPage";
 import MetricsPage from "./Pages/MetricsPage";
 import AddTransactionPage from "./Pages/AddTransactionPage";
+import SignUpForm from "./Pages/SignUpForm";
 
 function App() {
   const [expanded, setExpanded] = useState<boolean>(false);
@@ -19,7 +20,8 @@ function App() {
           <TopBar />
           <div className="flex-1">
             <Routes>
-              <Route path="/dashboard" element={<MainBentoGrid />} />\
+              <Route path="/signup" element={<SignUpForm />} />
+              <Route path="/dashboard" element={<MainBentoGrid />} />
               <Route path="/transactions" element={<TransactionsPage />} />
               <Route path="/addtransaction" element={<AddTransactionPage />} />
               <Route path="/metrics" element={<MetricsPage />} />
