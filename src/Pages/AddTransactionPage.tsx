@@ -27,7 +27,7 @@ function AddTransactionPage() {
   const [formData, setFormData] = useState<TransactionForm>({});
 
   return (
-    <div className="bg-gray-50 py-10 px-4 lg:px-8">
+    <div className="py-10 px-4 lg:px-8">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 items-start">
         <AddTransactionForm formData={formData} setFormData={setFormData} />
         <TransactionsReceipt formData={formData} />

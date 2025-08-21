@@ -5,7 +5,7 @@ import { FaAngleDoubleUp } from "react-icons/fa";
 
 function MetricsPage() {
   return (
-    <div className="bg-gray-50 py-10 px-4 lg:px-8">
+    <div className="py-10 px-4 lg:px-8">
       <div className="grid lg:grid-cols-3 lg:grid-rows-[auto,auto] gap-4 ">
         <TransactionsPie grid={false} />
 

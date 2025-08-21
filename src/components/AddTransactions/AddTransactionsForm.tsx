@@ -22,10 +22,7 @@ function AddTransactionForm({
   };
 
   return (
-    <form
-      className="bg-secondary-100 border rounded p-6"
-      onSubmit={handleSubmit}
-    >
+    <form className="bg-secondary-100 rounded p-6" onSubmit={handleSubmit}>
       <div className="w-full flex flex-wrap lg:block">
         <div className="w-1/2 lg:w-full">
           <label className="block text-lg font-bold text-primary uppercase tracking-wide mb-2">

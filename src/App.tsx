@@ -30,6 +30,7 @@ function App() {
                 path="/login/forgot-username"
                 element={<ForgotUsernameForm />}
               />
+              <Route path="/" element={<MainBentoGrid />} />
               <Route path="/dashboard" element={<MainBentoGrid />} />
               <Route path="/transactions" element={<TransactionsPage />} />
               <Route path="/addtransaction" element={<AddTransactionPage />} />
