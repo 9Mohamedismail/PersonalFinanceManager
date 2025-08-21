@@ -1,8 +1,16 @@
+import { useState } from "react";
 import { FcMoneyTransfer } from "react-icons/fc";
+import type { InsertUser } from "../db/schema";
 import { useNavigate } from "react-router-dom";
 
 function LoginForm() {
+  const [newUser, setNewUser] = useState<InsertUser>({
+    userName: "",
+    email: "",
+  });
+
   const navigate = useNavigate();
+
   return (
     <div className="py-10 px-4 lg:px-8">
       <div className="h-full flex flex-col max-w-sm sm:max-w-md mx-auto">
@@ -22,7 +30,7 @@ function LoginForm() {
           </a>
         </p>
 
-        <form className="mt-4">
+        <form className="mt-4" onClick={handleSubmit}>
           <div className="w-full flex flex-col">
             <div className="">
               <label className="block text-lg font-bold text-primary uppercase tracking-wide mb-2">

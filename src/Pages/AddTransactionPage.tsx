@@ -26,6 +26,7 @@ export type TransactionForm = Partial<Transaction>;
 function AddTransactionPage() {
   const [formData, setFormData] = useState<TransactionForm>({});
 
+  console.log(formData);
   return (
     <div className="py-10 px-4 lg:px-8">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 items-start">

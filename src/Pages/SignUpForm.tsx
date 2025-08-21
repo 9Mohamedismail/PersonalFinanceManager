@@ -1,7 +1,34 @@
+import { useState } from "react";
+import axios from "axios";
 import { FcMoneyTransfer } from "react-icons/fc";
+import type { InsertUser } from "../db/schema";
 import { useNavigate } from "react-router-dom";
 function SignUpForm() {
   const navigate = useNavigate();
+
+  const [newUser, setNewUser] = useState<InsertUser>({
+    userName: "",
+    email: "",
+  });
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    const newUserData: InsertUser = {
+      ...newUser,
+      [name]: value,
+    };
+    setNewUser(newUserData);
+  };
+
+  const handleSubmit = async (e: React.SyntheticEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    try {
+      axios.post("http://localhost:3000/api/adduser", newUser);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <div className="py-10 px-4 lg:px-8">
       <div className="h-full flex flex-col max-w-sm sm:max-w-md md:max-w-xl mx-auto">
@@ -25,7 +52,7 @@ function SignUpForm() {
           </span>
         </p>
 
-        <form className="mt-4">
+        <form className="mt-4" onSubmit={handleSubmit}>
           <div className="w-full flex flex-col">
             <div className="">
               <label className="block text-lg font-bold text-primary uppercase tracking-wide mb-2">
@@ -34,7 +61,10 @@ function SignUpForm() {
               <input
                 className="appearance-none block w-full bg-background border border-secondary rounded py-3 px-4 mb-3 leading-tight 
              focus:outline-none focus:bg-white focus:border-primary"
-                type="text"
+                type="email"
+                name="email"
+                value={newUser.email ?? ""}
+                onChange={handleChange}
               />
             </div>
             <div className="    ">
@@ -45,6 +75,9 @@ function SignUpForm() {
                 className="appearance-none block w-full bg-background border border-secondary rounded py-3 px-4 mb-3 leading-tight 
              focus:outline-none focus:bg-white focus:border-primary"
                 type="text"
+                name="userName"
+                value={newUser.userName ?? ""}
+                onChange={handleChange}
               />
             </div>
             <div className="">
@@ -55,10 +88,14 @@ function SignUpForm() {
                 className="appearance-none block w-full bg-background border border-secondary rounded py-3 px-4 mb-3 leading-tight 
              focus:outline-none focus:bg-white focus:border-primary"
                 type="text"
+                name="password"
               />
             </div>
           </div>
-          <button className="border-2 border-primary rounded py-2 w-full md:w-1/2 px-4 text-lg font-bold text-primary uppercase tracking-wide">
+          <button
+            type="submit"
+            className="border-2 border-primary rounded py-2 w-full md:w-1/2 px-4 text-lg font-bold text-primary uppercase tracking-wide"
+          >
             Sign up
           </button>
         </form>
