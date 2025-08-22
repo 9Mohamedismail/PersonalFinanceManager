@@ -3,6 +3,7 @@ import { Strategy as LocalStrategy } from "passport-local";
 import { eq, or } from "drizzle-orm";
 import { db } from "../../../src/db/db";
 import { usersTable } from "../../../src/db/schema";
+import { comparePassword } from "../../utils/helpers";
 
 passport.use(
   "local",
@@ -24,7 +25,7 @@ passport.use(
           return done(null, false, { message: "Incorrect email" });
         }
 
-        if (user.password !== password) {
+        if (!(await comparePassword(password, user.password))) {
           return done(null, false, { message: "Incorrect password" });
         }
         return done(null, user);

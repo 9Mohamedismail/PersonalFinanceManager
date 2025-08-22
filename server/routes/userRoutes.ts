@@ -33,6 +33,7 @@ router.post("/signup", async (req, res, next) => {
       });
     });
   } catch (err: any) {
+    // TO DO: FIX ERROR HANDLING TO BE MORE PRECISE
     if (err?.code === "23505") {
       const detail = err.detail || "";
       if (detail.includes("(username)")) {
