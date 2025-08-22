@@ -2,8 +2,9 @@ import { pgTable, serial, text } from "drizzle-orm/pg-core";
 
 export const usersTable = pgTable("users_table", {
   id: serial("id").primaryKey(),
-  userName: text("userName").notNull().unique(),
+  username: text("username").notNull().unique(),
   email: text("email").notNull().unique(),
+  password: text("password").notNull(),
 });
 
 export type InsertUser = typeof usersTable.$inferInsert;

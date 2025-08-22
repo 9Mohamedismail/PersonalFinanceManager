@@ -8,6 +8,13 @@
       "when": 1755740453723,
       "tag": "0000_true_big_bertha",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1755815803380,
+      "tag": "0001_whole_thundra",
+      "breakpoints": true
     }
   ]
 }
