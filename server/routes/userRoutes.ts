@@ -2,6 +2,7 @@ import { Router } from "express";
 import { db } from "../../src/db/db";
 import passport from "passport";
 import { usersTable } from "../../src/db/schema";
+import { hashPassword } from "../utils/helpers";
 
 const router = Router();
 
@@ -19,7 +20,7 @@ router.post("/signup", async (req, res, next) => {
 
     const [user] = await db
       .insert(usersTable)
-      .values({ username, email, password })
+      .values({ username, email, password: await hashPassword(password) })
       .returning();
 
     req.login(user, (err) => {
@@ -42,6 +43,8 @@ router.post("/signup", async (req, res, next) => {
       }
       return res.status(409).json({ error: "User already exists" });
     }
+    console.error("Signup error:", err);
+    return res.status(500).json({ error: "Internal server error" });
   }
 });
 
