@@ -1,6 +1,6 @@
 import express from "express";
 import cors from "cors";
-import userRouter from "./routes/userRoutes";
+import router from "./routes/userRoutes";
 import "./routes/strategies/local-strategy";
 import session from "express-session";
 import passport from "passport";
@@ -27,7 +27,7 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use("/api", userRouter);
+app.use("/api", router);
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);

@@ -5,9 +5,44 @@ import { usersTable } from "../../src/db/schema";
 
 const router = Router();
 
-router.post("/adduser", async (req, res) => {
-  await db.insert(usersTable).values(req.body);
-  return res.status(201).json({ message: "User added successfully" });
+router.post("/signup", async (req, res, next) => {
+  try {
+    const { username, email, password } = req.body as {
+      username?: string;
+      email?: string;
+      password?: string;
+    };
+
+    if (!username || !email || !password) {
+      return res.status(400).send("Required fields missing");
+    }
+
+    const [user] = await db
+      .insert(usersTable)
+      .values({ username, email, password })
+      .returning();
+
+    req.login(user, (err) => {
+      if (err) return next(err);
+      return res.status(201).json({
+        message: "User added successfully",
+        id: user.id,
+        username: user.username,
+        email: user.email,
+      });
+    });
+  } catch (err: any) {
+    if (err?.code === "23505") {
+      const detail = err.detail || "";
+      if (detail.includes("(username)")) {
+        return res.status(409).json({ error: "Username already exists" });
+      }
+      if (detail.includes("(email)")) {
+        return res.status(409).json({ error: "Email already exists" });
+      }
+      return res.status(409).json({ error: "User already exists" });
+    }
+  }
 });
 
 router.post("/login", passport.authenticate("local"), (req, res) => {
@@ -29,11 +64,6 @@ router.post("/logout", (req, res, next) => {
     }
     res.redirect("/");
   });
-});
-
-router.get("/", (req, res) => {
-  console.log(req.session);
-  console.log(req.session.id);
 });
 
 export default router;
