@@ -33,13 +33,21 @@ router.post("/signup", async (req, res, next) => {
       });
     });
   } catch (err: any) {
-    // TO DO: FIX ERROR HANDLING TO BE MORE PRECISE
-    if (err?.code === "23505") {
-      const detail = err.detail || "";
-      if (detail.includes("(username)")) {
+    const code = err?.code ?? err?.cause?.code;
+    const detail = err?.detail ?? err?.cause?.detail ?? "";
+    const constraint = err?.constraint ?? err?.cause?.constraint;
+
+    if (code === "23505") {
+      if (
+        constraint === "users_table_username_unique" ||
+        detail.includes("(username)")
+      ) {
         return res.status(409).json({ error: "Username already exists" });
       }
-      if (detail.includes("(email)")) {
+      if (
+        constraint === "users_table_email_unique" ||
+        detail.includes("(email)")
+      ) {
         return res.status(409).json({ error: "Email already exists" });
       }
       return res.status(409).json({ error: "User already exists" });

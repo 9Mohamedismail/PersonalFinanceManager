@@ -35,6 +35,8 @@ function SignUpForm() {
     username: "",
   });
 
+  const [serverError, setServerError] = useState("");
+
   const [loading, setLoading] = useState(false);
 
   const validators: Record<ValidatableField, (value: string) => string> = {
@@ -124,18 +126,19 @@ function SignUpForm() {
     if (!formValid || loading) return;
     try {
       setLoading(true);
-      const res = await axios.post("http://localhost:3000/api/signup", newUser);
+      const res = await axios.post("http://localhost:3000/api/signup", {
+        username: newUser.username.toLowerCase(),
+        email: newUser.email.toLowerCase(),
+        password: newUser.password,
+      });
 
       if (res.status === 201) {
         console.log("User created successfully!");
         navigate("/dashboard");
       }
-    } catch (err) {
-      if (axios.isAxiosError(err) && err.response?.status === 409) {
-        console.error(err.response.data);
-      } else {
-        console.error("Unexpected error:", err);
-      }
+    } catch (err: any) {
+      const serverMsg = err.response?.data?.error ?? "Login failed";
+      setServerError(serverMsg);
     } finally {
       setLoading(false);
     }
@@ -144,6 +147,13 @@ function SignUpForm() {
   return (
     <div className="py-10 px-4 lg:px-8">
       <div className="h-full flex flex-col max-w-sm sm:max-w-md md:max-w-xl mx-auto">
+        {serverError && (
+          <div className="border roundeds bg-secondary-100 py-4 mb-4">
+            <p className="text-base text-primary mx-4 font-bold">
+              {serverError}
+            </p>
+          </div>
+        )}
         <div className="flex justify-center ">
           <FcMoneyTransfer className="w-16 h-16 md:w-24 md:h-24" />
         </div>

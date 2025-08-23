@@ -12,7 +12,7 @@ function LoginForm() {
   });
 
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [serverError, setServerError] = useState("");
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -24,29 +24,30 @@ function LoginForm() {
 
     try {
       setLoading(true);
-      await axios.post("http://localhost:3000/api/login", login);
+      await axios.post("http://localhost:3000/api/login", {
+        identifier: login.identifier.toLowerCase(),
+        password: login.password,
+      });
 
       console.log("User logged in successfully!");
       navigate("/dashboard");
     } catch (err: any) {
       const serverMsg = err?.response?.data?.message;
       const fallbackMsg = err?.message || "Login failed";
-      setError(serverMsg || fallbackMsg);
+      setServerError(serverMsg || fallbackMsg);
     } finally {
       setLoading(false);
-      setLogin((prev) => ({
-        ...prev,
-        password: "",
-      }));
     }
   };
 
   return (
     <div className="py-10 px-4 lg:px-8">
       <div className="h-full flex flex-col max-w-sm sm:max-w-md mx-auto">
-        {error && (
+        {serverError && (
           <div className="border roundeds bg-secondary-100 py-4 mb-4">
-            <p className="text-base text-primary mx-4 font-bold">{error}</p>
+            <p className="text-base text-primary mx-4 font-bold">
+              {serverError}
+            </p>
           </div>
         )}
         <div className="flex justify-center ">
