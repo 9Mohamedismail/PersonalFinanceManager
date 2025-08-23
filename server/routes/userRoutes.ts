@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { db } from "../../src/db/db";
-import { eq } from "drizzle-orm";
+import { eq, and } from "drizzle-orm";
 import passport from "passport";
 import { usersTable } from "../../src/db/schema";
 import { hashPassword } from "../utils/helpers";
@@ -105,6 +105,71 @@ router.post("/user/by-email", async (req, res) => {
     return res
       .status(200)
       .json({ message: "User fetched", username: user.username });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ message: "Server error" });
+  }
+});
+
+router.post("/user", async (req, res) => {
+  const { username, email } = req.body;
+
+  if (!username || !email) {
+    return res
+      .status(404)
+      .json({ message: "User's email or password is missing" });
+  }
+
+  try {
+    const [user] = await db
+      .select({
+        id: usersTable.id,
+        username: usersTable.username,
+        email: usersTable.email,
+      })
+      .from(usersTable)
+      .where(
+        and(
+          eq(usersTable.username, username.toLowerCase()),
+          eq(usersTable.email, email.toLowerCase())
+        )
+      )
+      .limit(1);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    return res.status(200).json({ message: "User fetched", user });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ message: "Server error" });
+  }
+});
+
+router.put("/user/reset", async (req, res) => {
+  const { email, newPassword } = req.body;
+
+  if (!email || !newPassword) {
+    return res
+      .status(404)
+      .json({ message: "User's email or new password is missing" });
+  }
+
+  try {
+    const [user] = await db
+      .update(usersTable)
+      .set({ password: await hashPassword(newPassword) })
+      .where(eq(usersTable.email, email.toLowerCase()))
+      .returning({ id: usersTable.id });
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    return res
+      .status(200)
+      .json({ message: "User's password has been updated", userId: user.id });
   } catch (err) {
     console.error(err);
     return res.status(500).json({ message: "Server error" });
