@@ -1,19 +1,54 @@
 import { useState } from "react";
 import { FcMoneyTransfer } from "react-icons/fc";
-import type { InsertUser } from "../db/schema";
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 function LoginForm() {
-  const [newUser, setNewUser] = useState<InsertUser>({
-    userName: "",
-    email: "",
+  const navigate = useNavigate();
+
+  const [login, setLogin] = useState({
+    identifier: "",
+    password: "",
   });
 
-  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setLogin((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = async (e: React.SyntheticEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    try {
+      setLoading(true);
+      await axios.post("http://localhost:3000/api/login", login);
+
+      console.log("User logged in successfully!");
+      navigate("/dashboard");
+    } catch (err: any) {
+      const serverMsg = err?.response?.data?.message;
+      const fallbackMsg = err?.message || "Login failed";
+      setError(serverMsg || fallbackMsg);
+    } finally {
+      setLoading(false);
+      setLogin((prev) => ({
+        ...prev,
+        password: "",
+      }));
+    }
+  };
 
   return (
     <div className="py-10 px-4 lg:px-8">
       <div className="h-full flex flex-col max-w-sm sm:max-w-md mx-auto">
+        {error && (
+          <div className="border roundeds bg-secondary-100 py-4 mb-4">
+            <p className="text-base text-primary mx-4 font-bold">{error}</p>
+          </div>
+        )}
         <div className="flex justify-center ">
           <FcMoneyTransfer className="w-16 h-16 md:w-24 md:h-24" />
         </div>
@@ -30,7 +65,7 @@ function LoginForm() {
           </a>
         </p>
 
-        <form className="mt-4" onClick={handleSubmit}>
+        <form className="mt-4" onSubmit={handleSubmit}>
           <div className="w-full flex flex-col">
             <div className="">
               <label className="block text-lg font-bold text-primary uppercase tracking-wide mb-2">
@@ -40,6 +75,9 @@ function LoginForm() {
                 className="appearance-none block w-full bg-background border border-secondary rounded py-3 px-4 mb-3 leading-tight 
              focus:outline-none focus:bg-white focus:border-primary"
                 type="text"
+                name="identifier"
+                value={login.identifier ?? ""}
+                onChange={handleChange}
               />
             </div>
 
@@ -50,12 +88,23 @@ function LoginForm() {
               <input
                 className="appearance-none block w-full bg-background border border-secondary rounded py-3 px-4 mb-3 leading-tight 
              focus:outline-none focus:bg-white focus:border-primary"
-                type="text"
+                type="password"
+                name="password"
+                value={login.password ?? ""}
+                onChange={handleChange}
               />
             </div>
           </div>
-          <button className="border-2 border-primary rounded py-2 w-full px-4 text-lg font-bold text-primary uppercase tracking-wide">
-            Log in
+          <button
+            type="submit"
+            disabled={loading}
+            className={`border-2 border-primary rounded py-2 w-full px-4 text-lg font-bold text-primary uppercase tracking-wide ${
+              loading
+                ? "opacity-50 cursor-not-allowed"
+                : "text-primary cursor-pointer"
+            }`}
+          >
+            {loading ? "Logging in..." : "Log in"}
           </button>
         </form>
 

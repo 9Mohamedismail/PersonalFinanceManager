@@ -49,16 +49,30 @@ router.post("/signup", async (req, res, next) => {
   }
 });
 
-router.post("/login", passport.authenticate("local"), (req, res) => {
-  if (!req.user) {
-    return res.status(401).json({ error: "Unauthorized" });
-  }
+router.post("/login", (req, res, next) => {
+  passport.authenticate(
+    "local",
+    (err: any, user: any, info: { message?: string }) => {
+      if (err) {
+        return next(err);
+      }
 
-  res.status(200).json({
-    id: req.user.id,
-    username: req.user.username,
-    email: req.user.email,
-  });
+      if (!user) {
+        return res
+          .status(401)
+          .json({ message: info?.message || "Authentication failed" });
+      }
+
+      req.logIn(user, (err) => {
+        if (err) {
+          return next(err);
+        }
+        return res
+          .status(200)
+          .json({ message: "Logged in successfully", user });
+      });
+    }
+  )(req, res, next);
 });
 
 router.post("/logout", (req, res, next) => {

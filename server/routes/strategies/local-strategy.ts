@@ -22,7 +22,7 @@ passport.use(
           );
 
         if (!user) {
-          return done(null, false, { message: "Incorrect email" });
+          return done(null, false, { message: "Incorrect email or password" });
         }
 
         if (!(await comparePassword(password, user.password))) {
