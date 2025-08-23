@@ -108,7 +108,7 @@ function ForgotUsernameForm() {
                   Recover username
                 </button>
                 <button
-                  className="border-primary rounded w-full px-4 underline text-center lg:text-left text-base cursor-pointer font-bold text-secondary tracking-wide cursor-pointer"
+                  className="border-primary rounded w-full px-4 underline text-center lg:text-left text-base cursor-pointer font-bold text-secondary tracking-wide"
                   onClick={() => navigate("/login")}
                 >
                   Return to login
