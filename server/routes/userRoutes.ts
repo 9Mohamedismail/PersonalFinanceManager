@@ -21,7 +21,11 @@ router.post("/signup", async (req, res, next) => {
 
     const [user] = await db
       .insert(usersTable)
-      .values({ username, email, password: await hashPassword(password) })
+      .values({
+        username: username.toLowerCase(),
+        email: email.toLowerCase(),
+        password: await hashPassword(password),
+      })
       .returning();
 
     req.login(user, (err) => {
@@ -78,7 +82,7 @@ router.post("/login", (req, res, next) => {
         }
         return res
           .status(200)
-          .json({ message: "Logged in successfully", user });
+          .json({ message: "Logged in successfully", userID: user.id });
       });
     }
   )(req, res, next);
@@ -90,6 +94,8 @@ router.post("/user/by-email", async (req, res) => {
   if (!email) {
     return res.status(404).json({ message: "User email not sent" });
   }
+
+  console.log(req.session);
 
   try {
     const [user] = await db

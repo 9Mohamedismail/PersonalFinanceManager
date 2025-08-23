@@ -3,9 +3,11 @@ import cors from "cors";
 import router from "./routes/userRoutes";
 import "./routes/strategies/local-strategy";
 import session from "express-session";
+import connectPgSimple from "connect-pg-simple";
 import passport from "passport";
 
 const app = express();
+const PGStore = connectPgSimple(session);
 
 const PORT = process.env.PORT || 3000;
 const CLIENT_URL = process.env.CLIENT_URL || "http://localhost:5173";
@@ -20,7 +22,11 @@ app.use(
     resave: false,
     cookie: {
       maxAge: 60000 * 60,
+      httpOnly: true,
     },
+    store: new PGStore({
+      createTableIfMissing: true,
+    }),
   })
 );
 
