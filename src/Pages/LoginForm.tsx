@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { FcMoneyTransfer } from "react-icons/fc";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { UserInfoContext } from "../Context/UserInfoContext";
 
 type Login = {
   identifier: string;
@@ -10,6 +11,7 @@ type Login = {
 
 function LoginForm() {
   const navigate = useNavigate();
+  const { setUser } = useContext(UserInfoContext);
 
   const [login, setLogin] = useState<Login>({
     identifier: "",
@@ -33,7 +35,7 @@ function LoginForm() {
 
     try {
       setLoading(true);
-      await axios.post(
+      const res = await axios.post(
         "http://localhost:3000/api/login",
         {
           identifier: login.identifier.toLowerCase(),
@@ -43,6 +45,7 @@ function LoginForm() {
       );
 
       console.log("User logged in successfully!");
+      setUser(res.data.user);
       navigate("/dashboard");
     } catch (err: any) {
       const serverMsg = err?.response?.data?.message;

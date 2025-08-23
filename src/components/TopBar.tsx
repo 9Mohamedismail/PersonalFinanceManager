@@ -21,9 +21,11 @@ function TopBar() {
         { withCredentials: true }
       );
       console.log(res.data.message);
-      navigate("/login");
     } catch (err) {
       console.error("Logout failed:", err);
+    } finally {
+      setUser({ id: 0, username: "", email: "" });
+      navigate("/login");
     }
   };
 
@@ -47,14 +49,20 @@ function TopBar() {
         />
 
         {user.id ? (
-          <div className="flex items-center" onClick={handleLogout}>
+          <div
+            className="flex items-center cursor-pointer"
+            onClick={handleLogout}
+          >
             <h1 className="text-base md:text-lg tracking-wide uppercase ">
               Logout
             </h1>
             <FiChevronDown className="w-6 h-6" />
           </div>
         ) : (
-          <div className="flex items-center" onClick={() => navigate("/login")}>
+          <div
+            className="flex items-center cursor-pointer"
+            onClick={() => navigate("/login")}
+          >
             <h1 className="text-base md:text-lg tracking-wide uppercase ">
               Login
             </h1>

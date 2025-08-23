@@ -82,7 +82,10 @@ router.post("/login", (req, res, next) => {
         }
         return res
           .status(200)
-          .json({ message: "Logged in successfully", userID: user.id });
+          .json({
+            message: "Logged in successfully",
+            user: { id: user.id, username: user.username, email: user.email },
+          });
       });
     }
   )(req, res, next);
