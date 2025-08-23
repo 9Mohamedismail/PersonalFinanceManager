@@ -23,19 +23,20 @@ function ForgotUsernameForm() {
   const handleSubmit = async (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (!email) return;
+    if (!email) {
+      setResult({ message: "Enter a email", success: false });
+      return;
+    }
 
     try {
-      await axios
-        .post("http://localhost:3000/api/user/by-email", {
-          email: email,
-        })
-        .then((res) => {
-          setResult({
-            message: res.data.username,
-            success: true,
-          });
-        });
+      const res = await axios.post("http://localhost:3000/api/user/by-email", {
+        email: email,
+      });
+
+      setResult({
+        message: res.data.username,
+        success: true,
+      });
     } catch (err: any) {
       const serverMsg = err?.response?.data?.message;
       const fallbackMsg = err?.message || "User Retrieval failed";
@@ -103,11 +104,11 @@ function ForgotUsernameForm() {
               </div>
 
               <div className="flex flex-col lg:flex-row gap-2">
-                <button className="border-2 border-primary rounded py-2 w-full px-4 lg:px-2 text-lg font-bold text-primary uppercase tracking-wide">
+                <button className="border-2 border-primary rounded py-2 w-full px-4 lg:px-2 text-lg font-bold text-primary uppercase tracking-wide cursor-pointer">
                   Recover username
                 </button>
                 <button
-                  className="border-primary rounded w-full px-4 underline text-center lg:text-left text-base cursor-pointer font-bold text-secondary tracking-wide"
+                  className="border-primary rounded w-full px-4 underline text-center lg:text-left text-base cursor-pointer font-bold text-secondary tracking-wide cursor-pointer"
                   onClick={() => navigate("/login")}
                 >
                   Return to login

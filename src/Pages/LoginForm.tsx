@@ -108,7 +108,7 @@ function LoginForm() {
           <button
             type="submit"
             disabled={loading}
-            className={`border-2 border-primary rounded py-2 w-full px-4 text-lg font-bold text-primary uppercase tracking-wide ${
+            className={`border-2 border-primary rounded py-2 w-full px-4 text-lg font-bold text-primary uppercase tracking-wide cursor-pointer ${
               loading
                 ? "opacity-50 cursor-not-allowed"
                 : "text-primary cursor-pointer"
@@ -120,13 +120,13 @@ function LoginForm() {
 
         <div className="flex flex-row gap-2 mt-2">
           <button
-            className="border-2 border-primary rounded py-1 w-full px-2 text-base font-semibold text-primary  tracking-wide"
+            className="border-2 border-primary rounded py-1 w-full px-2 text-base font-semibold text-primary tracking-wide cursor-pointer"
             onClick={() => navigate("/login/forgot-username")}
           >
             Forgot Username?
           </button>
           <button
-            className="border-2 border-primary rounded py-1 w-full px-2 text-base font-semibold text-primary tracking-wide"
+            className="border-2 border-primary rounded py-1 w-full px-2 text-base font-semibold text-primary tracking-wide cursor-pointer"
             onClick={() => navigate("/login/forgot")}
           >
             Forgot Password?
@@ -140,10 +140,10 @@ function LoginForm() {
         </div>
 
         <div className="flex flex-col gap-2 ">
-          <button className="border-2 border-primary rounded  py-2 px-4 text-lg font-bold text-primary uppercase tracking-wide">
+          <button className="border-2 border-primary rounded  py-2 px-4 text-lg font-bold text-primary uppercase tracking-wide cursor-pointer">
             Google
           </button>
-          <button className="border-2 border-primary rounded  py-2 px-4 text-lg font-bold text-primary uppercase tracking-wide">
+          <button className="border-2 border-primary rounded  py-2 px-4 text-lg font-bold text-primary uppercase tracking-wide cursor-pointer">
             Github
           </button>
         </div>
