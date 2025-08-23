@@ -33,10 +33,14 @@ function LoginForm() {
 
     try {
       setLoading(true);
-      await axios.post("http://localhost:3000/api/login", {
-        identifier: login.identifier.toLowerCase(),
-        password: login.password,
-      });
+      await axios.post(
+        "http://localhost:3000/api/login",
+        {
+          identifier: login.identifier.toLowerCase(),
+          password: login.password,
+        },
+        { withCredentials: true }
+      );
 
       console.log("User logged in successfully!");
       navigate("/dashboard");

@@ -95,8 +95,6 @@ router.post("/user/by-email", async (req, res) => {
     return res.status(404).json({ message: "User email not sent" });
   }
 
-  console.log(req.session);
-
   try {
     const [user] = await db
       .select({ username: usersTable.username })
@@ -187,8 +185,15 @@ router.post("/logout", (req, res, next) => {
     if (error) {
       return next(error);
     }
-    res.redirect("/");
+    return res.status(200).json({ message: "Logged out successfully" });
   });
+});
+
+router.get("/user/me", (req, res) => {
+  if (!req.user) {
+    return res.status(401).json({ message: "Not authenticated" });
+  }
+  return res.status(200).json({ user: req.user });
 });
 
 export default router;

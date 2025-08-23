@@ -12,7 +12,7 @@ const PGStore = connectPgSimple(session);
 const PORT = process.env.PORT || 3000;
 const CLIENT_URL = process.env.CLIENT_URL || "http://localhost:5173";
 
-app.use(cors({ origin: CLIENT_URL }));
+app.use(cors({ origin: CLIENT_URL, credentials: true }));
 
 app.use(express.json());
 app.use(
@@ -23,6 +23,8 @@ app.use(
     cookie: {
       maxAge: 60000 * 60,
       httpOnly: true,
+      secure: false,
+      sameSite: "lax",
     },
     store: new PGStore({
       createTableIfMissing: true,
