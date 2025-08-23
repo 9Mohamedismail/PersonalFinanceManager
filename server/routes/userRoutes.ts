@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { db } from "../../src/db/db";
+import { eq } from "drizzle-orm";
 import passport from "passport";
 import { usersTable } from "../../src/db/schema";
 import { hashPassword } from "../utils/helpers";
@@ -81,6 +82,33 @@ router.post("/login", (req, res, next) => {
       });
     }
   )(req, res, next);
+});
+
+router.post("/user/by-email", async (req, res) => {
+  const { email } = req.body;
+
+  if (!email) {
+    return res.status(404).json({ message: "User email not sent" });
+  }
+
+  try {
+    const [user] = await db
+      .select({ username: usersTable.username })
+      .from(usersTable)
+      .where(eq(usersTable.email, email.toLowerCase()))
+      .limit(1);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    return res
+      .status(200)
+      .json({ message: "User fetched", username: user.username });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ message: "Server error" });
+  }
 });
 
 router.post("/logout", (req, res, next) => {

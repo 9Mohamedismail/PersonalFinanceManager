@@ -3,10 +3,15 @@ import { FcMoneyTransfer } from "react-icons/fc";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
+type Login = {
+  identifier: string;
+  password: string;
+};
+
 function LoginForm() {
   const navigate = useNavigate();
 
-  const [login, setLogin] = useState({
+  const [login, setLogin] = useState<Login>({
     identifier: "",
     password: "",
   });
@@ -21,6 +26,10 @@ function LoginForm() {
 
   const handleSubmit = async (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if (!login.identifier || !login.password) {
+      return;
+    }
 
     try {
       setLoading(true);

@@ -19,7 +19,8 @@ passport.use(
               eq(usersTable.username, `${username}`),
               eq(usersTable.email, `${username}`)
             )
-          );
+          )
+          .limit(1);
 
         if (!user) {
           return done(null, false, { message: "Incorrect email or password" });
