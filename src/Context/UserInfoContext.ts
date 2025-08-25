@@ -1,21 +1,17 @@
 import { createContext } from "react";
 
-export type User = {
+type User = {
   id: number;
   username: string;
   email: string;
 };
 
 type UserInfoContextType = {
-  user: User;
-  setUser: React.Dispatch<React.SetStateAction<User>>;
+  user: User | null;
+  setUser: React.Dispatch<React.SetStateAction<User | null>>;
 };
 
 export const UserInfoContext = createContext<UserInfoContextType>({
-  user: {
-    id: 0,
-    username: "",
-    email: "",
-  },
+  user: null,
   setUser: () => {},
 });

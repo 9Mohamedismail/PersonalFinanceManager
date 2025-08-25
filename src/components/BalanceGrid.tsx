@@ -1,6 +1,11 @@
 import { FiChevronDown } from "react-icons/fi";
+import Transactions from "../utils/Transactions.json";
 
 function BalanceGrid() {
+  const findBalance = () => {
+    return Transactions.reduce((prev, curr) => prev + curr.amount, 0);
+  };
+
   return (
     <div className="bg-secondary-100 rounded p-6">
       <div className="flex flex-col gap-y-10">
@@ -9,7 +14,10 @@ function BalanceGrid() {
             Your Balance
           </p>
           <p className="text-4xl font-bold text-primary tracking-wide">
-            $3090.00
+            {findBalance().toLocaleString("en-US", {
+              style: "currency",
+              currency: "USD",
+            })}
           </p>
           <div className="flex justify-center items-center gap-4">
             <p className="text-lg text-gray-900">This Month</p>
