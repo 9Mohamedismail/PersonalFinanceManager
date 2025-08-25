@@ -157,6 +157,8 @@
     "description": "LIRR Monthly Pass",
     "amount": -261.0,
     "type": "expense",
-    "category": "Transport"
+    "category": "Transport",
+    "created at": "00:00:00",
+    "updated at": "00:00:01"
   }
 ]
