@@ -11,13 +11,23 @@ import SignUpForm from "./Pages/SignUpForm";
 import LoginForm from "./Pages/LoginForm";
 import ForgotPasswordForm from "./Pages/ForgotPassword";
 import ForgotUsernameForm from "./Pages/ForgotUsername";
-import { UserInfoContext, type User } from "./Context/UserInfoContext";
+import {
+  UserInfoContext,
+  type User,
+  type AuthStatus,
+} from "./Context/UserInfoContext";
+import {
+  TransactionsContext,
+  type Transactions,
+} from "./Context/TransactionsContext";
 import axios from "axios";
-import ProtectedRoute from "./utils/Auth";
+import ProtectedRoute from "./utils/ProtectedRoute";
 
 function App() {
   const [expanded, setExpanded] = useState<boolean>(false);
   const [user, setUser] = useState<User | null>(null);
+  const [authStatus, setAuthStatus] = useState<AuthStatus>("loading");
+  const [transactions, setTransactions] = useState<Transactions | null>(null);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -28,47 +38,81 @@ function App() {
 
         console.log("User logged in", res.data.user);
         setUser(res.data.user);
+        setAuthStatus("authenticated");
       } catch (err: any) {
         if (err?.response?.status === 401) {
           console.log(err.response.data.message);
         } else {
           console.error("Unexpected error fetching user:", err);
         }
+        setAuthStatus("unauthenticated");
       }
     };
 
     fetchUser();
   }, []);
 
+  useEffect(() => {
+    if (!user) return;
+    const fetchTransactions = async () => {
+      try {
+        const res = await axios.get(`http://localhost:3000/api/transaction`, {
+          withCredentials: true,
+        });
+
+        console.log("User's transactions fetched:", res.data.transactions);
+        setTransactions(res.data.transactions);
+      } catch (err: any) {
+        if (err?.response?.status === 401) {
+          console.log(err.response.data.message);
+        } else {
+          console.error("Unexpected error fetching user's transactions:", err);
+        }
+      }
+    };
+
+    fetchTransactions();
+  }, [user]);
+
   return (
     <div className="flex min-h-screen">
-      <UserInfoContext.Provider value={{ user, setUser }}>
-        <SidebarContext.Provider value={{ expanded, setExpanded }}>
-          {user && <SideBar />}
-          <div className="flex flex-col flex-1 bg-background">
-            {user && <TopBar />}
-            <div className="flex-1">
-              <Routes>
-                <Route element={<ProtectedRoute />}>
-                  <Route path="/dashboard" element={<MainBentoGrid />} />
-                  <Route path="/transactions" element={<TransactionsPage />} />
+      <UserInfoContext.Provider
+        value={{ user, authStatus, setAuthStatus, setUser }}
+      >
+        <TransactionsContext.Provider value={{ transactions, setTransactions }}>
+          <SidebarContext.Provider value={{ expanded, setExpanded }}>
+            {user && <SideBar />}
+            <div className="flex flex-col flex-1 bg-background">
+              {user && <TopBar />}
+              <div className="flex-1">
+                <Routes>
+                  <Route element={<ProtectedRoute />}>
+                    <Route path="/dashboard" element={<MainBentoGrid />} />
+                    <Route
+                      path="/transactions"
+                      element={<TransactionsPage />}
+                    />
+                    <Route
+                      path="/addtransaction"
+                      element={<AddTransactionPage />}
+                    />
+                    <Route path="/metrics" element={<MetricsPage />} />
+                  </Route>
+                  <Route path="/signup" element={<SignUpForm />} />
+                  <Route path="/login" element={<LoginForm />} />
                   <Route
-                    path="/addtransaction"
-                    element={<AddTransactionPage />}
+                    path="/login/forgot"
+                    element={<ForgotPasswordForm />}
                   />
-                  <Route path="/metrics" element={<MetricsPage />} />
-                </Route>
-                <Route path="/signup" element={<SignUpForm />} />
-                <Route path="/login" element={<LoginForm />} />
-                <Route path="/login/forgot" element={<ForgotPasswordForm />} />
-                <Route
-                  path="/login/forgot-username"
-                  element={<ForgotUsernameForm />}
-                />
-              </Routes>
+                  <Route
+                    path="/login/forgot-username"
+                    element={<ForgotUsernameForm />}
+                  />
+                </Routes>
+              </div>
             </div>
-          </div>
-        </SidebarContext.Provider>
+          </SidebarContext.Provider>
+        </TransactionsContext.Provider>
       </UserInfoContext.Provider>
     </div>
   );

@@ -9,7 +9,7 @@ import { UserInfoContext } from "../Context/UserInfoContext";
 
 function TopBar() {
   const { expanded, setExpanded } = useContext(SidebarContext);
-  const { user, setUser } = useContext(UserInfoContext);
+  const { user, setUser, setAuthStatus } = useContext(UserInfoContext);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -25,6 +25,7 @@ function TopBar() {
       console.error("Logout failed:", err);
     } finally {
       setUser(null);
+      setAuthStatus("unauthenticated");
       navigate("/login");
     }
   };

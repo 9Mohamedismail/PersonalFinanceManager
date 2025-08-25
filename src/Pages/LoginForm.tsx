@@ -11,7 +11,7 @@ type Login = {
 
 function LoginForm() {
   const navigate = useNavigate();
-  const { setUser } = useContext(UserInfoContext);
+  const { setUser, setAuthStatus } = useContext(UserInfoContext);
 
   const [login, setLogin] = useState<Login>({
     identifier: "",
@@ -46,6 +46,7 @@ function LoginForm() {
 
       console.log("User logged in successfully!");
       setUser(res.data.user);
+      setAuthStatus("authenticated");
       navigate("/dashboard");
     } catch (err: any) {
       const serverMsg = err?.response?.data?.message;
