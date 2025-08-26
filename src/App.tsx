@@ -27,7 +27,7 @@ function App() {
   const [expanded, setExpanded] = useState<boolean>(false);
   const [user, setUser] = useState<User | null>(null);
   const [authStatus, setAuthStatus] = useState<AuthStatus>("loading");
-  const [transactions, setTransactions] = useState<Transactions | null>(null);
+  const [transactions, setTransactions] = useState<Transactions[] | null>(null);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -78,14 +78,14 @@ function App() {
   }, [user]);
 
   return (
-    <div className="flex min-h-screen">
+    <div className="flex min-h-screen bg-gray-50">
       <UserInfoContext.Provider
         value={{ user, authStatus, setAuthStatus, setUser }}
       >
         <TransactionsContext.Provider value={{ transactions, setTransactions }}>
           <SidebarContext.Provider value={{ expanded, setExpanded }}>
             {user && <SideBar />}
-            <div className="flex flex-col flex-1 bg-background">
+            <div className="flex flex-col flex-1">
               {user && <TopBar />}
               <div className="flex-1">
                 <Routes>

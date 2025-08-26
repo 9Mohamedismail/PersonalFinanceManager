@@ -13,7 +13,7 @@ function Transactions({ grid }: TransactionsProps) {
     <div>
       {grid && (
         <div className="flex justify-between">
-          <p className="text-2xl font-semibold text-gray-900 mb-2">
+          <p className="text-lg font-semibold text-gray-900 uppercase mb-2">
             Previous Transactions
           </p>
           <p

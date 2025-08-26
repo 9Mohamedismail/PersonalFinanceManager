@@ -5,7 +5,7 @@
   --color-secondary: #6a9c89;
   --color-secondary-100: #c4dad2;
   --color-text: #e9efec;
-  --color-background: #f5f6f8;
 
-  --font-receipt: "Courier New", Courier, monospace;
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Helvetica, Arial, sans-serif;
 }

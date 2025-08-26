@@ -30,14 +30,14 @@ type WeekTransactionsGrid = {
 function WeekTransactionsGrid({ grid }: WeekTransactionsGrid) {
   const navigate = useNavigate();
   return (
-    <div className="bg-secondary-100 rounded p-6 w-full text-start">
-      <div className="flex justify-between">
-        <p className="text-2xl font-semibold text-gray-900 mb-2 ">
+    <div className="bg-white rounded-lg shadow-sm border border-primary p-6 w-full text-start h-full flex flex-col">
+      <div className="xl:flex justify-between">
+        <p className="text-lg font-semibold text-gray-900 uppercase mb-2 ">
           Last Week Transactions
         </p>
         {grid && (
           <p
-            className="text-secondary font-bold mb-2 align-center cursor-pointer"
+            className="text-primary mb-2 align-center cursor-pointer"
             onClick={() => navigate("/metrics")}
           >
             View Details

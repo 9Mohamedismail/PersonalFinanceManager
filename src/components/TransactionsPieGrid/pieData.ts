@@ -12,15 +12,9 @@ const data: ChartData<"doughnut"> = {
   labels,
   datasets: [
     {
-      label: "Weekly Spending by Category",
+      label: "Spent this week:",
       data: [180, 140, 25, 35, 60],
-      backgroundColor: [
-        "#FF6384", // Restaurants - red
-        "#36A2EB", // Supermarkets - blue
-        "#FFCE56", // Transportation - yellow
-        "#4BC0C0", // Gasoline - teal
-        "#9966FF", // Merchandise - purple
-      ],
+      backgroundColor: ["#e06666", "#4d8370", "#4f81bd", "#d6a354", "#8e7cc3"],
       hoverOffset: 6,
     },
   ],

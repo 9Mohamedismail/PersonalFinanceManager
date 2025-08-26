@@ -18,10 +18,10 @@ const options: ChartOptions<"line"> = {
   scales: {
     x: {
       ticks: {
-        color: "#6b7280",
+        color: "#16423c",
         font: {
           size: 14,
-          weight: 500,
+          weight: 400,
         },
       },
       grid: {
@@ -33,10 +33,10 @@ const options: ChartOptions<"line"> = {
     },
     y: {
       ticks: {
-        color: "#6b7280",
+        color: "#16423c",
         font: {
           size: 14,
-          weight: 500,
+          weight: 400,
         },
       },
       grid: {

@@ -223,7 +223,7 @@ function SignUpForm() {
                 />
                 {showCheck("username") && (
                   <IoIosCheckmarkCircle
-                    color={!error.username.length ? "4BB543" : "red"}
+                    color={!error.username.length ? "4BB543" : "fc100d"}
                     className="absolute inset-y-0 right-0 h-full w-10 p-2 "
                   />
                 )}

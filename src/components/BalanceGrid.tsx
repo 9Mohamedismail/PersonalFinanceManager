@@ -16,8 +16,20 @@ function BalanceGrid() {
       : transactions.reduce((prev, curr) => prev + curr.amount, 0);
 
     return (
-      <span className="inline-flex items-center gap-2 border rounded-full px-3 text-lg font-semibold text-gray-900 tracking-wide">
-        {totalMonthBal < 0 ? <FiChevronDown /> : <FiChevronUp />}
+      <span
+        className="
+      inline-flex items-center
+      gap-1.5
+      rounded-lg border border-primary bg-white
+      px-4 py-1
+      text-lg text-primary tracking-wide shadow-sm
+    "
+      >
+        {totalMonthBal < 0 ? (
+          <FiChevronDown className="w-4 h-4 text-[#fc100d]" />
+        ) : (
+          <FiChevronUp className="w-4 h-4 text-[#4BB543]" />
+        )}
         {totalMonthBal.toLocaleString("en-US", {
           style: "currency",
           currency: "USD",
@@ -27,7 +39,7 @@ function BalanceGrid() {
   };
 
   const expensesThisMonth = () => {
-    if (!transactions) return 0;
+    if (!transactions) return 1;
     return transactions.reduce((prev, curr) => {
       if (curr.type === "expense") {
         return prev + curr.amount;
@@ -37,13 +49,13 @@ function BalanceGrid() {
   };
 
   return (
-    <div className="bg-secondary-100 rounded p-6">
+    <div className="bg-white rounded-lg shadow-sm border border-primary p-6 h-full flex flex-col">
       <div className="flex flex-col gap-y-10">
         <section className="text-center space-y-2">
           <p className="text-lg font-semibold text-gray-900 uppercase">
             Your Balance
           </p>
-          <p className="text-4xl font-bold text-primary tracking-wide">
+          <p className="text-4xl text-primary tracking-wide">
             {findBalance().toLocaleString("en-US", {
               style: "currency",
               currency: "USD",
@@ -58,11 +70,11 @@ function BalanceGrid() {
         <section className="space-y-2">
           <hr className="border-primary" />
           <p className="text-lg font-semibold text-gray-900 uppercase">
-            MONTH Summary
+            Summary
           </p>
           <div className="flex justify-between">
             <div>
-              <p className="text-lg font-semibold text-gray-900 tracking-wide">
+              <p className="text-2xl text-primary tracking-wide">
                 {expensesThisMonth().toLocaleString("en-US", {
                   style: "currency",
                   currency: "USD",
@@ -71,7 +83,7 @@ function BalanceGrid() {
               <p className="text-lg text-gray-900">Expenses</p>
             </div>
             <div>
-              <p className="text-lg font-semibold text-gray-900 tracking-wide">
+              <p className="text-2xl text-primary tracking-wide">
                 {transactions?.length}
               </p>
               <p className="text-lg text-gray-900">Transactions</p>

@@ -31,18 +31,18 @@ function TopBar() {
   };
 
   return (
-    <div className="flex items-center justify-between text-primary font-bold py-4 px-4 md:px-8">
+    <div className="flex items-center justify-between text-primary py-4 px-4 md:px-8">
       <div className="flex items-center space-x-4">
         <IoIosMenu size="2rem" onClick={() => setExpanded((prev) => !prev)} />
-        <h1 className="hidden sm:block text-base md:text-lg tracking-wide px-2 py-1 md:px-4 border rounded-full">
+        <h1 className="hidden sm:block text-base md:text-lg tracking-wide px-2 py-1 md:px-4 bg-white rounded-lg shadow-sm border border-primary">
           Good morning {user ? user.username : ""}
         </h1>
       </div>
-      <h1 className="text-base md:text-lg tracking-wide px-2 py-1 md:px-4 border rounded-full uppercase">
+      <h1 className="text-base md:text-lg tracking-wide px-2 py-1 md:px-4 bg-white rounded-lg shadow-sm border border-primary uppercase">
         {location.pathname.replace("/", "")}
       </h1>
 
-      <div className="flex items-center space-x-4 px-2 py-1 md:px-4 font-bold border rounded-full">
+      <div className="flex items-center space-x-4 px-2 py-1 md:px-4bg-white rounded-lg shadow-sm border border-primary">
         <img
           src="https://placehold.co/16x16"
           alt="User avatar"
