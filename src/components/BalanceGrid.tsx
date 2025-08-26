@@ -1,9 +1,39 @@
-import { FiChevronDown } from "react-icons/fi";
-import Transactions from "../utils/Transactions.json";
+import { FiChevronDown, FiChevronUp } from "react-icons/fi";
+import { TransactionsContext } from "../Context/TransactionsContext";
+import { useContext } from "react";
 
 function BalanceGrid() {
+  const { transactions } = useContext(TransactionsContext);
+
   const findBalance = () => {
-    return Transactions.reduce((prev, curr) => prev + curr.amount, 0);
+    if (!transactions) return 0;
+    return transactions.reduce((prev, curr) => prev + curr.amount, 0);
+  };
+
+  const balanceThisMonth = () => {
+    const totalMonthBal = !transactions
+      ? 0
+      : transactions.reduce((prev, curr) => prev + curr.amount, 0);
+
+    return (
+      <span className="inline-flex items-center gap-2 border rounded-full px-3 text-lg font-semibold text-gray-900 tracking-wide">
+        {totalMonthBal < 0 ? <FiChevronDown /> : <FiChevronUp />}
+        {totalMonthBal.toLocaleString("en-US", {
+          style: "currency",
+          currency: "USD",
+        })}
+      </span>
+    );
+  };
+
+  const expensesThisMonth = () => {
+    if (!transactions) return 0;
+    return transactions.reduce((prev, curr) => {
+      if (curr.type === "expense") {
+        return prev + curr.amount;
+      }
+      return prev;
+    }, 0);
   };
 
   return (
@@ -21,28 +51,28 @@ function BalanceGrid() {
           </p>
           <div className="flex justify-center items-center gap-4">
             <p className="text-lg text-gray-900">This Month</p>
-            <span className="inline-flex items-center gap-2 border rounded-full px-3 text-lg font-semibold text-gray-900 tracking-wide">
-              <FiChevronDown />
-              $1309
-            </span>
+            {balanceThisMonth()}
           </div>
         </section>
 
         <section className="space-y-2">
           <hr className="border-primary" />
           <p className="text-lg font-semibold text-gray-900 uppercase">
-            Summary
+            MONTH Summary
           </p>
           <div className="flex justify-between">
             <div>
               <p className="text-lg font-semibold text-gray-900 tracking-wide">
-                $872
+                {expensesThisMonth().toLocaleString("en-US", {
+                  style: "currency",
+                  currency: "USD",
+                })}
               </p>
               <p className="text-lg text-gray-900">Expenses</p>
             </div>
             <div>
               <p className="text-lg font-semibold text-gray-900 tracking-wide">
-                $872
+                {transactions?.length}
               </p>
               <p className="text-lg text-gray-900">Transactions</p>
             </div>

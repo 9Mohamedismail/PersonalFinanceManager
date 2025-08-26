@@ -56,9 +56,12 @@ function App() {
     if (!user) return;
     const fetchTransactions = async () => {
       try {
-        const res = await axios.get(`http://localhost:3000/api/transaction`, {
-          withCredentials: true,
-        });
+        const res = await axios.get(
+          `http://localhost:3000/api/transaction/month`,
+          {
+            withCredentials: true,
+          }
+        );
 
         console.log("User's transactions fetched:", res.data.transactions);
         setTransactions(res.data.transactions);

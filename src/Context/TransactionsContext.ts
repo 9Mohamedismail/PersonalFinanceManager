@@ -16,8 +16,8 @@ export type Transactions = {
 };
 
 type TransactionsContextType = {
-  transactions: Transactions | null;
-  setTransactions: React.Dispatch<React.SetStateAction<Transactions | null>>;
+  transactions: Transactions[] | null;
+  setTransactions: React.Dispatch<React.SetStateAction<Transactions[] | null>>;
 };
 
 export const TransactionsContext = createContext<TransactionsContextType>({
