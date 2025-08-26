@@ -148,8 +148,8 @@ function SignUpForm() {
     <div className="py-10 px-4 lg:px-8">
       <div className="h-full flex flex-col max-w-sm sm:max-w-md md:max-w-xl mx-auto">
         {serverError && (
-          <div className="border roundeds bg-secondary-100 py-4 mb-4">
-            <p className="text-base text-primary mx-4 font-bold">
+          <div className="border bg-secondary-100 rounded shadow-sm py-4 mb-4">
+            <p className="text-base text-primary mx-4 font-semibold">
               {serverError}
             </p>
           </div>
@@ -157,7 +157,7 @@ function SignUpForm() {
         <div className="flex justify-center ">
           <FcMoneyTransfer className="w-16 h-16 md:w-24 md:h-24" />
         </div>
-        <p className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl lg:text-center mb-4 font-bold text-primary tracking-wide">
+        <p className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl lg:text-center mb-4 text-primary tracking-wide">
           Get started with your account
         </p>
         <p className="text-base lg:text-lg text-gray-900 lg:text-center">
@@ -167,7 +167,7 @@ function SignUpForm() {
             Already have an account?
             <a
               onClick={() => navigate("/login")}
-              className="cursor-pointer font-bold text-secondary ml-1"
+              className="cursor-pointer font-semibold text-secondary ml-1"
             >
               Log in.
             </a>
@@ -177,12 +177,12 @@ function SignUpForm() {
         <form noValidate className="mt-4" onSubmit={handleSubmit}>
           <div className="w-full flex flex-col">
             <div className="">
-              <label className="block text-lg font-bold text-primary uppercase tracking-wide mb-2">
+              <label className="block text-lg text-primary uppercase tracking-wide mb-2">
                 Email
               </label>
               <div className="relative w-full">
                 <input
-                  className="appearance-none block w-full bg-background border border-secondary rounded py-3 px-4 mb-3 leading-tight 
+                  className="appearance-none block w-full border bg-white rounded shadow-sm border-primary py-3 px-4 mb-3 leading-tight 
              focus:outline-none focus:bg-white focus:border-primary"
                   type="email"
                   name="email"
@@ -206,12 +206,12 @@ function SignUpForm() {
               )}
             </div>
             <div className="">
-              <label className="block text-lg font-bold text-primary uppercase tracking-wide mb-2">
+              <label className="block text-lg text-primary uppercase tracking-wide mb-2">
                 Username
               </label>
               <div className="relative w-full">
                 <input
-                  className="appearance-none block w-full bg-background border border-secondary rounded py-3 px-4 mb-3 leading-tight 
+                  className="appearance-none block w-full border bg-white rounded shadow-sm border-primary py-3 px-4 mb-3 leading-tight 
              focus:outline-none focus:bg-white focus:border-primary"
                   type="text"
                   name="username"
@@ -235,12 +235,12 @@ function SignUpForm() {
               </p>
             )}
             <div className="">
-              <label className="block text-lg font-bold text-primary uppercase tracking-wide mb-2">
+              <label className="block text-lg text-primary uppercase tracking-wide mb-2">
                 Password
               </label>
               <div className="relative w-full">
                 <input
-                  className="appearance-none block w-full bg-background border border-secondary rounded py-3 px-4 mb-3 leading-tight 
+                  className="appearance-none block w-full border bg-white rounded shadow-sm border-primary py-3 px-4 mb-3 leading-tight 
              focus:outline-none focus:bg-white focus:border-primary"
                   type="password"
                   name="password"
@@ -282,7 +282,7 @@ function SignUpForm() {
           <button
             type="submit"
             disabled={!formValid || loading}
-            className={`border-2 border-primary rounded py-2 w-full md:w-1/2 px-4 text-lg font-bold text-primary uppercase tracking-wide ${
+            className={`border-2 bg-white rounded shadow-sm border-primary py-2 w-full md:w-1/2 px-4 text-lg font-semibold text-primary uppercase tracking-wide ${
               !formValid || loading
                 ? "opacity-50 cursor-not-allowed"
                 : "text-primary cursor-pointer"
@@ -299,10 +299,10 @@ function SignUpForm() {
         </div>
 
         <div className="flex flex-col gap-2 ">
-          <button className="border-2 cursor-pointer border-primary rounded  py-2 px-4 text-lg font-bold text-primary uppercase tracking-wide">
+          <button className="border-2 cursor-pointer bg-white rounded shadow-sm border-primary  py-2 px-4 text-lg font-semibold text-primary uppercase tracking-wide">
             Google
           </button>
-          <button className="border-2 cursor-pointer border-primary rounded  py-2 px-4 text-lg font-bold text-primary uppercase tracking-wide">
+          <button className="border-2 cursor-pointer bg-white rounded shadow-sm border-primary  py-2 px-4 text-lg font-semibold text-primary uppercase tracking-wide">
             Github
           </button>
         </div>

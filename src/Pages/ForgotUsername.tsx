@@ -52,7 +52,7 @@ function ForgotUsernameForm() {
       <div className="h-full flex flex-col max-w-sm sm:max-w-md mx-auto">
         {result.success ? (
           <>
-            <p className="text-5xl mb-4 font-bold text-primary tracking-wide">
+            <p className="text-5xl mb-4 text-primary tracking-wide">
               User Retrieved
             </p>
 
@@ -62,7 +62,7 @@ function ForgotUsernameForm() {
               <span className="">
                 <a
                   onClick={() => navigate("/login")}
-                  className="cursor-pointer font-bold text-secondary ml-1"
+                  className="cursor-pointer font-semibold text-secondary ml-1"
                 >
                   log in.
                 </a>
@@ -72,13 +72,13 @@ function ForgotUsernameForm() {
         ) : (
           <>
             {!result.success && result.message && (
-              <div className="border roundeds bg-secondary-100 py-4 mb-4">
-                <p className="text-base text-primary mx-4 font-bold">
+              <div className="border bg-secondary-100 rounded shadow-sm py-4 mb-4">
+                <p className="text-base text-primary mx-4 font-semibold">
                   {result.message}
                 </p>
               </div>
             )}
-            <p className="text-3xl sm:text-4xl lg:text-5xl mb-4 font-bold text-primary tracking-wide">
+            <p className="text-3xl sm:text-4xl lg:text-5xl mb-4 text-primary tracking-wide">
               Recover your username
             </p>
             <p className="text-base md:text-lg text-gray-900">
@@ -89,11 +89,11 @@ function ForgotUsernameForm() {
             <form className="mt-4" onSubmit={handleSubmit}>
               <div className="w-full flex flex-col">
                 <div className="">
-                  <label className="block text-lg font-bold text-primary uppercase tracking-wide mb-2">
+                  <label className="block text-lg text-primary uppercase tracking-wide mb-2">
                     Email
                   </label>
                   <input
-                    className="appearance-none block w-full bg-background border border-secondary rounded py-3 px-4 mb-3 leading-tight 
+                    className="appearance-none block w-full bg-white rounded shadow-sm border border-primary py-3 px-4 mb-3 leading-tight 
              focus:outline-none focus:bg-white focus:border-primary"
                     type="email"
                     name="email"
@@ -104,11 +104,11 @@ function ForgotUsernameForm() {
               </div>
 
               <div className="flex flex-col lg:flex-row gap-2">
-                <button className="border-2 border-primary rounded py-2 w-full px-4 lg:px-2 text-lg font-bold text-primary uppercase tracking-wide cursor-pointer">
+                <button className="border-2 bg-white rounded shadow-sm border-primary py-2 w-full px-4 text-lg font-semibold text-primary uppercase tracking-wide cursor-pointer">
                   Recover username
                 </button>
                 <button
-                  className="border-primary rounded w-full px-4 underline text-center lg:text-left text-base cursor-pointer font-bold text-secondary tracking-wide"
+                  className="border-primary rounded w-full px-4 underline text-center lg:text-left text-base cursor-pointer font-semibold text-secondary tracking-wide"
                   onClick={() => navigate("/login")}
                 >
                   Return to login

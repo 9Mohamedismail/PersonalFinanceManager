@@ -61,8 +61,8 @@ function LoginForm() {
     <div className="py-10 px-4 lg:px-8">
       <div className="h-full flex flex-col max-w-sm sm:max-w-md mx-auto">
         {serverError && (
-          <div className="border roundeds bg-secondary-100 py-4 mb-4">
-            <p className="text-base text-primary mx-4 font-bold">
+          <div className="border bg-secondary-100 rounded shadow-sm border-primary py-4 mb-4">
+            <p className="text-base text-primary mx-4 font-semibold">
               {serverError}
             </p>
           </div>
@@ -70,14 +70,14 @@ function LoginForm() {
         <div className="flex justify-center ">
           <FcMoneyTransfer className="w-16 h-16 md:w-24 md:h-24" />
         </div>
-        <p className="text-4xl md:text-5xl text-center mb-4 font-bold text-primary tracking-wide">
+        <p className="text-4xl md:text-5xl text-center mb-4 text-primary tracking-wide">
           Log in to NAME
         </p>
         <p className="text-lg text-gray-900 text-center">
           Need a NAME account?
           <a
             onClick={() => navigate("/signup")}
-            className="cursor-pointer font-bold text-secondary ml-1"
+            className="cursor-pointer font-semibold text-secondary ml-1"
           >
             Create an account.
           </a>
@@ -86,11 +86,11 @@ function LoginForm() {
         <form className="mt-4" onSubmit={handleSubmit}>
           <div className="w-full flex flex-col">
             <div className="">
-              <label className="block text-lg font-bold text-primary uppercase tracking-wide mb-2">
+              <label className="block text-lg text-primary uppercase tracking-wide mb-2">
                 Username or Email
               </label>
               <input
-                className="appearance-none block w-full bg-background border border-secondary rounded py-3 px-4 mb-3 leading-tight 
+                className="appearance-none block w-full bg-white rounded shadow-sm border border-primary  py-3 px-4 mb-3 leading-tight 
              focus:outline-none focus:bg-white focus:border-primary"
                 type="text"
                 name="identifier"
@@ -100,11 +100,11 @@ function LoginForm() {
             </div>
 
             <div className="">
-              <label className="block text-lg font-bold text-primary uppercase tracking-wide mb-2">
+              <label className="block text-lg text-primary uppercase tracking-wide mb-2">
                 Password
               </label>
               <input
-                className="appearance-none block w-full bg-background border border-secondary rounded py-3 px-4 mb-3 leading-tight 
+                className="appearance-none block w-full bg-white rounded shadow-sm border border-primary py-3 px-4 mb-3 leading-tight 
              focus:outline-none focus:bg-white focus:border-primary"
                 type="password"
                 name="password"
@@ -116,7 +116,7 @@ function LoginForm() {
           <button
             type="submit"
             disabled={loading}
-            className={`border-2 border-primary rounded py-2 w-full px-4 text-lg font-bold text-primary uppercase tracking-wide cursor-pointer ${
+            className={`border-2 bg-white rounded shadow-sm border-primary py-2 w-full px-4 text-lg font-semibold text-primary uppercase tracking-wide cursor-pointer ${
               loading
                 ? "opacity-50 cursor-not-allowed"
                 : "text-primary cursor-pointer"
@@ -128,13 +128,13 @@ function LoginForm() {
 
         <div className="flex flex-row gap-2 mt-2">
           <button
-            className="border-2 border-primary rounded py-1 w-full px-2 text-base font-semibold text-primary tracking-wide cursor-pointer"
+            className="border-2 bg-white rounded shadow-sm border-primary py-1 w-full px-2 text-base font-semibold text-primary tracking-wide cursor-pointer"
             onClick={() => navigate("/login/forgot-username")}
           >
             Forgot Username?
           </button>
           <button
-            className="border-2 border-primary rounded py-1 w-full px-2 text-base font-semibold text-primary tracking-wide cursor-pointer"
+            className="border-2 bg-white rounded shadow-sm border-primary py-1 w-full px-2 text-base font-semibold text-primary tracking-wide cursor-pointer"
             onClick={() => navigate("/login/forgot")}
           >
             Forgot Password?
@@ -148,10 +148,10 @@ function LoginForm() {
         </div>
 
         <div className="flex flex-col gap-2 ">
-          <button className="border-2 border-primary rounded  py-2 px-4 text-lg font-bold text-primary uppercase tracking-wide cursor-pointer">
+          <button className="border-2 bg-white rounded shadow-sm border-primary  py-2 px-4 text-lg font-semibold text-primary uppercase tracking-wide cursor-pointer">
             Google
           </button>
-          <button className="border-2 border-primary rounded  py-2 px-4 text-lg font-bold text-primary uppercase tracking-wide cursor-pointer">
+          <button className="border-2 bg-white rounded shadow-sm border-primary  py-2 px-4 text-lg font-semibold text-primary uppercase tracking-wide cursor-pointer">
             Github
           </button>
         </div>

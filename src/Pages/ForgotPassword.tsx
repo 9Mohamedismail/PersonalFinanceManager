@@ -98,8 +98,8 @@ function ForgotPasswordForm() {
     <div className="py-10 px-4 lg:px-8">
       <div className="h-full flex flex-col max-w-sm sm:max-w-md md:max-w-lg mx-auto">
         {!result.success && result.message && (
-          <div className="border roundeds bg-secondary-100 py-4 mb-4">
-            <p className="text-base text-primary mx-4 font-bold">
+          <div className="border bg-secondary-100 rounded shadow-sm py-4 mb-4">
+            <p className="text-base text-primary mx-4 font-semibold">
               {result.message}
             </p>
           </div>
@@ -107,7 +107,7 @@ function ForgotPasswordForm() {
 
         {step === "verify" && (
           <>
-            <p className="text-4xl md:text-5xl mb-4 font-bold text-primary tracking-wide">
+            <p className="text-4xl md:text-5xl mb-4 text-primary tracking-wide">
               Reset your password
             </p>
             <p className="text-base md:text-lg text-gray-900">
@@ -118,11 +118,11 @@ function ForgotPasswordForm() {
             <form className="mt-4" onSubmit={handleRequestSubmit}>
               <div className="w-full flex flex-col">
                 <div className="">
-                  <label className="block text-lg font-bold text-primary uppercase tracking-wide mb-2">
+                  <label className="block text-lg text-primary uppercase tracking-wide mb-2">
                     Email
                   </label>
                   <input
-                    className="appearance-none block w-full bg-background border border-secondary rounded py-3 px-4 mb-3 leading-tight 
+                    className="appearance-none block w-full bg-white rounded shadow-sm border border-primary py-3 px-4 mb-3 leading-tight 
              focus:outline-none focus:bg-white focus:border-primary"
                     type="email"
                     name="email"
@@ -131,11 +131,11 @@ function ForgotPasswordForm() {
                   />
                 </div>
                 <div className="">
-                  <label className="block text-lg font-bold text-primary uppercase tracking-wide mb-2">
+                  <label className="block text-lg text-primary uppercase tracking-wide mb-2">
                     Username
                   </label>
                   <input
-                    className="appearance-none block w-full bg-background border border-secondary rounded py-3 px-4 mb-3 leading-tight 
+                    className="appearance-none block w-full bg-white rounded shadow-sm border border-primary py-3 px-4 mb-3 leading-tight 
              focus:outline-none focus:bg-white focus:border-primary"
                     type="username"
                     name="username"
@@ -148,13 +148,13 @@ function ForgotPasswordForm() {
               <div className="flex flex-col lg:flex-row gap-2">
                 <button
                   type="submit"
-                  className="border-2 border-primary rounded py-2 w-full px-4 text-lg font-bold text-primary uppercase tracking-wide cursor-pointer"
+                  className="border-2 bg-white rounded shadow-sm border-primary py-2 w-full px-4 text-lg font-semibold text-primary uppercase tracking-wide cursor-pointer"
                 >
                   Reset Password
                 </button>
 
                 <button
-                  className="border-primary rounded w-full px-4 underline text-center lg:text-left text-base cursor-pointer font-bold text-secondary tracking-wide"
+                  className="border-primary rounded w-full px-4 underline text-center lg:text-left text-base cursor-pointer font-semibold text-secondary tracking-wide"
                   onClick={() => navigate("/login")}
                 >
                   Return to login
@@ -166,18 +166,18 @@ function ForgotPasswordForm() {
 
         {step === "setPassword" && (
           <>
-            <p className="text-5xl mb-4 font-bold text-primary tracking-wide">
+            <p className="text-5xl mb-4 text-primary tracking-wide">
               Choose a new password
             </p>
 
             <form className="mt-4" onSubmit={handlePasswordSubmit}>
               <div className="w-full flex flex-col">
-                <label className="block text-lg font-bold text-primary uppercase tracking-wide mb-2">
+                <label className="block text-lg text-primary uppercase tracking-wide mb-2">
                   Password
                 </label>
                 <div className="relative w-full">
                   <input
-                    className="appearance-none block w-full bg-background border border-secondary rounded py-3 px-4 mb-3 leading-tight 
+                    className="appearance-none block w-full bg-white rounded shadow-sm border border-primary py-3 px-4 mb-3 leading-tight 
                               focus:outline-none focus:bg-white focus:border-primary"
                     type="password"
                     name="password"
@@ -186,12 +186,12 @@ function ForgotPasswordForm() {
                   />
                 </div>
                 <div className="">
-                  <label className="block text-lg font-bold text-primary uppercase tracking-wide mb-2">
+                  <label className="block text-lg text-primary uppercase tracking-wide mb-2">
                     Confirm Password
                   </label>
                   <div className="relative w-full">
                     <input
-                      className="appearance-none block w-full bg-background border border-secondary rounded py-3 px-4 mb-3 leading-tight 
+                      className="appearance-none block w-full bg-white rounded shadow-sm border border-primary py-3 px-4 mb-3 leading-tight 
                               focus:outline-none focus:bg-white focus:border-primary"
                       type="password"
                       name="confirm"
@@ -204,7 +204,7 @@ function ForgotPasswordForm() {
 
               <button
                 type="submit"
-                className="border-2 border-primary rounded py-2 w-full px-4 text-lg font-bold text-primary uppercase tracking-wide cursor-pointer"
+                className="border-2 bg-white rounded shadow-sm border-primary py-2 w-full px-4 text-lg font-semibold text-primary uppercase tracking-wide cursor-pointer"
               >
                 Update Password
               </button>
@@ -214,12 +214,12 @@ function ForgotPasswordForm() {
 
         {step === "done" && (
           <>
-            <p className="text-5xl mb-8 font-bold text-primary text-center tracking-wide">
+            <p className="text-5xl mb-8  text-primary text-center tracking-wide">
               All set! 🎉
             </p>
 
             <button
-              className="border-2 border-primary rounded py-2 w-full px-4 text-lg font-bold text-primary uppercase tracking-wide cursor-pointer"
+              className="border-2 bg-white rounded shadow-sm border-primary py-2 w-full px-4 text-lg font-semibold text-primary uppercase tracking-wide cursor-pointer"
               onClick={() => navigate("/login")}
             >
               Return to login
