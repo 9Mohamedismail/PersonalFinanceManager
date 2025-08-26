@@ -11,7 +11,7 @@ import {
   Tooltip,
 } from "chart.js";
 import options from "./chartConfig";
-import data from "./chartData";
+import { useWeeklyChartData } from "./chartData";
 
 ChartJS.register(
   CategoryScale,
@@ -29,6 +29,8 @@ type WeekTransactionsGrid = {
 
 function WeekTransactionsGrid({ grid }: WeekTransactionsGrid) {
   const navigate = useNavigate();
+  const data = useWeeklyChartData();
+
   return (
     <div className="bg-white rounded-lg shadow-sm border border-primary p-6 w-full text-start h-full flex flex-col">
       <div className="xl:flex justify-between">

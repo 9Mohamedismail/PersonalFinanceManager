@@ -16,11 +16,25 @@ export type Transactions = {
 };
 
 type TransactionsContextType = {
-  transactions: Transactions[] | null;
-  setTransactions: React.Dispatch<React.SetStateAction<Transactions[] | null>>;
+  allTransactions: Transactions[] | null;
+  weeklyTransactions: Transactions[] | null;
+  monthlyTransactions: Transactions[] | null;
+  setAllTransactions: React.Dispatch<
+    React.SetStateAction<Transactions[] | null>
+  >;
+  setWeeklyTransactions: React.Dispatch<
+    React.SetStateAction<Transactions[] | null>
+  >;
+  setMonthlyTransactions: React.Dispatch<
+    React.SetStateAction<Transactions[] | null>
+  >;
 };
 
 export const TransactionsContext = createContext<TransactionsContextType>({
-  transactions: null,
-  setTransactions: () => {},
+  allTransactions: null,
+  weeklyTransactions: null,
+  monthlyTransactions: null,
+  setAllTransactions: () => {},
+  setWeeklyTransactions: () => {},
+  setMonthlyTransactions: () => {},
 });

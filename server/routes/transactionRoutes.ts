@@ -1,12 +1,12 @@
 import { Router } from "express";
 import { db } from "../../src/db/db";
-import { eq, and, gte, lte } from "drizzle-orm";
+import { eq, and, gte, lt } from "drizzle-orm";
 import { transactionsTable } from "../../src/db/schema";
 
 const router = Router();
 
 router.get("/transaction/all", async (req, res) => {
-  const user = req.user;
+  const user = req.user as { id: number } | undefined;
 
   if (!user) return res.status(401).json({ message: "Unauthorized" });
 
@@ -18,21 +18,46 @@ router.get("/transaction/all", async (req, res) => {
 
     return res
       .status(200)
-      .json({ message: "User's transactions fetched", transactions });
+      .json({ message: "ALL User's transactions fetched", transactions });
   } catch (err) {
     console.error(err);
     return res.status(500).json({ message: "Server error" });
   }
 });
 
-router.get("/transaction/month", async (req, res) => {
-  const user = req.user;
+router.get("/transaction", async (req, res) => {
+  const user = req.user as { id: number } | undefined;
 
   if (!user) return res.status(401).json({ message: "Unauthorized" });
 
+  const period = String(req.query.period ?? "month");
+
   const now = new Date();
-  const start = new Date(Date.UTC(now.getFullYear(), now.getMonth(), 1));
-  const end = new Date(Date.UTC(now.getFullYear(), now.getMonth() + 1, 1));
+  let start: Date;
+  let end: Date;
+
+  if (period === "month") {
+    start = new Date(Date.UTC(now.getFullYear(), now.getMonth(), 1));
+    end = new Date(Date.UTC(now.getFullYear(), now.getMonth() + 1, 1));
+  } else if (period === "week") {
+    const dayOfWeek = now.getUTCDay();
+    const daysSinceMonday = (dayOfWeek + 6) % 7;
+    const thisMonday = new Date(
+      Date.UTC(
+        now.getUTCFullYear(),
+        now.getUTCMonth(),
+        now.getUTCDate() - daysSinceMonday
+      )
+    );
+
+    start = new Date(thisMonday);
+    start.setUTCDate(thisMonday.getUTCDate() - 7);
+    end = thisMonday;
+  } else {
+    return res
+      .status(400)
+      .json({ message: "Invalid period. Use 'week' or 'month'" });
+  }
 
   try {
     const transactions = await db
@@ -42,19 +67,14 @@ router.get("/transaction/month", async (req, res) => {
         and(
           eq(transactionsTable.userId, user.id),
           gte(transactionsTable.date, start),
-          lte(transactionsTable.date, end)
+          lt(transactionsTable.date, end)
         )
       );
 
-    if (!transactions) {
-      return res
-        .status(200)
-        .json({ message: "User has no transactions or fetching failed" });
-    }
-
-    return res
-      .status(200)
-      .json({ message: "User's transactions fetched", transactions });
+    return res.status(200).json({
+      message: `${period.toUpperCase()} User's transactions fetched`,
+      transactions,
+    });
   } catch (err) {
     console.error(err);
     return res.status(500).json({ message: "Server error" });

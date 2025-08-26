@@ -27,7 +27,15 @@ function App() {
   const [expanded, setExpanded] = useState<boolean>(false);
   const [user, setUser] = useState<User | null>(null);
   const [authStatus, setAuthStatus] = useState<AuthStatus>("loading");
-  const [transactions, setTransactions] = useState<Transactions[] | null>(null);
+  const [allTransactions, setAllTransactions] = useState<Transactions[] | null>(
+    null
+  );
+  const [weeklyTransactions, setWeeklyTransactions] = useState<
+    Transactions[] | null
+  >(null);
+  const [monthlyTransactions, setMonthlyTransactions] = useState<
+    Transactions[] | null
+  >(null);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -54,17 +62,18 @@ function App() {
 
   useEffect(() => {
     if (!user) return;
-    const fetchTransactions = async () => {
+    const fetchAllTransactions = async () => {
       try {
         const res = await axios.get(
-          `http://localhost:3000/api/transaction/month`,
+          `http://localhost:3000/api/transaction/all`,
           {
             withCredentials: true,
           }
         );
 
-        console.log("User's transactions fetched:", res.data.transactions);
-        setTransactions(res.data.transactions);
+        console.log("ALL User's transactions fetched:", res.data.transactions);
+
+        setAllTransactions(res.data.transactions);
       } catch (err: any) {
         if (err?.response?.status === 401) {
           console.log(err.response.data.message);
@@ -74,7 +83,54 @@ function App() {
       }
     };
 
-    fetchTransactions();
+    const fetchWeeklyTransactions = async () => {
+      try {
+        const res = await axios.get(
+          `http://localhost:3000/api/transaction?period=week`,
+          {
+            withCredentials: true,
+          }
+        );
+
+        console.log("WEEK User's transactions fetched:", res.data.transactions);
+
+        setWeeklyTransactions(res.data.transactions);
+      } catch (err: any) {
+        if (err?.response?.status === 401) {
+          console.log(err.response.data.message);
+        } else {
+          console.error("Unexpected error fetching user's transactions:", err);
+        }
+      }
+    };
+
+    const fetchMonthlyTransactions = async () => {
+      try {
+        const res = await axios.get(
+          `http://localhost:3000/api/transaction?period=month`,
+          {
+            withCredentials: true,
+          }
+        );
+
+        console.log(
+          "MONTH User's transactions fetched:",
+          res.data.transactions
+        );
+
+        setMonthlyTransactions(res.data.transactions);
+      } catch (err: any) {
+        if (err?.response?.status === 401) {
+          console.log(err.response.data.message);
+        } else {
+          console.error("Unexpected error fetching user's transactions:", err);
+        }
+      }
+    };
+
+    fetchAllTransactions();
+    fetchWeeklyTransactions();
+    fetchMonthlyTransactions();
   }, [user]);
 
   return (
@@ -82,7 +138,16 @@ function App() {
       <UserInfoContext.Provider
         value={{ user, authStatus, setAuthStatus, setUser }}
       >
-        <TransactionsContext.Provider value={{ transactions, setTransactions }}>
+        <TransactionsContext.Provider
+          value={{
+            allTransactions,
+            weeklyTransactions,
+            monthlyTransactions,
+            setAllTransactions,
+            setWeeklyTransactions,
+            setMonthlyTransactions,
+          }}
+        >
           <SidebarContext.Provider value={{ expanded, setExpanded }}>
             {user && <SideBar />}
             <div className="flex flex-col flex-1">

@@ -3,7 +3,7 @@ import { Chart as ChartJS } from "chart.js";
 import { ArcElement, Tooltip, Legend } from "chart.js";
 import { useNavigate } from "react-router";
 import options from "./pieConfig";
-import data from "./pieData";
+import { useWeeklyCategoryChartData, labels } from "./pieData";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -12,9 +12,10 @@ type TransactionsPieProps = {
 };
 
 function TransactionsPie({ grid }: TransactionsPieProps) {
-  const labels = data.labels as string[];
-  const values = data.datasets[0].data as number[];
   const navigate = useNavigate();
+  const data = useWeeklyCategoryChartData();
+  const values = (data.datasets?.[0]?.data as number[]) ?? [];
+
   return (
     <div className="bg-white rounded-lg shadow-sm border border-primary p-6 lg:flex-1">
       <div className="xl:flex justify-between">
