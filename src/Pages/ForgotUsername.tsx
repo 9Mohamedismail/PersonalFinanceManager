@@ -48,76 +48,74 @@ function ForgotUsernameForm() {
   };
 
   return (
-    <div className="py-10 px-4 lg:px-8">
-      <div className="h-full flex flex-col max-w-sm sm:max-w-md mx-auto">
-        {result.success ? (
-          <>
-            <p className="text-5xl mb-4 text-primary tracking-wide">
-              User Retrieved
-            </p>
+    <div className="h-screen flex flex-col max-w-sm sm:max-w-md mx-auto justify-center">
+      {result.success ? (
+        <>
+          <p className="text-5xl mb-4 text-primary tracking-wide">
+            User Retrieved
+          </p>
 
-            <p className="text-2xl text-gray-900">
-              Your username is {result.message}. You can now go ahead and use it
-              to
-              <span className="">
-                <a
-                  onClick={() => navigate("/login")}
-                  className="cursor-pointer font-semibold text-secondary ml-1"
-                >
-                  log in.
-                </a>
-              </span>
-            </p>
-          </>
-        ) : (
-          <>
-            {!result.success && result.message && (
-              <div className="border bg-secondary-100 rounded shadow-sm py-4 mb-4">
-                <p className="text-base text-primary mx-4 font-semibold">
-                  {result.message}
-                </p>
-              </div>
-            )}
-            <p className="text-3xl sm:text-4xl lg:text-5xl mb-4 text-primary tracking-wide">
-              Recover your username
-            </p>
-            <p className="text-base md:text-lg text-gray-900">
-              You can recover your username using the email address associated
-              with your account.
-            </p>
+          <p className="text-2xl text-gray-900">
+            Your username is {result.message}. You can now go ahead and use it
+            to
+            <span className="">
+              <a
+                onClick={() => navigate("/login")}
+                className="cursor-pointer font-semibold text-secondary ml-1"
+              >
+                log in.
+              </a>
+            </span>
+          </p>
+        </>
+      ) : (
+        <>
+          {!result.success && result.message && (
+            <div className="border bg-secondary-100 rounded shadow-sm py-4 mb-4">
+              <p className="text-base text-primary mx-4 font-semibold">
+                {result.message}
+              </p>
+            </div>
+          )}
+          <p className="text-3xl sm:text-4xl lg:text-5xl mb-4 text-primary tracking-wide">
+            Recover your username
+          </p>
+          <p className="text-base md:text-lg text-gray-900">
+            You can recover your username using the email address associated
+            with your account.
+          </p>
 
-            <form className="mt-4" onSubmit={handleSubmit}>
-              <div className="w-full flex flex-col">
-                <div className="">
-                  <label className="block text-lg text-primary uppercase tracking-wide mb-2">
-                    Email
-                  </label>
-                  <input
-                    className="appearance-none block w-full bg-white rounded shadow-sm border border-primary py-3 px-4 mb-3 leading-tight 
+          <form className="mt-4" onSubmit={handleSubmit}>
+            <div className="w-full flex flex-col">
+              <div className="">
+                <label className="block text-lg text-primary uppercase tracking-wide mb-2">
+                  Email
+                </label>
+                <input
+                  className="appearance-none block w-full bg-white rounded shadow-sm border border-primary py-3 px-4 mb-3 leading-tight 
              focus:outline-none focus:bg-white focus:border-primary"
-                    type="email"
-                    name="email"
-                    value={email ?? ""}
-                    onChange={handleChange}
-                  />
-                </div>
+                  type="email"
+                  name="email"
+                  value={email ?? ""}
+                  onChange={handleChange}
+                />
               </div>
+            </div>
 
-              <div className="flex flex-col lg:flex-row gap-2">
-                <button className="border-2 bg-white rounded shadow-sm border-primary py-2 w-full px-4 text-lg font-semibold text-primary uppercase tracking-wide cursor-pointer">
-                  Recover username
-                </button>
-                <button
-                  className="border-primary rounded w-full px-4 underline text-center lg:text-left text-base cursor-pointer font-semibold text-secondary tracking-wide"
-                  onClick={() => navigate("/login")}
-                >
-                  Return to login
-                </button>
-              </div>
-            </form>
-          </>
-        )}
-      </div>
+            <div className="flex flex-col lg:flex-row gap-2">
+              <button className="border-2 bg-white rounded shadow-sm border-primary py-2 w-full px-4 text-lg font-semibold text-primary uppercase tracking-wide cursor-pointer">
+                Recover username
+              </button>
+              <button
+                className="border-primary rounded w-full px-4 underline text-center lg:text-left text-base cursor-pointer font-semibold text-secondary tracking-wide"
+                onClick={() => navigate("/login")}
+              >
+                Return to login
+              </button>
+            </div>
+          </form>
+        </>
+      )}
     </div>
   );
 }

@@ -22,6 +22,7 @@ import {
 } from "./Context/TransactionsContext";
 import axios from "axios";
 import ProtectedRoute from "./utils/ProtectedRoute";
+import ErrorPage from "./Pages/ErrorPage";
 
 function App() {
   const [expanded, setExpanded] = useState<boolean>(false);
@@ -176,6 +177,7 @@ function App() {
                     path="/login/forgot-username"
                     element={<ForgotUsernameForm />}
                   />
+                  <Route path="/*" element={<ErrorPage />} />
                 </Routes>
               </div>
             </div>
