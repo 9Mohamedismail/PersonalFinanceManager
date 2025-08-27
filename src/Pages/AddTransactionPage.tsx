@@ -2,7 +2,8 @@ import { useState } from "react";
 import AddTransactionForm from "../components/AddTransactions/AddTransactionsForm";
 import TransactionsReceipt from "../components/AddTransactions/TransactionsReceipt";
 
-type Type = "Debit" | "Credit" | "Transfer" | "Fee" | "Refund";
+type Type = "Income" | "Expense";
+
 type Category =
   | "Restaurants"
   | "Supermarkets"
@@ -17,7 +18,6 @@ type Transaction = {
   account: string;
   category: Category;
   description: string;
-  note: string;
   status: "pending" | "posted";
 };
 

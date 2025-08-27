@@ -25,15 +25,15 @@ function TransactionsReceipt({ formData }: TransactionsReceiptProps) {
         </div>
         <div className="text-end">
           <p>{formData.date || "Transaction Date"}</p>
-          <p> {formData.status || "Transaction Status"}</p>
+          <p> {formData.status || "Transaction Status:"}</p>
         </div>
       </div>
 
       <div className="flex justify-between p-4 mx-2 text-lg text-gray-900 break-words ">
         <p className="max-w-[70%] break-words">
-          {formData.description != null
-            ? `${formData.description}:`
-            : "Transaction Description:"}
+          {formData.category != null
+            ? `${formData.category}:`
+            : "Transaction Category:"}
         </p>
         <p className="max-w-[30%] text-right">
           {formData.amount != null ? `$${formData.amount}` : "Amount"}
@@ -54,7 +54,7 @@ function TransactionsReceipt({ formData }: TransactionsReceiptProps) {
 
       <div className="flex justify-center text-lg text-gray-900">
         <p className="break-words w-full text-center p-4">
-          {formData.note || "Transaction Note"}
+          {formData.description || "Transaction Description"}
         </p>
       </div>
       <div className="flex justify-center">

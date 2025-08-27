@@ -22,14 +22,17 @@ function AddTransactionForm({
   };
 
   return (
-    <form className="bg-secondary-100 rounded p-6" onSubmit={handleSubmit}>
+    <form
+      className="bg-white rounded-lg shadow-sm border border-primary p-6"
+      onSubmit={handleSubmit}
+    >
       <div className="w-full flex flex-wrap lg:block">
         <div className="w-1/2 lg:w-full">
           <label className="block text-lg font-bold text-primary uppercase tracking-wide mb-2">
             Amount
           </label>
           <input
-            className="appearance-none block w-full bg-background border border-secondary rounded py-3 px-4 mb-3 leading-tight 
+            className="appearance-none block w-full bg-white rounded shadow-sm border border-primary py-3 px-4 mb-3 leading-tight 
              focus:outline-none focus:bg-white focus:border-primary"
             type="number"
             name="amount"
@@ -43,7 +46,7 @@ function AddTransactionForm({
             Date
           </label>
           <input
-            className="appearance-none block w-full bg-background border border-secondary rounded py-3 px-4 mb-3 leading-tight 
+            className="appearance-none block w-full bg-white rounded shadow-sm border border-primary py-3 px-4 mb-3 leading-tight 
              focus:outline-none focus:bg-white focus:border-primary"
             name="date"
             type="date"
@@ -58,17 +61,14 @@ function AddTransactionForm({
           <select
             name="type"
             onChange={handleChange}
-            className="appearance-none block w-full bg-background border border-secondary rounded py-3 px-4 mb-3 leading-tight 
+            className="appearance-none block w-full bg-white rounded shadow-sm border border-primary py-3 px-4 mb-3 leading-tight 
              focus:outline-none focus:bg-white focus:border-primary"
           >
             <option disabled selected hidden value="">
-              Account Type
+              Transaction Type
             </option>
-            <option value="Debit">Debit</option>
-            <option value="Credit">Credit</option>
-            <option value="Transfer">Transfer</option>
-            <option value="Fee">Fee</option>
-            <option value="Refund">Refund</option>
+            <option value="Income">Income</option>
+            <option value="Expense">Expense</option>
           </select>
         </div>
         <div className="w-1/2 pl-2 lg:w-full lg:pl-0 ">
@@ -78,7 +78,7 @@ function AddTransactionForm({
           <select
             name="account"
             onChange={handleChange}
-            className="appearance-none block w-full bg-background border border-secondary rounded py-3 px-4 mb-3 leading-tight 
+            className="appearance-none block w-full bg-white rounded shadow-sm border border-primary py-3 px-4 mb-3 leading-tight 
              focus:outline-none focus:bg-white focus:border-primary"
           >
             <option disabled selected hidden value="">
@@ -94,7 +94,7 @@ function AddTransactionForm({
           <select
             name="category"
             onChange={handleChange}
-            className="appearance-none block w-full bg-background border border-secondary rounded py-3 px-4 mb-3 leading-tight 
+            className="appearance-none block w-full bg-white rounded shadow-sm border border-primary py-3 px-4 mb-3 leading-tight 
              focus:outline-none focus:bg-white focus:border-primary"
           >
             <option disabled selected hidden value="">
@@ -155,20 +155,7 @@ function AddTransactionForm({
             type="text"
             placeholder="Description of Transaction"
             onChange={handleChange}
-            className="appearance-none block w-full bg-background border border-secondary rounded py-3 px-4 mb-3 leading-tight 
-             focus:outline-none focus:bg-white focus:border-primary"
-          />
-        </div>
-        <div className="w-full">
-          <label className="block text-lg font-bold text-primary uppercase tracking-wide mb-2">
-            Note:
-          </label>
-          <input
-            name="note"
-            type="text"
-            placeholder="Transaction Note"
-            onChange={handleChange}
-            className="appearance-none block w-full bg-background border border-secondary rounded py-3 px-4 mb-3 leading-tight 
+            className="appearance-none block w-full bg-white rounded shadow-sm border border-primary py-3 px-4 mb-3 leading-tight 
              focus:outline-none focus:bg-white focus:border-primary"
           />
         </div>
@@ -177,7 +164,7 @@ function AddTransactionForm({
       <div className="mt-2">
         <button
           type="submit"
-          className=" border-2 border-primary rounded py-2 px-4 text-lg font-bold text-primary uppercase tracking-wide"
+          className="border-2 bg-white rounded shadow-sm border-primary  py-2 px-4 text-lg font-semibold text-primary uppercase tracking-wide cursor-pointer"
         >
           Add Transaction
         </button>
