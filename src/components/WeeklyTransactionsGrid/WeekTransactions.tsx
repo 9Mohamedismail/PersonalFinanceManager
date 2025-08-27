@@ -35,7 +35,7 @@ function WeekTransactionsGrid({ grid }: WeekTransactionsGrid) {
     <div className="bg-white rounded-lg shadow-sm border border-primary p-6 w-full text-start h-full flex flex-col">
       <div className="xl:flex justify-between">
         <p className="text-lg font-semibold text-gray-900 uppercase mb-2 ">
-          Last Week Transactions
+          Previous Week Transactions
         </p>
         {grid && (
           <p

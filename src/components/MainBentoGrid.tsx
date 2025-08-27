@@ -16,9 +16,9 @@ function MainBentoGrid() {
             <WeekTransactionsGrid grid />
           </div>
         </div>
-        {/*<div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 lg:col-start-1 lg:row-start-2 lg:col-span-2 h-full min-w-0 justify-between">
+        <div className="lg:col-start-1 lg:row-start-2 lg:col-span-2 h-full min-w-0 justify-between">
           <Transactions grid />
-        </div>*/}
+        </div>
 
         <div className="lg:col-start-3 lg:row-start-1 lg:row-span-2 flex flex-col gap-4 min-w-0">
           <TransactionsPie grid />

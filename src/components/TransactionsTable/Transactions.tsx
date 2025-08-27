@@ -1,31 +1,12 @@
 import { DataGrid } from "@mui/x-data-grid";
 import columns from "./TransactionsColumns";
 import rows from "./TransactionsRows";
-import { useNavigate } from "react-router";
 
-type TransactionsProps = {
-  grid: boolean;
-};
-
-function Transactions({ grid }: TransactionsProps) {
-  const navigate = useNavigate();
+function Transactions({ grid }: { grid: boolean }) {
   return (
-    <div>
-      {grid && (
-        <div className="flex justify-between">
-          <p className="text-lg font-semibold text-gray-900 uppercase mb-2">
-            Previous Transactions
-          </p>
-          <p
-            className="text-secondary font-bold mb-2 align-center cursor-pointer"
-            onClick={() => navigate("/transactions")}
-          >
-            View Details
-          </p>
-        </div>
-      )}
+    <div className="h-full">
       <DataGrid
-        rows={!grid ? rows : rows.slice(-5)}
+        rows={!grid ? rows : rows.slice(-7)}
         columns={columns.map((col) => ({
           ...col,
           sortable: !grid,
@@ -35,51 +16,43 @@ function Transactions({ grid }: TransactionsProps) {
         hideFooter={grid}
         disableColumnResize={true}
         disableRowSelectionOnClick
+        pagination
         sx={{
           "& .MuiDataGrid-cell": {
             color: "#101828",
-            fontSize: "16px",
-            borderColor: "#c4dad2",
-            borderBottom: "1px solid #c4dad2",
-            backgroundColor: "#c4dad2",
+            fontSize: "18px",
+            fontWeight: 400,
+            backgroundColor: "#ffffff",
           },
           "& .MuiDataGrid-columnHeaderTitle": {
-            color: "#c4dad2",
-            fontSize: "1rem",
-            fontWeight: 700,
-            letterSpacing: "0.025em",
+            color: "#ffffff",
+            fontSize: "18px",
+            fontWeight: 400,
           },
           "& .MuiDataGrid-columnHeader": {
             backgroundColor: "#16423c",
-            borderBottom: "none !important",
-            borderRight: "none !important",
           },
           "& .MuiDataGrid-columnSeparator": {
-            color: "#c4dad2",
-          },
-          "& .MuiDataGrid-footerContainer": {
-            backgroundColor: "#c4dad2",
-            color: "#c4dad2",
-            borderColor: "#c4dad2",
+            color: "#4d8370",
           },
           "& .MuiTablePagination-root": {
-            fontSize: "1rem",
-            fontWeight: 700,
-            letterSpacing: "0.025em",
+            fontSize: "18px",
+            fontWeight: 400,
           },
           "& .MuiTablePagination-displayedRows": {
-            fontSize: "1rem",
-            fontWeight: 700,
-            letterSpacing: "0.025em",
+            fontSize: "18px",
+            fontWeight: 400,
           },
           "& .MuiTablePagination-selectLabel": {
-            fontSize: "1rem",
-            fontWeight: 700,
-            letterSpacing: "0.025em",
+            fontSize: "18px",
+            fontWeight: 400,
           },
-          border: "1px solid #c4dad2",
-          borderRadius: "0.25rem",
+          backgroundColor: "#ffffff",
+          border: "1px solid var(--color-primary)",
+          borderRadius: "0.5rem",
+          boxShadow: "0 1px 2px 0 rgba(0,0,0,0.05)",
           overflow: "hidden",
+          fontFamily: "Inter, sans-serif",
         }}
       />
     </div>

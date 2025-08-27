@@ -3,17 +3,20 @@ import { TransactionsContext } from "../Context/TransactionsContext";
 import { useContext } from "react";
 
 function BalanceGrid() {
-  const { transactions } = useContext(TransactionsContext);
+  const { allTransactions, monthlyTransactions } =
+    useContext(TransactionsContext);
 
   const findBalance = () => {
-    if (!transactions) return 0;
-    return transactions.reduce((prev, curr) => prev + curr.amount, 0);
+    if (!allTransactions) return 0;
+    return allTransactions.reduce((prev, curr) => prev + curr.amount, 0);
   };
 
   const balanceThisMonth = () => {
-    const totalMonthBal = !transactions
-      ? 0
-      : transactions.reduce((prev, curr) => prev + curr.amount, 0);
+    if (!monthlyTransactions) return 0;
+    const totalMonthBal = monthlyTransactions.reduce(
+      (prev, curr) => prev + curr.amount,
+      0
+    );
 
     return (
       <span
@@ -39,10 +42,10 @@ function BalanceGrid() {
   };
 
   const expensesThisMonth = () => {
-    if (!transactions) return 1;
-    return transactions.reduce((prev, curr) => {
+    if (!monthlyTransactions) return 0;
+    return monthlyTransactions.reduce((prev, curr) => {
       if (curr.type === "expense") {
-        return prev + curr.amount;
+        return Math.abs(prev + curr.amount);
       }
       return prev;
     }, 0);
@@ -67,10 +70,10 @@ function BalanceGrid() {
           </div>
         </section>
 
-        <section className="space-y-2">
+        <section className="flex flex-col space-y-2 ">
           <hr className="border-primary" />
           <p className="text-lg font-semibold text-gray-900 uppercase">
-            Summary
+            Month Summary
           </p>
           <div className="flex justify-between">
             <div>
@@ -84,7 +87,7 @@ function BalanceGrid() {
             </div>
             <div>
               <p className="text-2xl text-primary tracking-wide">
-                {transactions?.length}
+                {monthlyTransactions?.length}
               </p>
               <p className="text-lg text-gray-900">Transactions</p>
             </div>

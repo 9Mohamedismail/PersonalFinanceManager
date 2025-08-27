@@ -1,4 +1,8 @@
+import { useNavigate } from "react-router-dom";
+
 function ErrorPage() {
+  const navigate = useNavigate();
+
   return (
     <div className="px-4 lg:px-8">
       <div className="h-screen flex flex-col max-w-lg mx-auto items-center justify-center">
@@ -12,7 +16,10 @@ function ErrorPage() {
           The page you are looking for might have been removed, had it's name
           changed, or is temproarily unavailable
         </p>
-        <button className="border-2 bg-white rounded shadow-sm border-primary py-2 w-full px-4 text-lg font-semibold text-primary uppercase tracking-wide cursor-pointer">
+        <button
+          className="border-2 bg-white rounded shadow-sm border-primary py-2 w-full px-4 text-lg font-semibold text-primary uppercase tracking-wide cursor-pointer"
+          onClick={() => navigate("/login")}
+        >
           GO TO HOMEPAGE
         </button>
       </div>
