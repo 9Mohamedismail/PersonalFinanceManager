@@ -17,6 +17,7 @@ function Transactions({ grid }: { grid: boolean }) {
         disableColumnResize={true}
         disableRowSelectionOnClick
         pagination
+        density={!grid ? "compact" : undefined}
         sx={{
           "& .MuiDataGrid-cell": {
             color: "#101828",
