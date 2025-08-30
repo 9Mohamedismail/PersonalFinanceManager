@@ -3,16 +3,16 @@ import type { TransactionForm } from "../../Pages/AddTransactionPage";
 type AddTransactionFormProps = {
   formData: TransactionForm;
   setFormData: React.Dispatch<React.SetStateAction<TransactionForm>>;
+  handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
+  loading: boolean;
 };
 
 function AddTransactionForm({
   formData,
   setFormData,
+  handleSubmit,
+  loading,
 }: AddTransactionFormProps) {
-  const handleSubmit = (e: React.SyntheticEvent<HTMLFormElement>) => {
-    e.preventDefault();
-  };
-
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ): void => {
@@ -24,7 +24,7 @@ function AddTransactionForm({
   return (
     <form
       className="bg-white rounded-lg shadow-sm border border-primary p-6"
-      onSubmit={handleSubmit}
+      onSubmit={(e) => handleSubmit(e)}
     >
       <div className="w-full flex flex-wrap lg:block">
         <div className="w-1/2 lg:w-full">
@@ -76,7 +76,7 @@ function AddTransactionForm({
             Account
           </label>
           <select
-            name="account"
+            name="accountId"
             onChange={handleChange}
             className="appearance-none block w-full bg-white rounded shadow-sm border border-primary py-3 px-4 mb-3 leading-tight 
              focus:outline-none focus:bg-white focus:border-primary"
@@ -164,9 +164,14 @@ function AddTransactionForm({
       <div className="mt-2">
         <button
           type="submit"
-          className="border-2 bg-white rounded shadow-sm border-primary  py-2 px-4 text-lg font-semibold text-primary uppercase tracking-wide cursor-pointer"
+          disabled={loading}
+          className={`border-2 bg-white rounded shadow-sm border-primary py-2 px-4 text-lg font-semibold text-primary uppercase tracking-wide cursor-pointer ${
+            loading
+              ? "opacity-50 cursor-not-allowed"
+              : "text-primary cursor-pointer"
+          }`}
         >
-          Add Transaction
+          {loading ? "Adding Transaction..." : "Add Transaction"}
         </button>
       </div>
     </form>

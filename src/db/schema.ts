@@ -18,6 +18,7 @@ export const usersTable = pgTable("users_table", {
 });
 
 export const typeEnum = pgEnum("type", ["expense", "income"]);
+export const statusEnum = pgEnum("status", ["pending", "posted"]);
 
 export const transactionsTable = pgTable("transactions_table", {
   id: serial("id").primaryKey(),
@@ -27,11 +28,13 @@ export const transactionsTable = pgTable("transactions_table", {
   description: varchar("description", { length: 256 }).notNull(),
   amount: integer("amount").notNull(),
   type: typeEnum().notNull(),
+  status: statusEnum().notNull(),
   category: text("category").notNull(),
   createdAt: timestamp("created_at", {
     precision: 6,
     withTimezone: true,
   }).notNull(),
+
   updatedAt: timestamp("updated_at", {
     precision: 6,
     withTimezone: true,

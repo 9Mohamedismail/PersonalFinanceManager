@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { db } from "../../src/db/db";
-import { eq, and, gte, lt } from "drizzle-orm";
+import { eq, and, gte, lt, desc } from "drizzle-orm";
 import { transactionsTable } from "../../src/db/schema";
 
 const router = Router();
@@ -21,7 +21,7 @@ router.get("/transaction/all", async (req, res) => {
       .json({ message: "ALL User's transactions fetched", transactions });
   } catch (err) {
     console.error(err);
-    return res.status(500).json({ message: "Server error" });
+    return res.status(500).json({ message: "Server error", err: err });
   }
 });
 
@@ -77,7 +77,50 @@ router.get("/transaction", async (req, res) => {
     });
   } catch (err) {
     console.error(err);
-    return res.status(500).json({ message: "Server error" });
+    return res.status(500).json({ message: "Server error", err: err });
+  }
+});
+
+router.post("/transaction/add", async (req, res) => {
+  const user = req.user as { id: number } | undefined;
+  if (!user) return res.status(401).json({ message: "Unauthorized" });
+
+  const { accountId, date, description, amount, type, category, status } =
+    req.body;
+
+  if (
+    !accountId ||
+    !date ||
+    !description ||
+    !amount ||
+    !type ||
+    !category ||
+    !status
+  ) {
+    return res.status(400).send("Required fields missing");
+  }
+
+  try {
+    const [transaction] = await db
+      .insert(transactionsTable)
+      .values({
+        userId: user.id,
+        accountId: String(accountId),
+        date: new Date(date),
+        description,
+        amount: Number(amount),
+        type: type.toLowerCase() as "income" | "expense",
+        status: status.toLowerCase() as "pending" | "posted",
+        category,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      })
+      .returning();
+
+    return res.status(200).json({ message: "Transaction added!", transaction });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ message: "Server error", err: err });
   }
 });
 
