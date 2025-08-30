@@ -1,19 +1,26 @@
 import type { GridColDef } from "@mui/x-data-grid";
+import { format, parseISO } from "date-fns";
 
 const columns: GridColDef[] = [
-  { field: "date", headerName: "Date", width: 150 },
+  {
+    field: "date",
+    headerName: "Date",
+    width: 150,
+    valueFormatter: (params) => {
+      return format(parseISO(params), "MMM d, yyyy");
+    },
+  },
   { field: "description", headerName: "Description", flex: 1, minWidth: 200 },
   {
     field: "amount",
     headerName: "Amount",
-    width: 100,
+    flex: 1,
+    minWidth: 200,
     type: "number",
     valueFormatter: (params) => {
       return Number(params).toLocaleString("en-US", {
         style: "currency",
         currency: "USD",
-        notation: "compact",
-        maximumFractionDigits: 2,
       });
     },
   },
