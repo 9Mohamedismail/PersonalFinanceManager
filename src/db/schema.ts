@@ -27,7 +27,7 @@ export const transactionsTable = pgTable("transactions_table", {
   accountId: text("account_id").notNull(),
   date: date("transaction_date", { mode: "date" }),
   description: varchar("description", { length: 256 }).notNull(),
-  amount: numeric("amount").notNull(),
+  amount: numeric("amount", { precision: 10, scale: 2 }).notNull(),
   type: typeEnum().notNull(),
   status: statusEnum().notNull(),
   category: text("category").notNull(),

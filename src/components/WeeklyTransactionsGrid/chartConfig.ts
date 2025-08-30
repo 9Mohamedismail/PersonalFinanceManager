@@ -32,6 +32,7 @@ const options: ChartOptions<"line"> = {
       },
     },
     y: {
+      min: 0,
       ticks: {
         color: "#16423c",
         font: {

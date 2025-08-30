@@ -24,7 +24,6 @@ type Transaction = {
 
 export type TransactionForm = Partial<Transaction>;
 
-// MAKE SURE DESCRIPTION IS VALIDATED
 function AddTransactionPage() {
   const [formData, setFormData] = useState<TransactionForm>({});
   const [loading, setLoading] = useState<boolean>(false);

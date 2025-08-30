@@ -1,0 +1,1 @@
+ALTER TABLE "transactions_table" ALTER COLUMN "amount" SET DATA TYPE numeric(10, 2);

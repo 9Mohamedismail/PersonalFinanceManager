@@ -4,7 +4,7 @@ import { TransactionsContext } from "../../Context/TransactionsContext";
 
 type Transaction = {
   date: string;
-  amount: number;
+  amount: number | string;
   type: "expense" | "income";
   category: string;
 };
@@ -22,12 +22,14 @@ function categoryTotals(transactions: Transaction[]): number[] {
   const totals = Array(labels.length).fill(0) as number[];
 
   for (const transaction of transactions) {
+    if (transaction.type !== "expense") continue;
+
     const label = transaction.category;
     const transacationIndex = index.get(label);
 
     if (transacationIndex === undefined) continue;
 
-    totals[transacationIndex] += Math.abs(transaction.amount);
+    totals[transacationIndex] += Math.abs(Number(transaction.amount));
   }
   return totals;
 }

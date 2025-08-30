@@ -16,9 +16,14 @@ router.get("/transaction/all", async (req, res) => {
       .from(transactionsTable)
       .where(eq(transactionsTable.userId, user.id));
 
+    const payload = transactions.map((transaction) => ({
+      ...transaction,
+      amount: Number(transaction.amount),
+    }));
+
     return res
       .status(200)
-      .json({ message: "ALL User's transactions fetched", transactions });
+      .json({ message: "ALL User's transactions fetched", payload });
   } catch (err) {
     console.error(err);
     return res.status(500).json({ message: "Server error", err: err });
@@ -71,9 +76,14 @@ router.get("/transaction", async (req, res) => {
         )
       );
 
+    const payload = transactions.map((transaction) => ({
+      ...transaction,
+      amount: Number(transaction.amount),
+    }));
+
     return res.status(200).json({
       message: `${period.toUpperCase()} User's transactions fetched`,
-      transactions,
+      payload,
     });
   } catch (err) {
     console.error(err);

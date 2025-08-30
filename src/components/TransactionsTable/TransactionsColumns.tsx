@@ -1,4 +1,4 @@
-import type { GridColDef, GridValueFormatter } from "@mui/x-data-grid";
+import type { GridColDef } from "@mui/x-data-grid";
 
 const columns: GridColDef[] = [
   { field: "date", headerName: "Date", width: 150 },
@@ -12,6 +12,8 @@ const columns: GridColDef[] = [
       return Number(params).toLocaleString("en-US", {
         style: "currency",
         currency: "USD",
+        notation: "compact",
+        maximumFractionDigits: 2,
       });
     },
   },

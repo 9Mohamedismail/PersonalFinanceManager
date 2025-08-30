@@ -8,15 +8,19 @@ function BalanceGrid() {
 
   const findBalance = () => {
     if (!allTransactions) return 0;
-    return allTransactions.reduce((prev, curr) => prev + curr.amount, 0);
+    return allTransactions.reduce(
+      (prev, curr) => prev + Number(curr.amount),
+      0
+    );
   };
 
   const balanceThisMonth = () => {
-    if (!monthlyTransactions) return 0;
-    const totalMonthBal = monthlyTransactions.reduce(
-      (prev, curr) => prev + curr.amount,
-      0
-    );
+    const totalMonthBal = !monthlyTransactions
+      ? 0
+      : monthlyTransactions.reduce(
+          (prev, curr) => prev + Number(curr.amount),
+          0
+        );
 
     return (
       <span
@@ -36,6 +40,8 @@ function BalanceGrid() {
         {totalMonthBal.toLocaleString("en-US", {
           style: "currency",
           currency: "USD",
+          notation: "compact",
+          maximumFractionDigits: 2,
         })}
       </span>
     );
@@ -45,7 +51,7 @@ function BalanceGrid() {
     if (!monthlyTransactions) return 0;
     return monthlyTransactions.reduce((prev, curr) => {
       if (curr.type === "expense") {
-        return Math.abs(prev + curr.amount);
+        return Math.abs(prev + Number(curr.amount));
       }
       return prev;
     }, 0);
@@ -62,6 +68,8 @@ function BalanceGrid() {
             {findBalance().toLocaleString("en-US", {
               style: "currency",
               currency: "USD",
+              notation: "compact",
+              maximumFractionDigits: 2,
             })}
           </p>
           <div className="flex justify-center items-center gap-4">
@@ -81,6 +89,8 @@ function BalanceGrid() {
                 {expensesThisMonth().toLocaleString("en-US", {
                   style: "currency",
                   currency: "USD",
+                  notation: "compact",
+                  maximumFractionDigits: 2,
                 })}
               </p>
               <p className="text-lg text-gray-900">Expenses</p>

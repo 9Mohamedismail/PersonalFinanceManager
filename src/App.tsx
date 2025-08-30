@@ -72,9 +72,9 @@ function App() {
           }
         );
 
-        console.log("ALL User's transactions fetched:", res.data.transactions);
+        console.log("ALL User's transactions fetched:", res.data.payload);
 
-        setAllTransactions(res.data.transactions);
+        setAllTransactions(res.data.payload);
       } catch (err: any) {
         if (err?.response?.status === 401) {
           console.log(err.response.data.message);
@@ -93,9 +93,9 @@ function App() {
           }
         );
 
-        console.log("WEEK User's transactions fetched:", res.data.transactions);
+        console.log("WEEK User's transactions fetched:", res.data.payload);
 
-        setWeeklyTransactions(res.data.transactions);
+        setWeeklyTransactions(res.data.payload);
       } catch (err: any) {
         if (err?.response?.status === 401) {
           console.log(err.response.data.message);
@@ -114,12 +114,9 @@ function App() {
           }
         );
 
-        console.log(
-          "MONTH User's transactions fetched:",
-          res.data.transactions
-        );
+        console.log("MONTH User's transactions fetched:", res.data.payload);
 
-        setMonthlyTransactions(res.data.transactions);
+        setMonthlyTransactions(res.data.payload);
       } catch (err: any) {
         if (err?.response?.status === 401) {
           console.log(err.response.data.message);

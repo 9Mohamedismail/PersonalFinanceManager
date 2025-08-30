@@ -8,7 +8,7 @@ export type Transactions = {
   accountId: number;
   date: string;
   description: string;
-  amount: number;
+  amount: string;
   type: TransactionType;
   category: string;
   createdAt: string;

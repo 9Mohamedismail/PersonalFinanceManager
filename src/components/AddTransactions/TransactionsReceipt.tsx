@@ -43,7 +43,7 @@ function TransactionsReceipt({ formData }: TransactionsReceiptProps) {
       <div className="flex flex-col p-4 text-lg text-gray-900">
         <div className="flex flex-row gap-4">
           <p>Account:</p>
-          <p> {formData.account || "Account Name"}</p>
+          <p> {formData.accountId || "Account Name"}</p>
         </div>
 
         <div className="flex flex-row gap-4">

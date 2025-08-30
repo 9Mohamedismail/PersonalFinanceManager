@@ -31,6 +31,9 @@ function WeekTransactionsGrid({ grid }: WeekTransactionsGrid) {
   const navigate = useNavigate();
   const data = useWeeklyChartData();
 
+  const values = (data.datasets?.[0]?.data as number[]) ?? [];
+  const isEmpty = values.every((value) => value === 0);
+
   return (
     <div className="bg-white rounded-lg shadow-sm border border-primary p-6 w-full text-start h-full flex flex-col">
       <div className="xl:flex justify-between">
@@ -46,8 +49,15 @@ function WeekTransactionsGrid({ grid }: WeekTransactionsGrid) {
           </p>
         )}
       </div>
+
       <div className="mt-4 w-full h-[210px] ">
-        <Line options={options} data={data} />
+        {isEmpty ? (
+          <p className="text-2xl text-primary tracking-wide flex items-center justify-center h-full">
+            No data available
+          </p>
+        ) : (
+          <Line options={options} data={data} />
+        )}
       </div>
     </div>
   );

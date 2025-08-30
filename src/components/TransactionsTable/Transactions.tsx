@@ -1,12 +1,15 @@
 import { DataGrid } from "@mui/x-data-grid";
 import columns from "./TransactionsColumns";
-import rows from "./TransactionsRows";
+import { TransactionsContext } from "../../Context/TransactionsContext";
+import { useContext } from "react";
 
 function Transactions({ grid }: { grid: boolean }) {
+  const { allTransactions } = useContext(TransactionsContext);
+
   return (
     <div className="h-full">
       <DataGrid
-        rows={!grid ? rows : rows.slice(-7)}
+        rows={!grid ? allTransactions ?? [] : (allTransactions ?? []).slice(-7)}
         columns={columns.map((col) => ({
           ...col,
           sortable: !grid,

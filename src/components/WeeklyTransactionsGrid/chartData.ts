@@ -5,7 +5,7 @@ import { TransactionsContext } from "../../Context/TransactionsContext";
 
 type Transaction = {
   date: string;
-  amount: number;
+  amount: number | string;
   type: "expense" | "income";
 };
 
@@ -22,7 +22,7 @@ function weeklyTotals(transactions: Transaction[]): number[] {
 
     const dayIndex = (dayNumber + 6) % 7;
 
-    const value = Math.abs(transaction.amount);
+    const value = Math.abs(Number(transaction.amount));
     totals[dayIndex] += value;
   }
 
