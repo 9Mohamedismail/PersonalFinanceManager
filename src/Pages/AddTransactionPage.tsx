@@ -32,7 +32,7 @@ function AddTransactionPage() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(formData);
+
     if (
       !formData.accountId ||
       !formData.date ||
@@ -45,6 +45,8 @@ function AddTransactionPage() {
       return;
     }
 
+    console.log(formData);
+
     const payload = {
       ...formData,
       accountId: String(formData.accountId),
@@ -54,11 +56,9 @@ function AddTransactionPage() {
 
     try {
       setLoading(true);
-      const res = await axios.post(
-        "http://localhost:3000/api/transaction/add",
-        payload,
-        { withCredentials: true }
-      );
+      await axios.post("http://localhost:3000/api/transaction/add", payload, {
+        withCredentials: true,
+      });
 
       console.log("Transaction added successfully!");
     } catch (err: any) {

@@ -7,6 +7,7 @@ import {
   varchar,
   timestamp,
   pgEnum,
+  numeric,
 } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm/relations";
 
@@ -26,7 +27,7 @@ export const transactionsTable = pgTable("transactions_table", {
   accountId: text("account_id").notNull(),
   date: date("transaction_date", { mode: "date" }),
   description: varchar("description", { length: 256 }).notNull(),
-  amount: integer("amount").notNull(),
+  amount: numeric("amount").notNull(),
   type: typeEnum().notNull(),
   status: statusEnum().notNull(),
   category: text("category").notNull(),

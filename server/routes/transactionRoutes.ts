@@ -108,7 +108,7 @@ router.post("/transaction/add", async (req, res) => {
         accountId: String(accountId),
         date: new Date(date),
         description,
-        amount: Number(amount),
+        amount: String(amount),
         type: type.toLowerCase() as "income" | "expense",
         status: status.toLowerCase() as "pending" | "posted",
         category,
