@@ -25,7 +25,7 @@ import ProtectedRoute from "./utils/ProtectedRoute";
 import ErrorPage from "./Pages/ErrorPage";
 
 function App() {
-  const [expanded, setExpanded] = useState<boolean>(false);
+  const [expanded, setExpanded] = useState<boolean>(true);
   const [user, setUser] = useState<User | null>(null);
   const [authStatus, setAuthStatus] = useState<AuthStatus>("loading");
   const [allTransactions, setAllTransactions] = useState<Transactions[] | null>(
@@ -37,6 +37,16 @@ function App() {
   const [monthlyTransactions, setMonthlyTransactions] = useState<
     Transactions[] | null
   >(null);
+
+  useEffect(() => {
+    let sideBarStorage = localStorage.getItem("sideBar") ?? "true";
+
+    if (!localStorage.getItem("sideBar")) {
+      localStorage.setItem("sideBar", sideBarStorage);
+    }
+
+    setExpanded(sideBarStorage === "true");
+  });
 
   useEffect(() => {
     const fetchUser = async () => {

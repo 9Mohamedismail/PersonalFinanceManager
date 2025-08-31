@@ -30,10 +30,17 @@ function TopBar() {
     }
   };
 
+  const handleExpand = () => {
+    const newValue = !expanded;
+    localStorage.setItem("sideBar", newValue.toString());
+
+    setExpanded(newValue);
+  };
+
   return (
     <div className="flex items-center justify-between text-primary py-4 px-4 md:px-8">
       <div className="flex items-center space-x-4">
-        <IoIosMenu size="2rem" onClick={() => setExpanded((prev) => !prev)} />
+        <IoIosMenu size="2rem" onClick={handleExpand} />
         <h1 className="hidden sm:block text-base md:text-lg tracking-wide px-2 py-1 md:px-4 bg-white rounded-lg shadow-sm border border-primary">
           Good morning {user ? user.username : ""}
         </h1>
