@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { RiCoupon2Line, RiShoppingCart2Line } from "react-icons/ri";
+import { HiOutlinePresentationChartLine } from "react-icons/hi2";
 import { MdOutlinePayments, MdAddShoppingCart } from "react-icons/md";
 import { IoSettingsOutline } from "react-icons/io5";
 import { AiOutlineDashboard } from "react-icons/ai";
@@ -50,26 +50,24 @@ function SideBar() {
             Dashboard
           </SideBarItem>
           <SideBarItem
-            icon={<RiCoupon2Line size={32} />}
+            icon={<HiOutlinePresentationChartLine size={32} />}
             onClick={() => navigate("/metrics")}
           >
             Metrics
           </SideBarItem>
           <SideBarItem
-            icon={<RiShoppingCart2Line size={32} />}
-            onClick={() => navigate("/addtransaction")}
-          >
-            Add Transaction
-          </SideBarItem>
-          <SideBarItem
-            icon={<TbReportMoney size={32} />}
+            icon={<LiaFileInvoiceDollarSolid size={32} />}
             onClick={() => navigate("/transactions")}
           >
             Transactions
           </SideBarItem>
-          <SideBarItem icon={<LiaFileInvoiceDollarSolid size={32} />}>
-            Invoices
+          <SideBarItem
+            icon={<TbReportMoney size={32} />}
+            onClick={() => navigate("/addtransaction")}
+          >
+            Add Transaction
           </SideBarItem>
+
           <SideBarItem icon={<IoSettingsOutline size={32} />}>
             Settings
           </SideBarItem>
