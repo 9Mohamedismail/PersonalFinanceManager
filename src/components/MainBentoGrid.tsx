@@ -7,22 +7,22 @@ import WeekTransactionsGrid from "./WeeklyTransactionsGrid/WeekTransactions";
 function MainBentoGrid() {
   return (
     <div className="py-10 px-4 lg:px-8">
-      <div className="grid lg:grid-cols-3 lg:grid-rows-[auto,auto] gap-4">
-        <div className="flex flex-col lg:col-span-2 lg:flex-row items-stretch gap-4 min-w-0">
-          <div className="lg:w-[300px] w-full shrink min-w-0 h-full">
+      <div className="grid xl:grid-cols-3 xl:grid-rows-[auto,auto] gap-4">
+        <div className="flex flex-col xl:col-span-2 xl:flex-row items-start gap-4 min-w-0">
+          <div className="xl:w-[300px] w-full shrink min-w-0 ">
             <BalanceGrid />
           </div>
-          <div className="w-full lg:flex-1 shrink min-w-0 h-full">
+          <div className="w-full xl:flex-1 shrink min-w-0">
             <WeekTransactionsGrid grid />
           </div>
         </div>
-        <div className="lg:col-start-1 lg:row-start-2 lg:col-span-2 h-full min-w-0 justify-between">
+        <div className="xl:col-start-1 xl:row-start-2 xl:col-span-2 h-100 min-w-0 justify-between">
           <Transactions grid />
         </div>
 
-        <div className="lg:col-start-3 lg:row-start-1 lg:row-span-2 flex flex-col gap-4 min-w-0">
+        <div className="xl:col-start-3 xl:row-start-1 xl:row-span-2 flex flex-col gap-4 min-w-0">
           <TransactionsPie grid />
-          <div className="lg:h-[225px]">
+          <div className="xl:h-[225px]">
             <BudgetProgressBar number={70} total={100} grid />
           </div>
         </div>

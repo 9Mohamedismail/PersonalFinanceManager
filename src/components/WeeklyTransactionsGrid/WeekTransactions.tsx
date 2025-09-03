@@ -50,7 +50,7 @@ function WeekTransactionsGrid({ grid }: WeekTransactionsGrid) {
         )}
       </div>
 
-      <div className="mt-4 w-full h-[210px] ">
+      <div className="mt-4 w-full h-[220px]">
         {isEmpty ? (
           <p className="text-2xl text-primary tracking-wide flex items-center justify-center h-full">
             No data available
