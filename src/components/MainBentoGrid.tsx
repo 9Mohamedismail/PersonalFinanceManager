@@ -9,7 +9,7 @@ function MainBentoGrid() {
     <div className="py-10 px-4 lg:px-8">
       <div className="grid xl:grid-cols-3 xl:grid-rows-[auto,auto] gap-4">
         <div className="flex flex-col xl:col-span-2 xl:flex-row items-start gap-4 min-w-0">
-          <div className="xl:w-[300px] w-full shrink min-w-0 ">
+          <div className="lg:w-[300px] w-full shrink min-w-0 ">
             <BalanceGrid />
           </div>
           <div className="w-full xl:flex-1 shrink min-w-0">
