@@ -36,6 +36,11 @@ const columns: GridColDef[] = [
       </button>
     ),
   },
+  {
+    field: "delete",
+    headerName: "Delete",
+    width: 100,
+  },
 ];
 
 export default columns;

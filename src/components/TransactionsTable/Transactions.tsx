@@ -1,21 +1,47 @@
-import { DataGrid } from "@mui/x-data-grid";
+import { DataGrid, type GridRowId } from "@mui/x-data-grid";
 import columns from "./TransactionsColumns";
 import { TransactionsContext } from "../../Context/TransactionsContext";
 import { useContext } from "react";
 
 function Transactions({ grid }: { grid: boolean }) {
-  const { allTransactions } = useContext(TransactionsContext);
+  const { setAllTransactions, allTransactions } =
+    useContext(TransactionsContext);
+
+  const handleDelete = (id: GridRowId) => {
+    setAllTransactions((prev) => prev.filter((row) => row.id !== id));
+  };
+
+  const actionColumns = columns.map((col) => {
+    if (col.field === "delete") {
+      return {
+        ...col,
+        sortable: !grid,
+        filterable: !grid,
+        disableColumnMenu: grid,
+        renderCell: (params) => (
+          <button
+            className="border rounded-md px-3 text-base font-semibold text-red-500"
+            onClick={() => handleDelete(params.row.id)}
+          >
+            Delete
+          </button>
+        ),
+      };
+    }
+
+    return {
+      ...col,
+      sortable: !grid,
+      filterable: !grid,
+      disableColumnMenu: grid,
+    };
+  });
 
   return (
     <div className="h-full">
       <DataGrid
         rows={!grid ? allTransactions ?? [] : (allTransactions ?? []).slice(-7)}
-        columns={columns.map((col) => ({
-          ...col,
-          sortable: !grid,
-          filterable: !grid,
-          disableColumnMenu: grid,
-        }))}
+        columns={actionColumns}
         hideFooter={grid}
         disableColumnResize={true}
         disableRowSelectionOnClick
