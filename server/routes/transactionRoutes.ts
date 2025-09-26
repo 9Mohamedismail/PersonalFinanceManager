@@ -134,4 +134,29 @@ router.post("/transaction/add", async (req, res) => {
   }
 });
 
+router.delete("/transaction/delete/:id", async (req, res) => {
+  const user = req.user as { id: number } | undefined;
+  if (!user) return res.status(401).json({ message: "Unauthorized" });
+
+  const { id } = req.params;
+
+  if (!id) {
+    return res.status(400).send("Transaction id not provided");
+  }
+
+  try {
+    const [transaction] = await db
+      .delete(transactionsTable)
+      .where(eq(transactionsTable.id, Number(id)))
+      .returning();
+
+    return res
+      .status(200)
+      .json({ message: "Transaction deleted! ", transaction });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ message: "Server error", err: err });
+  }
+});
+
 export default router;

@@ -1,31 +1,56 @@
 import { DataGrid, type GridRowId } from "@mui/x-data-grid";
+import Modal from "@mui/material/Modal";
 import columns from "./TransactionsColumns";
 import { TransactionsContext } from "../../Context/TransactionsContext";
-import { useContext } from "react";
+import { useContext, useState } from "react";
+import axios from "axios";
+import EditTransactionModal from "../EditTransactionModal/EditTransactionModal";
 
 function Transactions({ grid }: { grid: boolean }) {
   const { setAllTransactions, allTransactions } =
     useContext(TransactionsContext);
 
-  const handleDelete = (id: GridRowId) => {
-    setAllTransactions((prev) => prev.filter((row) => row.id !== id));
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
+  const handleDelete = async (id: GridRowId) => {
+    try {
+      await axios.delete(`http://localhost:3000/api/transaction/delete/${id}`, {
+        withCredentials: true,
+      });
+
+      console.log("Transaction deleted successfully!");
+    } catch (err: any) {
+      const serverMsg = err?.response?.data?.message;
+      const fallbackMsg = err?.message || "Delete failed";
+      console.error(serverMsg || fallbackMsg);
+    } finally {
+      setAllTransactions((prev) => prev.filter((row) => row.id !== id));
+    }
   };
 
   const actionColumns = columns.map((col) => {
-    if (col.field === "delete") {
+    if (col.field === "actions") {
       return {
         ...col,
         sortable: !grid,
         filterable: !grid,
         disableColumnMenu: grid,
-        renderCell: (params) => (
+        renderCell: (params) => [
           <button
             className="border rounded-md px-3 text-base font-semibold text-red-500"
             onClick={() => handleDelete(params.row.id)}
           >
             Delete
-          </button>
-        ),
+          </button>,
+          <button
+            className="border rounded-md px-3 text-base font-semibold text-red-500"
+            onClick={handleOpen}
+          >
+            Edit
+          </button>,
+        ],
       };
     }
 
@@ -85,6 +110,14 @@ function Transactions({ grid }: { grid: boolean }) {
           fontFamily: "Inter, sans-serif",
         }}
       />
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <EditTransactionModal />
+      </Modal>
     </div>
   );
 }

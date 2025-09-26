@@ -13,6 +13,7 @@ const columns: GridColDef[] = [
   { field: "description", headerName: "Description", flex: 1, minWidth: 200 },
   {
     field: "amount",
+    editable: true,
     headerName: "Amount",
     flex: 1,
     minWidth: 200,
@@ -26,7 +27,7 @@ const columns: GridColDef[] = [
   },
   { field: "category", headerName: "Category", width: 200 },
   {
-    field: "action",
+    field: "details",
     headerName: "Details",
     width: 100,
 
@@ -37,9 +38,9 @@ const columns: GridColDef[] = [
     ),
   },
   {
-    field: "delete",
-    headerName: "Delete",
-    width: 100,
+    field: "actions",
+    headerName: "Actions",
+    width: 200,
   },
 ];
 
