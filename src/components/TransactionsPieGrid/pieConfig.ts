@@ -18,6 +18,14 @@ const options: ChartOptions<"doughnut"> = {
         padding: 16,
       },
     },
+    tooltip: {
+      callbacks: {
+        label: function (context) {
+          const value = context.raw as number;
+          return `$${value.toLocaleString()}`;
+        },
+      },
+    },
   },
 };
 

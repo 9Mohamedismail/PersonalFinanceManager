@@ -13,6 +13,12 @@ const options: ChartOptions<"line"> = {
     tooltip: {
       mode: "index",
       intersect: false,
+      callbacks: {
+        label: function (context) {
+          const value = context.raw as number;
+          return `$${value.toLocaleString()}`;
+        },
+      },
     },
   },
   scales: {
