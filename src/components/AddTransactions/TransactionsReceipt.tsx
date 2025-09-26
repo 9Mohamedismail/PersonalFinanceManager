@@ -1,27 +1,31 @@
 import Barcode from "react-barcode";
 import type { TransactionForm } from "../../Pages/AddTransactionPage";
+import { useContext } from "react";
+import { UserInfoContext } from "../../Context/UserInfoContext";
+import { TransactionsContext } from "../../Context/TransactionsContext";
 
 type TransactionsReceiptProps = {
   formData: TransactionForm;
 };
 
 function TransactionsReceipt({ formData }: TransactionsReceiptProps) {
+  const { user } = useContext(UserInfoContext);
+  const { allTransactions } = useContext(TransactionsContext);
+
   return (
     <div className="bg-gray-50 border w-full font-receipt 2xl:w-[70%] p-4">
       <div className="flex flex-col justify-center items-center">
         <p className="text-4xl font-bold text-gray-900 uppercase tracking-wide ">
           Receipt
         </p>
-        <p className="text-lg text-gray-900">Berqhotel Grosse Scheidegg</p>
-        <p className="text-lg text-gray-900">
-          3818 Grindeiwald Fanile R. Mullier
-        </p>
+        <p className="text-lg text-gray-900">[Personal Finance Manager]</p>
+        <p className="text-lg text-gray-900">Expense Receipt</p>
       </div>
 
       <div className="flex justify-between p-4 text-base text-gray-900">
         <div className="text-start">
-          <p> Receipt Number 4572</p>
-          <p>Alan</p>
+          <p> Receipt Number {allTransactions ? allTransactions.length : 0}</p>
+          <p>{user ? user.username : ""}</p>
         </div>
         <div className="text-end">
           <p>{formData.date || "Transaction Date"}</p>
