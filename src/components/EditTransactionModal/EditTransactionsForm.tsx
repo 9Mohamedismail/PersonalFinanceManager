@@ -46,7 +46,7 @@ function EditTransactionForm({
 
   return (
     <form
-      className="bg-white rounded-lg shadow-sm border border-primary p-6 lg:w-1/2"
+      className="bg-white rounded-lg shadow-sm border border-primary p-6"
       onSubmit={handleSubmitWrapper}
     >
       <div className="w-full flex flex-wrap lg:block">

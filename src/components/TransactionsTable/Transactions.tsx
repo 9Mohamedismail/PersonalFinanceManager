@@ -119,13 +119,16 @@ function Transactions({ grid }: { grid: boolean }) {
           fontFamily: "Inter, sans-serif",
         }}
       />
-      <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <EditTransactionModal id={rowId} />
+      <Modal open={open} onClose={handleClose}>
+        <div
+          className="
+    flex min-h-screen justify-center items-center   
+    lg:block lg:min-h-0 lg:absolute lg:top-1/2 lg:left-1/2 lg:-translate-x-1/2 lg:-translate-y-1/2
+    py-10 px-4 lg:px-8 lg:w-1/2
+  "
+        >
+          <EditTransactionModal id={rowId} handleClose={handleClose} />
+        </div>
       </Modal>
     </div>
   );

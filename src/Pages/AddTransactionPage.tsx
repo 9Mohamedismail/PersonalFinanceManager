@@ -28,7 +28,8 @@ export type TransactionForm = Partial<Transaction>;
 function AddTransactionPage() {
   const [formData, setFormData] = useState<TransactionForm>({});
   const [loading, setLoading] = useState<boolean>(false);
-  const [serverError, setServerError] = useState<string | null>(null);
+  const [resetKey, setResetKey] = useState(0);
+  const [serverMessage, setServerMessage] = useState<string | null>(null);
 
   const { setAllTransactions } = useContext(TransactionsContext);
 
@@ -69,28 +70,30 @@ function AddTransactionPage() {
       const newTransaction = res.data.transaction;
 
       setAllTransactions((prev) => [...(prev ?? []), newTransaction]);
-
+      setFormData({});
       console.log("Transaction added successfully!");
     } catch (err: any) {
       const serverMsg = err?.response?.data?.message;
       const fallbackMsg = err?.message || "Transaction add failed";
-      setServerError(serverMsg || fallbackMsg);
+      setServerMessage(serverMsg || fallbackMsg);
     } finally {
       setLoading(false);
+      setResetKey((prev) => prev + 1);
     }
   };
 
   return (
     <div className="py-10 px-4 lg:px-8">
-      {serverError && (
+      {serverMessage && (
         <div className="border bg-secondary-100 rounded shadow-sm border-primary py-4 mb-4 2xl:w-1/2 ">
           <p className="text-base text-primary mx-4 font-semibold">
-            {serverError}
+            {serverMessage}
           </p>
         </div>
       )}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 items-start">
         <AddTransactionForm
+          key={resetKey}
           formData={formData}
           setFormData={setFormData}
           handleSubmit={handleSubmit}

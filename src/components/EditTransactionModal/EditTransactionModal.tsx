@@ -7,7 +7,13 @@ import {
 } from "../../Context/TransactionsContext";
 import type { GridRowId } from "@mui/x-data-grid";
 
-function EditTransactionModal({ id }: { id: GridRowId | null }) {
+function EditTransactionModal({
+  id,
+  handleClose,
+}: {
+  id: GridRowId | null;
+  handleClose: () => void;
+}) {
   const { allTransactions, setAllTransactions } =
     useContext(TransactionsContext);
 
@@ -72,11 +78,12 @@ function EditTransactionModal({ id }: { id: GridRowId | null }) {
       setServerError(serverMsg || fallbackMsg);
     } finally {
       setLoading(false);
+      handleClose();
     }
   };
 
   return (
-    <div className="py-10 px-4 lg:px-8 flex min-h-screen justify-center items-center ">
+    <div className="">
       {serverError && (
         <div className="border bg-secondary-100 rounded shadow-sm border-primary py-4 mb-4 2xl:w-1/2 ">
           <p className="text-base text-primary mx-4 font-semibold">
