@@ -11,8 +11,15 @@ function Transactions({ grid }: { grid: boolean }) {
     useContext(TransactionsContext);
 
   const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const [rowId, setRowId] = useState<GridRowId | null>(null);
+  const handleOpen = (id: GridRowId) => {
+    setOpen(true);
+    setRowId(id);
+  };
+  const handleClose = () => {
+    setOpen(false);
+    setRowId(null);
+  };
 
   const handleDelete = async (id: GridRowId) => {
     try {
@@ -26,7 +33,9 @@ function Transactions({ grid }: { grid: boolean }) {
       const fallbackMsg = err?.message || "Delete failed";
       console.error(serverMsg || fallbackMsg);
     } finally {
-      setAllTransactions((prev) => prev.filter((row) => row.id !== id));
+      setAllTransactions((prev) =>
+        prev ? prev.filter((row) => row.id !== id) : []
+      );
     }
   };
 
@@ -37,7 +46,7 @@ function Transactions({ grid }: { grid: boolean }) {
         sortable: !grid,
         filterable: !grid,
         disableColumnMenu: grid,
-        renderCell: (params) => [
+        renderCell: (params: { row: { id: GridRowId } }) => [
           <button
             className="border rounded-md px-3 text-base font-semibold text-red-500"
             onClick={() => handleDelete(params.row.id)}
@@ -46,7 +55,7 @@ function Transactions({ grid }: { grid: boolean }) {
           </button>,
           <button
             className="border rounded-md px-3 text-base font-semibold text-red-500"
-            onClick={handleOpen}
+            onClick={() => handleOpen(params.row.id)}
           >
             Edit
           </button>,
@@ -116,7 +125,7 @@ function Transactions({ grid }: { grid: boolean }) {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <EditTransactionModal />
+        <EditTransactionModal id={rowId} />
       </Modal>
     </div>
   );

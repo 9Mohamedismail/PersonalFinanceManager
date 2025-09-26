@@ -102,7 +102,7 @@ router.post("/transaction/add", async (req, res) => {
     !accountId ||
     !date ||
     !description ||
-    !amount ||
+    amount === undefined ||
     !type ||
     !category ||
     !status
@@ -128,6 +128,57 @@ router.post("/transaction/add", async (req, res) => {
       .returning();
 
     return res.status(200).json({ message: "Transaction added!", transaction });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ message: "Server error", err: err });
+  }
+});
+
+router.post("/transaction/update/:id", async (req, res) => {
+  const user = req.user as { id: number } | undefined;
+  if (!user) return res.status(401).json({ message: "Unauthorized" });
+
+  const { id } = req.params;
+
+  if (!id) {
+    return res.status(400).send("Transaction id not provided");
+  }
+
+  const { accountId, date, description, amount, type, category, status } =
+    req.body;
+
+  if (
+    !accountId ||
+    !date ||
+    !description ||
+    amount === undefined ||
+    !type ||
+    !category ||
+    !status
+  ) {
+    return res.status(400).send("Required fields missing");
+  }
+
+  try {
+    const [transaction] = await db
+      .update(transactionsTable)
+      .set({
+        userId: user.id,
+        accountId: String(accountId),
+        date: new Date(date),
+        description,
+        amount: String(amount),
+        type: type.toLowerCase() as "income" | "expense",
+        status: status.toLowerCase() as "pending" | "posted",
+        category,
+        updatedAt: new Date(),
+      })
+      .where(eq(transactionsTable.id, Number(id)))
+      .returning();
+
+    return res
+      .status(200)
+      .json({ message: "Transaction updated!", transaction });
   } catch (err) {
     console.error(err);
     return res.status(500).json({ message: "Server error", err: err });

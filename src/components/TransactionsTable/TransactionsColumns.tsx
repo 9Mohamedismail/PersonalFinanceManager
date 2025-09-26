@@ -13,7 +13,6 @@ const columns: GridColDef[] = [
   { field: "description", headerName: "Description", flex: 1, minWidth: 200 },
   {
     field: "amount",
-    editable: true,
     headerName: "Amount",
     flex: 1,
     minWidth: 200,

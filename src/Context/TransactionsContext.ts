@@ -1,6 +1,7 @@
 import { createContext } from "react";
 
 export type TransactionType = "expense" | "income";
+export type TransactionStatus = "pending" | "posted";
 
 export type Transactions = {
   id: number;
@@ -10,6 +11,7 @@ export type Transactions = {
   description: string;
   amount: string;
   type: TransactionType;
+  status: TransactionStatus;
   category: string;
   createdAt: string;
   updatedAt: string;

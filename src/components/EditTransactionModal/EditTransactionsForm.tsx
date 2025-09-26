@@ -1,26 +1,26 @@
 import { useState } from "react";
-import type { TransactionForm } from "../../Pages/AddTransactionPage";
+import { type Transactions } from "../../Context/TransactionsContext";
 
-type AddTransactionFormProps = {
-  formData: TransactionForm;
-  setFormData: React.Dispatch<React.SetStateAction<TransactionForm>>;
+type EditTransactionFormProps = {
+  formData: Partial<Transactions>;
+  setFormData: React.Dispatch<React.SetStateAction<Partial<Transactions>>>;
   handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
   loading: boolean;
 };
 
-function AddTransactionForm({
+function EditTransactionForm({
   formData,
   setFormData,
   handleSubmit,
   loading,
-}: AddTransactionFormProps) {
+}: EditTransactionFormProps) {
   const handleChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
     >
   ): void => {
     const { name, value } = e.target;
-    const newFormData: TransactionForm = { ...formData, [name]: value };
+    const newFormData: Partial<Transactions> = { ...formData, [name]: value };
     setFormData(newFormData);
   };
   const [touched, setTouched] = useState<Record<string, boolean>>({});
@@ -46,7 +46,7 @@ function AddTransactionForm({
 
   return (
     <form
-      className="bg-white rounded-lg shadow-sm border border-primary p-6"
+      className="bg-white rounded-lg shadow-sm border border-primary p-6 lg:w-1/2"
       onSubmit={handleSubmitWrapper}
     >
       <div className="w-full flex flex-wrap lg:block">
@@ -77,7 +77,7 @@ function AddTransactionForm({
              focus:outline-none focus:bg-white focus:border-primary"
             name="date"
             type="date"
-            value={formData.date ?? ""}
+            value={formData.date ? formData.date.split("T")[0] : ""}
             onBlur={handleBlur}
             onChange={handleChange}
           />
@@ -217,6 +217,7 @@ function AddTransactionForm({
             placeholder="Description of Transaction"
             onChange={handleChange}
             onBlur={handleBlur}
+            value={formData.description ?? ""}
             maxLength={256}
             className="appearance-none block w-full bg-white rounded shadow-sm border border-primary py-3 px-4 mb-3 leading-tight 
              focus:outline-none focus:bg-white focus:border-primary text-xs sm:text-base"
@@ -243,11 +244,11 @@ function AddTransactionForm({
               : "text-primary cursor-pointer"
           }`}
         >
-          {loading ? "Adding Transaction..." : "Add Transaction"}
+          {loading ? "Updating Transaction..." : "Update Transaction"}
         </button>
       </div>
     </form>
   );
 }
 
-export default AddTransactionForm;
+export default EditTransactionForm;
