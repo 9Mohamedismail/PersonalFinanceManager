@@ -39,37 +39,41 @@ function Transactions({ grid }: { grid: boolean }) {
     }
   };
 
-  const actionColumns = columns.map((col) => {
-    if (col.field === "actions") {
+  const actionColumns = columns
+    .filter((col) => (grid ? col.field !== "actions" : true))
+    .map((col) => {
+      if (col.field === "actions" && !grid) {
+        return {
+          ...col,
+          sortable: col.sortable ?? !grid,
+          filterable: col.filterable ?? !grid,
+          disableColumnMenu: col.disableColumnMenu ?? grid,
+          renderCell: (params: { row: { id: GridRowId } }) => [
+            <div className="flex justify-around mt-1">
+              <button
+                className="border rounded-md px-3 text-base font-semibold text-red-500"
+                onClick={() => handleDelete(params.row.id)}
+              >
+                Delete
+              </button>
+              <button
+                className="border rounded-md px-3 text-base font-semibold text-red-500"
+                onClick={() => handleOpen(params.row.id)}
+              >
+                Edit
+              </button>
+            </div>,
+          ],
+        };
+      }
+
       return {
         ...col,
-        sortable: !grid,
-        filterable: !grid,
-        disableColumnMenu: grid,
-        renderCell: (params: { row: { id: GridRowId } }) => [
-          <button
-            className="border rounded-md px-3 text-base font-semibold text-red-500"
-            onClick={() => handleDelete(params.row.id)}
-          >
-            Delete
-          </button>,
-          <button
-            className="border rounded-md px-3 text-base font-semibold text-red-500"
-            onClick={() => handleOpen(params.row.id)}
-          >
-            Edit
-          </button>,
-        ],
+        sortable: col.sortable ?? !grid,
+        filterable: col.filterable ?? !grid,
+        disableColumnMenu: col.disableColumnMenu ?? grid,
       };
-    }
-
-    return {
-      ...col,
-      sortable: !grid,
-      filterable: !grid,
-      disableColumnMenu: grid,
-    };
-  });
+    });
 
   return (
     <div className="h-full">
@@ -81,6 +85,11 @@ function Transactions({ grid }: { grid: boolean }) {
         disableRowSelectionOnClick
         pagination
         density={!grid ? "compact" : undefined}
+        initialState={{
+          sorting: {
+            sortModel: [{ field: "date", sort: "desc" }],
+          },
+        }}
         sx={{
           "& .MuiDataGrid-cell": {
             color: "#101828",
@@ -110,6 +119,15 @@ function Transactions({ grid }: { grid: boolean }) {
           "& .MuiTablePagination-selectLabel": {
             fontSize: "18px",
             fontWeight: 400,
+          },
+          "& .MuiDataGrid-row.Mui-selected": {
+            backgroundColor: "inherit !important",
+          },
+          "& .MuiDataGrid-cell:focus": {
+            outline: "none",
+          },
+          "& .MuiDataGrid-columnHeader:focus": {
+            outline: "none",
           },
           backgroundColor: "#ffffff",
           border: "1px solid var(--color-primary)",

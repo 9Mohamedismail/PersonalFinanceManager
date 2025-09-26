@@ -10,7 +10,14 @@ const columns: GridColDef[] = [
       return format(parseISO(params), "MMM d, yyyy");
     },
   },
-  { field: "description", headerName: "Description", flex: 1, minWidth: 200 },
+  {
+    field: "description",
+    headerName: "Description",
+    flex: 1,
+    minWidth: 200,
+    sortable: false,
+    filterable: true,
+  },
   {
     field: "amount",
     headerName: "Amount",
@@ -29,7 +36,9 @@ const columns: GridColDef[] = [
     field: "details",
     headerName: "Details",
     width: 100,
-
+    sortable: false,
+    filterable: false,
+    disableColumnMenu: true,
     renderCell: () => (
       <button className="border rounded-md px-3 text-base font-semibold text-secondary">
         Details
@@ -40,6 +49,9 @@ const columns: GridColDef[] = [
     field: "actions",
     headerName: "Actions",
     width: 200,
+    sortable: false,
+    filterable: false,
+    disableColumnMenu: true,
   },
 ];
 
