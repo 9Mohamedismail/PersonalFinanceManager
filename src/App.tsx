@@ -23,6 +23,7 @@ import {
 import axios from "axios";
 import ProtectedRoute from "./utils/ProtectedRoute";
 import ErrorPage from "./Pages/ErrorPage";
+import Profile from "./Pages/Profile";
 
 function App() {
   const [expanded, setExpanded] = useState<boolean>(true);
@@ -164,6 +165,7 @@ function App() {
                 <Routes>
                   <Route element={<ProtectedRoute />}>
                     <Route path="/dashboard" element={<MainBentoGrid />} />
+                    <Route path="/profile" element={<Profile />} />
                     <Route
                       path="/transactions"
                       element={<TransactionsPage />}

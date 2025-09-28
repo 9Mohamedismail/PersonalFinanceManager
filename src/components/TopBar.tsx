@@ -57,14 +57,17 @@ function TopBar() {
         />
 
         {user ? (
-          <div
-            className="flex items-center cursor-pointer"
-            onClick={handleLogout}
-          >
-            <h1 className="text-base md:text-lg tracking-wide uppercase ">
+          <div className="flex items-center cursor-pointer">
+            <h1
+              className="text-base md:text-lg tracking-wide uppercase"
+              onClick={handleLogout}
+            >
               Logout
             </h1>
-            <FiChevronDown className="w-6 h-6" />
+            <FiChevronDown
+              className="w-6 h-6"
+              onClick={() => navigate("/profile")}
+            />
           </div>
         ) : (
           <div
