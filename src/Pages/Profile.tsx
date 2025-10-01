@@ -1,16 +1,17 @@
-import Accounts from "../ProfilePage/Accounts";
-import GeneralInfo from "../ProfilePage/GeneralInfo";
-import Password from "../ProfilePage/Password";
+import { useContext } from "react";
+import Accounts from "../components/ProfilePage/Accounts";
+import GeneralInfo from "../components/ProfilePage/GeneralInfo";
+import Password from "../components/ProfilePage/Password";
+import { UserInfoContext } from "../Context/UserInfoContext";
 
 function Profile() {
+  const { user } = useContext(UserInfoContext);
+
   return (
-    <div className="py-10 px-4 lg:px-8">
-      <div className="grid grid-cols-2 grid-rows-2 gap-4 ">
-        <GeneralInfo />
-        <div className="row-span-2">
-          <Accounts />
-        </div>
-        <Password />
+    <div className="py-10 px-4 lg:px-8 flex justify-center">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-stretch max-w-7xl w-full">
+        <GeneralInfo username={user?.username} email={user?.email} />
+        <Accounts />
       </div>
     </div>
   );

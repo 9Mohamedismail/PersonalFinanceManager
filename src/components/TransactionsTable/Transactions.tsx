@@ -51,13 +51,13 @@ function Transactions({ grid }: { grid: boolean }) {
           renderCell: (params: { row: { id: GridRowId } }) => [
             <div className="flex justify-around mt-1">
               <button
-                className="border rounded-md px-3 text-base font-semibold text-red-500"
+                className="border-2 bg-white rounded-md shadow-sm border-red-500 px-3 text-base font-semibold text-red-500 uppercase tracking-wide cursor-pointer"
                 onClick={() => handleDelete(params.row.id)}
               >
                 Delete
               </button>
               <button
-                className="border rounded-md px-3 text-base font-semibold text-red-500"
+                className="border-2 bg-white rounded-md shadow-sm border-orange-500 px-3 text-base font-semibold text-orange-500 uppercase tracking-wide cursor-pointer"
                 onClick={() => handleOpen(params.row.id)}
               >
                 Edit

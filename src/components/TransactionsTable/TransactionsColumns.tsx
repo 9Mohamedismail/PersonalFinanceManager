@@ -35,12 +35,12 @@ const columns: GridColDef[] = [
   {
     field: "details",
     headerName: "Details",
-    width: 100,
+    width: 120,
     sortable: false,
     filterable: false,
     disableColumnMenu: true,
     renderCell: () => (
-      <button className="border rounded-md px-3 text-base font-semibold text-secondary">
+      <button className="border-2 bg-white rounded-md shadow-sm border-secondary px-3 text-base font-semibold text-secondary uppercase tracking-wide cursor-pointer">
         Details
       </button>
     ),
