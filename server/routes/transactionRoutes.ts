@@ -5,30 +5,27 @@ import { transactionsTable } from "../../src/db/schema";
 
 const router = Router();
 
-router.get("/transaction/all", async (req, res) => {
-  const user = req.user as { id: number } | undefined;
+const toPayload = (transactions: any[]) =>
+  transactions.map((transaction) => ({
+    ...transaction,
+    amount: Number(transaction.amount),
+  }));
 
-  if (!user) return res.status(401).json({ message: "Unauthorized" });
-
-  try {
-    const transactions = await db
-      .select()
-      .from(transactionsTable)
-      .where(eq(transactionsTable.userId, user.id));
-
-    const payload = transactions.map((transaction) => ({
-      ...transaction,
-      amount: Number(transaction.amount),
-    }));
-
-    return res
-      .status(200)
-      .json({ message: "ALL User's transactions fetched", payload });
-  } catch (err) {
-    console.error(err);
-    return res.status(500).json({ message: "Server error", err: err });
+const validateTransaction = (body: any) => {
+  const { accountId, date, description, amount, type, category, status } = body;
+  if (
+    !accountId ||
+    !date ||
+    !description ||
+    amount === undefined ||
+    !type ||
+    !category ||
+    !status
+  ) {
+    return false;
   }
-});
+  return true;
+};
 
 router.get("/transaction", async (req, res) => {
   const user = req.user as { id: number } | undefined;
@@ -38,8 +35,7 @@ router.get("/transaction", async (req, res) => {
   const period = String(req.query.period ?? "month");
 
   const now = new Date();
-  let start: Date;
-  let end: Date;
+  let start: Date, end: Date;
 
   if (period === "month") {
     start = new Date(Date.UTC(now.getFullYear(), now.getMonth(), 1));
@@ -76,14 +72,30 @@ router.get("/transaction", async (req, res) => {
         )
       );
 
-    const payload = transactions.map((transaction) => ({
-      ...transaction,
-      amount: Number(transaction.amount),
-    }));
+    return res.status(200).json({
+      message: `${period.toUpperCase()} user's transactions fetched`,
+      payload: toPayload(transactions),
+    });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ message: "Server error", err: err });
+  }
+});
+
+router.get("/transaction/all", async (req, res) => {
+  const user = req.user as { id: number } | undefined;
+
+  if (!user) return res.status(401).json({ message: "Unauthorized" });
+
+  try {
+    const transactions = await db
+      .select()
+      .from(transactionsTable)
+      .where(eq(transactionsTable.userId, user.id));
 
     return res.status(200).json({
-      message: `${period.toUpperCase()} User's transactions fetched`,
-      payload,
+      message: "All user's transactions fetched",
+      payload: toPayload(transactions),
     });
   } catch (err) {
     console.error(err);
@@ -95,18 +107,7 @@ router.post("/transaction/add", async (req, res) => {
   const user = req.user as { id: number } | undefined;
   if (!user) return res.status(401).json({ message: "Unauthorized" });
 
-  const { accountId, date, description, amount, type, category, status } =
-    req.body;
-
-  if (
-    !accountId ||
-    !date ||
-    !description ||
-    amount === undefined ||
-    !type ||
-    !category ||
-    !status
-  ) {
+  if (!validateTransaction(req.body)) {
     return res.status(400).send("Required fields missing");
   }
 
@@ -115,13 +116,13 @@ router.post("/transaction/add", async (req, res) => {
       .insert(transactionsTable)
       .values({
         userId: user.id,
-        accountId: String(accountId),
-        date: new Date(date),
-        description,
-        amount: String(amount),
-        type: type.toLowerCase() as "income" | "expense",
-        status: status.toLowerCase() as "pending" | "posted",
-        category,
+        accountId: req.body.accountId,
+        date: new Date(req.body.date),
+        description: req.body.description,
+        amount: String(req.body.amount),
+        type: req.body.type.toLowerCase() as "income" | "expense",
+        status: req.body.status.toLowerCase() as "pending" | "posted",
+        category: req.body.category,
         createdAt: new Date(),
         updatedAt: new Date(),
       })
@@ -138,24 +139,11 @@ router.post("/transaction/update/:id", async (req, res) => {
   const user = req.user as { id: number } | undefined;
   if (!user) return res.status(401).json({ message: "Unauthorized" });
 
-  const { id } = req.params;
-
-  if (!id) {
+  if (!req.params.id) {
     return res.status(400).send("Transaction id not provided");
   }
 
-  const { accountId, date, description, amount, type, category, status } =
-    req.body;
-
-  if (
-    !accountId ||
-    !date ||
-    !description ||
-    amount === undefined ||
-    !type ||
-    !category ||
-    !status
-  ) {
+  if (!validateTransaction(req.body)) {
     return res.status(400).send("Required fields missing");
   }
 
@@ -164,16 +152,16 @@ router.post("/transaction/update/:id", async (req, res) => {
       .update(transactionsTable)
       .set({
         userId: user.id,
-        accountId: String(accountId),
-        date: new Date(date),
-        description,
-        amount: String(amount),
-        type: type.toLowerCase() as "income" | "expense",
-        status: status.toLowerCase() as "pending" | "posted",
-        category,
+        accountId: req.body.accountId,
+        date: new Date(req.body.date),
+        description: req.body.description,
+        amount: String(req.body.amount),
+        type: req.body.type.toLowerCase() as "income" | "expense",
+        status: req.body.status.toLowerCase() as "pending" | "posted",
+        category: req.body.category,
         updatedAt: new Date(),
       })
-      .where(eq(transactionsTable.id, Number(id)))
+      .where(eq(transactionsTable.id, Number(req.params.id)))
       .returning();
 
     return res
@@ -189,16 +177,14 @@ router.delete("/transaction/delete/:id", async (req, res) => {
   const user = req.user as { id: number } | undefined;
   if (!user) return res.status(401).json({ message: "Unauthorized" });
 
-  const { id } = req.params;
-
-  if (!id) {
+  if (!req.params.id) {
     return res.status(400).send("Transaction id not provided");
   }
 
   try {
     const [transaction] = await db
       .delete(transactionsTable)
-      .where(eq(transactionsTable.id, Number(id)))
+      .where(eq(transactionsTable.id, Number(req.params.id)))
       .returning();
 
     return res
