@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { db } from "../../src/db/db";
-import { eq, and, gte, lt, desc } from "drizzle-orm";
+import { eq, and, gte, lt, desc, sql } from "drizzle-orm";
 import { accountsTable } from "../../src/db/schema";
 
 const router = Router();
@@ -37,6 +37,17 @@ router.post("/accounts/add", async (req, res) => {
   }
 
   try {
+    const count = await db
+      .select({ count: sql<number>`count(*)` })
+      .from(accountsTable)
+      .where(eq(accountsTable.userId, user.id));
+
+    if (count[0].count >= 6) {
+      return res
+        .status(400)
+        .json({ message: "You can only have up to 6 accounts" });
+    }
+
     const existing = await db
       .select()
       .from(accountsTable)

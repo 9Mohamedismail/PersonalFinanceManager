@@ -3,7 +3,7 @@ import InfoRow from "./InfoRow";
 import { AccountsContext, type Accounts } from "../../Context/AccountsContext";
 import axios from "axios";
 
-function Accounts() {
+function AccountInfo() {
   const { accounts, setAccounts } = useContext(AccountsContext);
 
   console.log(accounts);
@@ -52,6 +52,10 @@ function Accounts() {
       );
 
       console.log("Account added successfully!");
+      if (res.data.account) {
+        setAccounts((prev) => [...(prev ?? []), res.data.account]);
+      }
+
       setServerError("");
       setAdd(false);
       setAccountData({
@@ -77,7 +81,7 @@ function Accounts() {
         </div>
       )}
       <h2 className="block text-2xl text-primary uppercase tracking-wide mb-2">
-        ACCOUNTS
+        ACCOUNTS ({accounts?.length}/6)
       </h2>
       <div className="w-full flex flex-col gap-2">
         {accounts?.map((account) => (
@@ -108,14 +112,15 @@ function Accounts() {
           </div>
         ))}
 
-        {!add ? (
+        {accounts && accounts.length < 6 && !add && (
           <button
             className="border-2 bg-white rounded-md shadow-sm border-secondary px-3 text-base font-semibold text-secondary uppercase tracking-wide cursor-pointer"
             onClick={() => setAdd(true)}
           >
             Add Account
           </button>
-        ) : (
+        )}
+        {add && accounts && accounts.length < 6 && (
           <form
             className="bg-white rounded-lg shadow-sm border border-primary w-full flex flex-col gap-2 p-4"
             onSubmit={handleSubmit}
@@ -173,4 +178,4 @@ function Accounts() {
   );
 }
 
-export default Accounts;
+export default AccountInfo;
