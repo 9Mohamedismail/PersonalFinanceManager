@@ -5,6 +5,27 @@ import { accountsTable } from "../../src/db/schema";
 
 const router = Router();
 
+router.get("/accounts", async (req, res) => {
+  const user = req.user as { id: number } | undefined;
+
+  if (!user) return res.status(401).json({ message: "Unauthorized" });
+
+  try {
+    const accounts = await db
+      .select()
+      .from(accountsTable)
+      .where(eq(accountsTable.userId, user.id));
+
+    return res.status(200).json({
+      message: "All user's accounts fetched",
+      payload: accounts,
+    });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ message: "Server error", err: err });
+  }
+});
+
 router.post("/accounts/add", async (req, res) => {
   const user = req.user as { id: number } | undefined;
   if (!user) return res.status(401).json({ message: "Unauthorized" });

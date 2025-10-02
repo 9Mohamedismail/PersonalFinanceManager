@@ -16,6 +16,7 @@ import {
   type User,
   type AuthStatus,
 } from "./Context/UserInfoContext";
+import { AccountsContext, type Accounts } from "./Context/AccountsContext";
 import {
   TransactionsContext,
   type Transactions,
@@ -29,6 +30,7 @@ function App() {
   const [expanded, setExpanded] = useState<boolean>(true);
   const [user, setUser] = useState<User | null>(null);
   const [authStatus, setAuthStatus] = useState<AuthStatus>("loading");
+  const [accounts, setAccounts] = useState<Accounts[] | null>(null);
   const [allTransactions, setAllTransactions] = useState<Transactions[] | null>(
     null
   );
@@ -70,6 +72,27 @@ function App() {
     };
 
     fetchUser();
+  }, []);
+
+  useEffect(() => {
+    const fetchAccounts = async () => {
+      try {
+        const res = await axios.get("http://localhost:3000/api/accounts", {
+          withCredentials: true,
+        });
+
+        console.log("ALL User's accounts fetched:", res.data.payload);
+        setAccounts(res.data.user);
+      } catch (err: any) {
+        if (err?.response?.status === 401) {
+          console.log(err.response.data.message);
+        } else {
+          console.error("Unexpected error fetching user's accounts:", err);
+        }
+      }
+    };
+
+    fetchAccounts();
   }, []);
 
   useEffect(() => {
@@ -147,51 +170,53 @@ function App() {
       <UserInfoContext.Provider
         value={{ user, authStatus, setAuthStatus, setUser }}
       >
-        <TransactionsContext.Provider
-          value={{
-            allTransactions,
-            weeklyTransactions,
-            monthlyTransactions,
-            setAllTransactions,
-            setWeeklyTransactions,
-            setMonthlyTransactions,
-          }}
-        >
-          <SidebarContext.Provider value={{ expanded, setExpanded }}>
-            {user && <SideBar />}
-            <div className="flex flex-col flex-1 min-h-0 min-w-0">
-              {user && <TopBar />}
-              <div className="flex-1">
-                <Routes>
-                  <Route element={<ProtectedRoute />}>
-                    <Route path="/dashboard" element={<MainBentoGrid />} />
-                    <Route path="/profile" element={<Profile />} />
+        <AccountsContext.Provider value={{ accounts, setAccounts }}>
+          <TransactionsContext.Provider
+            value={{
+              allTransactions,
+              weeklyTransactions,
+              monthlyTransactions,
+              setAllTransactions,
+              setWeeklyTransactions,
+              setMonthlyTransactions,
+            }}
+          >
+            <SidebarContext.Provider value={{ expanded, setExpanded }}>
+              {user && <SideBar />}
+              <div className="flex flex-col flex-1 min-h-0 min-w-0">
+                {user && <TopBar />}
+                <div className="flex-1">
+                  <Routes>
+                    <Route element={<ProtectedRoute />}>
+                      <Route path="/dashboard" element={<MainBentoGrid />} />
+                      <Route path="/profile" element={<Profile />} />
+                      <Route
+                        path="/transactions"
+                        element={<TransactionsPage />}
+                      />
+                      <Route
+                        path="/addtransaction"
+                        element={<AddTransactionPage />}
+                      />
+                      <Route path="/metrics" element={<MetricsPage />} />
+                    </Route>
+                    <Route path="/signup" element={<SignUpForm />} />
+                    <Route path="/login" element={<LoginForm />} />
                     <Route
-                      path="/transactions"
-                      element={<TransactionsPage />}
+                      path="/login/forgot"
+                      element={<ForgotPasswordForm />}
                     />
                     <Route
-                      path="/addtransaction"
-                      element={<AddTransactionPage />}
+                      path="/login/forgot-username"
+                      element={<ForgotUsernameForm />}
                     />
-                    <Route path="/metrics" element={<MetricsPage />} />
-                  </Route>
-                  <Route path="/signup" element={<SignUpForm />} />
-                  <Route path="/login" element={<LoginForm />} />
-                  <Route
-                    path="/login/forgot"
-                    element={<ForgotPasswordForm />}
-                  />
-                  <Route
-                    path="/login/forgot-username"
-                    element={<ForgotUsernameForm />}
-                  />
-                  <Route path="/*" element={<ErrorPage />} />
-                </Routes>
+                    <Route path="/*" element={<ErrorPage />} />
+                  </Routes>
+                </div>
               </div>
-            </div>
-          </SidebarContext.Provider>
-        </TransactionsContext.Provider>
+            </SidebarContext.Provider>
+          </TransactionsContext.Provider>
+        </AccountsContext.Provider>
       </UserInfoContext.Provider>
     </div>
   );

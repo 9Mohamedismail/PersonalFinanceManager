@@ -1,17 +1,11 @@
 import { useState } from "react";
 import InfoRow from "./InfoRow";
+import { type Accounts } from "../../Context/AccountsContext";
 import axios from "axios";
-
-type accountType = "Checking" | "Saving" | "Cash" | undefined;
-
-type Account = {
-  accountName: string;
-  accountType: accountType;
-};
 
 function Accounts() {
   const [add, setAdd] = useState(false);
-  const [accountData, setAccountData] = useState<Account>({
+  const [accountData, setAccountData] = useState<Accounts>({
     accountName: "",
     accountType: undefined,
   });
