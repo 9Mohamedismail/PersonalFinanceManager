@@ -157,7 +157,7 @@ function AccountInfo() {
           </div>
         ))}
 
-        {accounts && accounts.length < 6 && !add && (
+        {!add && !editId && accounts && accounts.length < 6 && (
           <button
             className="border-2 bg-white rounded-md shadow-sm border-secondary px-3 text-base font-semibold text-secondary uppercase tracking-wide cursor-pointer"
             onClick={() => setAdd(true)}
@@ -165,7 +165,7 @@ function AccountInfo() {
             Add Account
           </button>
         )}
-        {add && accounts && accounts.length < 6 && (
+        {(add || editId) && (
           <form
             className="bg-white rounded-lg shadow-sm border border-primary w-full flex flex-col gap-2 p-4"
             onSubmit={handleSubmit}

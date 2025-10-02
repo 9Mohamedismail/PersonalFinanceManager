@@ -96,6 +96,24 @@ router.put("/accounts/update/:id", async (req, res) => {
   }
 
   try {
+    const existing = await db
+      .select()
+      .from(accountsTable)
+      .where(
+        and(
+          eq(accountsTable.userId, user.id),
+          eq(accountsTable.accountName, accountName.toLowerCase()),
+          sql`${accountsTable.id} <> ${req.params.id}`
+        )
+      )
+      .limit(1);
+
+    if (existing.length > 0) {
+      return res
+        .status(400)
+        .json({ message: "Account with that name already exists" });
+    }
+
     const [account] = await db
       .update(accountsTable)
       .set({
