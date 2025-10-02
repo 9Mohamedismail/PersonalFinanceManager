@@ -11,7 +11,7 @@ function GeneralInfo({ username, email }: GeneralInfoProps) {
   const [edit, setEdit] = useState(false);
 
   return (
-    <div className="bg-white rounded-lg shadow-sm border border-primary p-6 flex-1 h-full">
+    <div className="bg-white rounded-lg shadow-sm border border-primary p-6 min-h-[450px]">
       <div className="w-full flex flex-col gap-2">
         <div className="flex justify-center items-center flex-col">
           <img

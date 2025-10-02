@@ -59,7 +59,7 @@ router.post("/accounts/add", async (req, res) => {
       .values({
         userId: user.id,
         accountName: accountName.toLowerCase(),
-        accountType: accountType.toLowerCase(),
+        accountType: accountType,
       })
       .returning();
 

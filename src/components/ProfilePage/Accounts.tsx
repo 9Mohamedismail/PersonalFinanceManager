@@ -1,9 +1,13 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import InfoRow from "./InfoRow";
-import { type Accounts } from "../../Context/AccountsContext";
+import { AccountsContext, type Accounts } from "../../Context/AccountsContext";
 import axios from "axios";
 
 function Accounts() {
+  const { accounts, setAccounts } = useContext(AccountsContext);
+
+  console.log(accounts);
+
   const [add, setAdd] = useState(false);
   const [accountData, setAccountData] = useState<Accounts>({
     accountName: "",
@@ -42,7 +46,7 @@ function Accounts() {
         "http://localhost:3000/api/accounts/add",
         {
           accountName: accountData.accountName.toLowerCase(),
-          accountType: accountData.accountType.toLowerCase(),
+          accountType: accountData.accountType,
         },
         { withCredentials: true }
       );
@@ -64,7 +68,7 @@ function Accounts() {
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-sm border border-primary p-6 flex-1 h-full">
+    <div className="bg-white rounded-lg shadow-sm border border-primary p-6 min-h-[450px]">
       {serverError && (
         <div className="border bg-secondary-100 rounded shadow-sm border-primary py-4 mb-4">
           <p className="text-base text-primary mx-4 font-semibold">
@@ -76,28 +80,34 @@ function Accounts() {
         ACCOUNTS
       </h2>
       <div className="w-full flex flex-col gap-2">
-        <div className="flex gap-2">
-          <input
-            className="appearance-none block w-full bg-white rounded shadow-sm border border-primary  py-2 px-2 leading-tight 
-             focus:outline-none focus:bg-white focus:border-primary"
-            type="text"
-            name="account"
-            readOnly
-          />
+        {accounts?.map((account) => (
+          <div className="flex gap-2">
+            <div className="w-full bg-white rounded shadow-sm border border-primary py-1 px-3">
+              <div className="flex flex-col leading-none">
+                <div className="text-lg text-primary uppercase tracking-wide font-medium leading-tight">
+                  {account.accountName?.toUpperCase()}
+                </div>
+                <div className="text-sm text-gray-600 tracking-wide leading-snug">
+                  {account.accountType}
+                </div>
+              </div>
+            </div>
 
-          <button
-            className="border-2 bg-white rounded-md shadow-sm border-orange-500 px-3 text-base font-semibold text-orange-500 uppercase tracking-wide cursor-pointer"
-            onClick={() => handleOpen(params.row.id)}
-          >
-            Edit
-          </button>
-          <button
-            className="border-2 bg-white rounded-md shadow-sm border-red-500 px-3 text-base font-semibold text-red-500 uppercase tracking-wide cursor-pointer"
-            onClick={() => handleDelete(params.row.id)}
-          >
-            Delete
-          </button>
-        </div>
+            <button
+              className="border-2 bg-white rounded-md shadow-sm border-orange-500 px-3 text-base font-semibold text-orange-500 uppercase tracking-wide cursor-pointer"
+              onClick={() => handleOpen(params.row.id)}
+            >
+              Edit
+            </button>
+            <button
+              className="border-2 bg-white rounded-md shadow-sm border-red-500 px-3 text-base font-semibold text-red-500 uppercase tracking-wide cursor-pointer"
+              onClick={() => handleDelete(params.row.id)}
+            >
+              Delete
+            </button>
+          </div>
+        ))}
+
         {!add ? (
           <button
             className="border-2 bg-white rounded-md shadow-sm border-secondary px-3 text-base font-semibold text-secondary uppercase tracking-wide cursor-pointer"
@@ -125,7 +135,7 @@ function Accounts() {
                 name="accountType"
                 value={accountData.accountType ?? ""}
                 onChange={handleChange}
-                className="bg-white rounded shadow-sm border border-primary py-2 px-4 leading-tight 
+                className="bg-white rounded shadow-sm border border-primary py-2 px-4 leading-tight
                focus:outline-none focus:border-primary"
               >
                 <option disabled hidden value="">

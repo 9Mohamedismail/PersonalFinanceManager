@@ -82,7 +82,7 @@ function App() {
         });
 
         console.log("ALL User's accounts fetched:", res.data.payload);
-        setAccounts(res.data.user);
+        setAccounts(res.data.payload);
       } catch (err: any) {
         if (err?.response?.status === 401) {
           console.log(err.response.data.message);
