@@ -135,7 +135,7 @@ router.post("/transaction/add", async (req, res) => {
   }
 });
 
-router.post("/transaction/update/:id", async (req, res) => {
+router.put("/transaction/update/:id", async (req, res) => {
   const user = req.user as { id: number } | undefined;
   if (!user) return res.status(401).json({ message: "Unauthorized" });
 

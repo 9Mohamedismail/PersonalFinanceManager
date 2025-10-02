@@ -28,14 +28,13 @@ function Transactions({ grid }: { grid: boolean }) {
       });
 
       console.log("Transaction deleted successfully!");
+      setAllTransactions((prev) =>
+        prev ? prev.filter((row) => row.id !== id) : []
+      );
     } catch (err: any) {
       const serverMsg = err?.response?.data?.message;
       const fallbackMsg = err?.message || "Delete failed";
       console.error(serverMsg || fallbackMsg);
-    } finally {
-      setAllTransactions((prev) =>
-        prev ? prev.filter((row) => row.id !== id) : []
-      );
     }
   };
 

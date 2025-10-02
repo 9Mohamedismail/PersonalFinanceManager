@@ -81,4 +81,57 @@ router.post("/accounts/add", async (req, res) => {
   }
 });
 
+router.put("/accounts/update/:id", async (req, res) => {
+  const user = req.user as { id: number } | undefined;
+  if (!user) return res.status(401).json({ message: "Unauthorized" });
+
+  if (!req.params.id) {
+    return res.status(400).send("account id not provided");
+  }
+
+  const { accountName, accountType } = req.body;
+
+  if (!accountName || !accountType) {
+    return res.status(400).send("Required fields missing");
+  }
+
+  try {
+    const [account] = await db
+      .update(accountsTable)
+      .set({
+        userId: user.id,
+        accountName: accountName.toLowerCase(),
+        accountType: accountType,
+      })
+      .where(eq(accountsTable.id, Number(req.params.id)))
+      .returning();
+
+    return res.status(200).json({ message: "Account updated!", account });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ message: "Server error", err: err });
+  }
+});
+
+router.delete("/accounts/delete/:id", async (req, res) => {
+  const user = req.user as { id: number } | undefined;
+  if (!user) return res.status(401).json({ message: "Unauthorized" });
+
+  if (!req.params.id) {
+    return res.status(400).send("Accouunt id not provided");
+  }
+
+  try {
+    const [account] = await db
+      .delete(accountsTable)
+      .where(eq(accountsTable.id, Number(req.params.id)))
+      .returning();
+
+    return res.status(200).json({ message: "Account deleted! ", account });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ message: "Server error", err: err });
+  }
+});
+
 export default router;

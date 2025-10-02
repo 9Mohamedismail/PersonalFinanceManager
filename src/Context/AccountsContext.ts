@@ -3,6 +3,7 @@ import { createContext } from "react";
 export type AccountType = "Checking" | "Saving" | "Cash" | undefined;
 
 export type Accounts = {
+  id: number;
   accountName: string;
   accountType: AccountType;
 };

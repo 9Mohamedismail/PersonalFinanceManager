@@ -1,15 +1,19 @@
 import { useContext, useState } from "react";
 import InfoRow from "./InfoRow";
-import { AccountsContext, type Accounts } from "../../Context/AccountsContext";
+import { AccountsContext } from "../../Context/AccountsContext";
 import axios from "axios";
+
+export type NewAccount = {
+  accountName: string;
+  accountType: string | undefined;
+};
 
 function AccountInfo() {
   const { accounts, setAccounts } = useContext(AccountsContext);
 
-  console.log(accounts);
-
   const [add, setAdd] = useState(false);
-  const [accountData, setAccountData] = useState<Accounts>({
+  const [editId, setEditId] = useState<number | null>(null);
+  const [accountData, setAccountData] = useState<NewAccount>({
     accountName: "",
     accountType: undefined,
   });
@@ -26,11 +30,27 @@ function AccountInfo() {
 
   const handleCancel = () => {
     setAdd(false);
+    setEditId(null);
     setAccountData({
       accountName: "",
       accountType: undefined,
     });
     setServerError("");
+  };
+
+  const handleDelete = async (id: number) => {
+    try {
+      await axios.delete(`http://localhost:3000/api/accounts/delete/${id}`, {
+        withCredentials: true,
+      });
+
+      console.log("Account deleted successfully!");
+      setAccounts((prev) => prev?.filter((account) => account.id !== id) ?? []);
+    } catch (err: any) {
+      const serverMsg = err?.response?.data?.message;
+      const fallbackMsg = err?.message || "Delete failed";
+      console.error(serverMsg || fallbackMsg);
+    }
   };
 
   const handleSubmit = async (e: React.SyntheticEvent<HTMLFormElement>) => {
@@ -42,29 +62,47 @@ function AccountInfo() {
 
     try {
       setLoading(true);
-      const res = await axios.post(
-        "http://localhost:3000/api/accounts/add",
-        {
-          accountName: accountData.accountName.toLowerCase(),
-          accountType: accountData.accountType,
-        },
-        { withCredentials: true }
-      );
 
-      console.log("Account added successfully!");
-      if (res.data.account) {
-        setAccounts((prev) => [...(prev ?? []), res.data.account]);
+      if (editId) {
+        const res = await axios.put(
+          `http://localhost:3000/api/accounts/update/${editId}`,
+          {
+            accountName: accountData.accountName.toLowerCase(),
+            accountType: accountData.accountType,
+          },
+          { withCredentials: true }
+        );
+
+        if (res.data.account) {
+          setAccounts(
+            (prev) =>
+              prev?.map((account) =>
+                account.id === editId ? res.data.account : account
+              ) ?? []
+          );
+        }
+      } else {
+        const res = await axios.post(
+          "http://localhost:3000/api/accounts/add",
+          {
+            accountName: accountData.accountName.toLowerCase(),
+            accountType: accountData.accountType,
+          },
+          { withCredentials: true }
+        );
+
+        if (res.data.account) {
+          setAccounts((prev) => [...(prev ?? []), res.data.account]);
+        }
       }
 
       setServerError("");
       setAdd(false);
-      setAccountData({
-        accountName: "",
-        accountType: undefined,
-      });
+      setEditId(null);
+      setAccountData({ accountName: "", accountType: undefined });
     } catch (err: any) {
       const serverMsg = err?.response?.data?.message;
-      const fallbackMsg = err?.message || "Account was not added";
+      const fallbackMsg = err?.message || "Account action failed";
       setServerError(serverMsg || fallbackMsg);
     } finally {
       setLoading(false);
@@ -85,7 +123,7 @@ function AccountInfo() {
       </h2>
       <div className="w-full flex flex-col gap-2">
         {accounts?.map((account) => (
-          <div className="flex gap-2">
+          <div key={account.id} className="flex gap-2">
             <div className="w-full bg-white rounded shadow-sm border border-primary py-1 px-3">
               <div className="flex flex-col leading-none">
                 <div className="text-lg text-primary uppercase tracking-wide font-medium leading-tight">
@@ -99,13 +137,20 @@ function AccountInfo() {
 
             <button
               className="border-2 bg-white rounded-md shadow-sm border-orange-500 px-3 text-base font-semibold text-orange-500 uppercase tracking-wide cursor-pointer"
-              onClick={() => handleOpen(params.row.id)}
+              onClick={() => {
+                setEditId(account.id);
+                setAccountData({
+                  accountName: account.accountName,
+                  accountType: account.accountType,
+                });
+                setAdd(true);
+              }}
             >
               Edit
             </button>
             <button
               className="border-2 bg-white rounded-md shadow-sm border-red-500 px-3 text-base font-semibold text-red-500 uppercase tracking-wide cursor-pointer"
-              onClick={() => handleDelete(params.row.id)}
+              onClick={() => handleDelete(account.id)}
             >
               Delete
             </button>
@@ -168,7 +213,13 @@ function AccountInfo() {
                     : "text-primary cursor-pointer"
                 }`}
               >
-                {loading ? "Adding account..." : "Add account"}
+                {loading
+                  ? editId
+                    ? "Updating account..."
+                    : "Adding account..."
+                  : editId
+                  ? "Update account"
+                  : "Add account"}
               </button>
             </div>
           </form>
