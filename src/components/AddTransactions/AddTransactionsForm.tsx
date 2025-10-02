@@ -100,7 +100,7 @@ function AddTransactionForm({
             className="appearance-none block w-full bg-white rounded shadow-sm border border-primary py-3 px-4 mb-3 leading-tight 
              focus:outline-none focus:bg-white focus:border-primary text-xs sm:text-base"
           >
-            <option disabled selected hidden value="">
+            <option disabled hidden value="">
               Choose a Transaction Type
             </option>
             <option value="Income">Income</option>
@@ -124,7 +124,7 @@ function AddTransactionForm({
             className="appearance-none block w-full bg-white rounded shadow-sm border border-primary py-3 px-4 mb-3 leading-tight 
              focus:outline-none focus:bg-white focus:border-primary text-xs sm:text-base"
           >
-            <option disabled selected hidden value="">
+            <option disabled hidden value="">
               Choose an Account
             </option>
             <option>Chase 5848</option>
@@ -147,7 +147,7 @@ function AddTransactionForm({
             className="appearance-none block w-full bg-white rounded shadow-sm border border-primary py-3 px-4 mb-3 leading-tight 
              focus:outline-none focus:bg-white focus:border-primary text-xs sm:text-base"
           >
-            <option disabled selected hidden value="">
+            <option disabled hidden value="">
               Choose a Category Type
             </option>
             <option value="Restaurants">Restaurants</option>

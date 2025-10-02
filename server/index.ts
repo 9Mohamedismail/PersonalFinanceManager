@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import userRoutes from "./routes/userRoutes";
 import transactionRoutes from "./routes/transactionRoutes";
+import accountRoutes from "./routes/accountRoutes";
 import "./routes/strategies/local-strategy";
 import session from "express-session";
 import connectPgSimple from "connect-pg-simple";
@@ -38,6 +39,7 @@ app.use(passport.session());
 
 app.use("/api", userRoutes);
 app.use("/api", transactionRoutes);
+app.use("/api", accountRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
