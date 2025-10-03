@@ -52,7 +52,6 @@ function App() {
   }, []);
 
   useEffect(() => {
-    if (!user) return;
     const fetchUser = async () => {
       try {
         const res = await axios.get("http://localhost:3000/api/user/me", {
@@ -183,38 +182,51 @@ function App() {
             }}
           >
             <SidebarContext.Provider value={{ expanded, setExpanded }}>
-              {authStatus === "authenticated" && <SideBar />}
-              <div className="flex flex-col flex-1 min-h-0 min-w-0">
-                {authStatus === "authenticated" && <TopBar />}
-                <div className="flex-1">
-                  <Routes>
-                    <Route element={<ProtectedRoute />}>
-                      <Route path="/dashboard" element={<MainBentoGrid />} />
-                      <Route path="/profile" element={<Profile />} />
-                      <Route
-                        path="/transactions"
-                        element={<TransactionsPage />}
-                      />
-                      <Route
-                        path="/addtransaction"
-                        element={<AddTransactionPage />}
-                      />
-                      <Route path="/metrics" element={<MetricsPage />} />
-                    </Route>
-                    <Route path="/signup" element={<SignUpForm />} />
-                    <Route path="/login" element={<LoginForm />} />
-                    <Route
-                      path="/login/forgot"
-                      element={<ForgotPasswordForm />}
-                    />
-                    <Route
-                      path="/login/forgot-username"
-                      element={<ForgotUsernameForm />}
-                    />
-                    <Route path="/*" element={<ErrorPage />} />
-                  </Routes>
+              {authStatus === "loading" ? (
+                <div className="flex-1 flex items-center justify-center">
+                  <p className="text-5xl text-primary tracking-wide">
+                    Loading...
+                  </p>
                 </div>
-              </div>
+              ) : (
+                <>
+                  {authStatus === "authenticated" && <SideBar />}
+                  <div className="flex flex-col flex-1 min-h-0 min-w-0">
+                    {authStatus === "authenticated" && <TopBar />}
+                    <div className="flex-1">
+                      <Routes>
+                        <Route element={<ProtectedRoute />}>
+                          <Route
+                            path="/dashboard"
+                            element={<MainBentoGrid />}
+                          />
+                          <Route path="/profile" element={<Profile />} />
+                          <Route
+                            path="/transactions"
+                            element={<TransactionsPage />}
+                          />
+                          <Route
+                            path="/addtransaction"
+                            element={<AddTransactionPage />}
+                          />
+                          <Route path="/metrics" element={<MetricsPage />} />
+                        </Route>
+                        <Route path="/signup" element={<SignUpForm />} />
+                        <Route path="/login" element={<LoginForm />} />
+                        <Route
+                          path="/login/forgot"
+                          element={<ForgotPasswordForm />}
+                        />
+                        <Route
+                          path="/login/forgot-username"
+                          element={<ForgotUsernameForm />}
+                        />
+                        <Route path="/*" element={<ErrorPage />} />
+                      </Routes>
+                    </div>
+                  </div>
+                </>
+              )}
             </SidebarContext.Provider>
           </TransactionsContext.Provider>
         </AccountsContext.Provider>
