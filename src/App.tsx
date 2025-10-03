@@ -49,9 +49,10 @@ function App() {
     }
 
     setExpanded(sideBarStorage === "true");
-  });
+  }, []);
 
   useEffect(() => {
+    if (!user) return;
     const fetchUser = async () => {
       try {
         const res = await axios.get("http://localhost:3000/api/user/me", {
@@ -182,9 +183,9 @@ function App() {
             }}
           >
             <SidebarContext.Provider value={{ expanded, setExpanded }}>
-              {user && <SideBar />}
+              {authStatus === "authenticated" && <SideBar />}
               <div className="flex flex-col flex-1 min-h-0 min-w-0">
-                {user && <TopBar />}
+                {authStatus === "authenticated" && <TopBar />}
                 <div className="flex-1">
                   <Routes>
                     <Route element={<ProtectedRoute />}>

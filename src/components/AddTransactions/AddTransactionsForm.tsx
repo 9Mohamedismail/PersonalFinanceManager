@@ -1,8 +1,10 @@
 import { useState } from "react";
+import { type Accounts } from "../../Context/AccountsContext";
 import type { TransactionForm } from "../../Pages/AddTransactionPage";
 
 type AddTransactionFormProps = {
   formData: TransactionForm;
+  accounts: Accounts[];
   setFormData: React.Dispatch<React.SetStateAction<TransactionForm>>;
   handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
   loading: boolean;
@@ -10,6 +12,7 @@ type AddTransactionFormProps = {
 
 function AddTransactionForm({
   formData,
+  accounts,
   setFormData,
   handleSubmit,
   loading,
@@ -118,8 +121,8 @@ function AddTransactionForm({
           </label>
           <select
             name="accountId"
-            onChange={handleChange}
             value={formData.accountId ?? ""}
+            onChange={handleChange}
             onBlur={handleBlur}
             className="appearance-none block w-full bg-white rounded shadow-sm border border-primary py-3 px-4 mb-3 leading-tight 
              focus:outline-none focus:bg-white focus:border-primary text-xs sm:text-base"
@@ -127,7 +130,11 @@ function AddTransactionForm({
             <option disabled hidden value="">
               Choose an Account
             </option>
-            <option>Chase 5848</option>
+            {accounts?.map((account) => (
+              <option key={account.id} value={account.id}>
+                {account.accountName}
+              </option>
+            ))}
           </select>
           {(submitted || touched.accountI) && !formData.accountId && (
             <p className="-mt-2 text-sm text-[#fc100d] ">

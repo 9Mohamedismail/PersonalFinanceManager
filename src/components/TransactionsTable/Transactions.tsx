@@ -47,7 +47,7 @@ function Transactions({ grid }: { grid: boolean }) {
           sortable: col.sortable ?? !grid,
           filterable: col.filterable ?? !grid,
           disableColumnMenu: col.disableColumnMenu ?? grid,
-          renderCell: (params: { row: { id: GridRowId } }) => [
+          renderCell: (params: { row: { id: GridRowId } }) => (
             <div className="flex justify-around mt-1">
               <button
                 className="border-2 bg-white rounded-md shadow-sm border-red-500 px-3 text-base font-semibold text-red-500 uppercase tracking-wide cursor-pointer"
@@ -61,8 +61,8 @@ function Transactions({ grid }: { grid: boolean }) {
               >
                 Edit
               </button>
-            </div>,
-          ],
+            </div>
+          ),
         };
       }
 
@@ -77,6 +77,7 @@ function Transactions({ grid }: { grid: boolean }) {
   return (
     <div className="h-full">
       <DataGrid
+        getRowId={(row) => row.id}
         rows={!grid ? allTransactions ?? [] : (allTransactions ?? []).slice(-7)}
         columns={actionColumns}
         hideFooter={grid}
@@ -86,7 +87,9 @@ function Transactions({ grid }: { grid: boolean }) {
         density={!grid ? "compact" : undefined}
         initialState={{
           sorting: {
-            sortModel: [{ field: "date", sort: "desc" }],
+            sortModel: allTransactions?.length
+              ? [{ field: "date", sort: "desc" }]
+              : [],
           },
         }}
         sx={{

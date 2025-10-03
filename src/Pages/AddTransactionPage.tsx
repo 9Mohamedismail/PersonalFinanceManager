@@ -3,6 +3,8 @@ import AddTransactionForm from "../components/AddTransactions/AddTransactionsFor
 import TransactionsReceipt from "../components/AddTransactions/TransactionsReceipt";
 import axios from "axios";
 import { TransactionsContext } from "../Context/TransactionsContext";
+import { AccountsContext } from "../Context/AccountsContext";
+import { useNavigate } from "react-router-dom";
 
 type Type = "Income" | "Expense";
 
@@ -32,6 +34,8 @@ function AddTransactionPage() {
   const [serverMessage, setServerMessage] = useState<string | null>(null);
 
   const { setAllTransactions } = useContext(TransactionsContext);
+  const { accounts } = useContext(AccountsContext);
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -91,16 +95,35 @@ function AddTransactionPage() {
           </p>
         </div>
       )}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 items-start">
-        <AddTransactionForm
-          key={resetKey}
-          formData={formData}
-          setFormData={setFormData}
-          handleSubmit={handleSubmit}
-          loading={loading}
-        />
-        <TransactionsReceipt formData={formData} />
-      </div>
+
+      {accounts && accounts.length > 0 ? (
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 items-start">
+          <AddTransactionForm
+            key={resetKey}
+            formData={formData}
+            accounts={accounts}
+            setFormData={setFormData}
+            handleSubmit={handleSubmit}
+            loading={loading}
+          />
+          <TransactionsReceipt formData={formData} />
+        </div>
+      ) : (
+        <div className="flex min-h-[70vh] justify-center items-center">
+          <div className="bg-white rounded-lg shadow-sm border border-primary p-6 w-full max-w-lg text-center">
+            <p className="text-lg text-gray-900 mb-4">
+              You must create an account before adding transactions.
+            </p>
+            <button
+              type="button"
+              className="border-2 bg-white rounded shadow-sm border-primary py-2 px-4 sm:text-lg font-semibold text-primary uppercase tracking-wide cursor-pointer"
+              onClick={() => navigate("/profile")}
+            >
+              Add an account
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
