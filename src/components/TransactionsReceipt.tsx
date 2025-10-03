@@ -1,14 +1,18 @@
 import Barcode from "react-barcode";
-import type { TransactionForm } from "../../Pages/AddTransactionPage";
 import { useContext } from "react";
-import { UserInfoContext } from "../../Context/UserInfoContext";
-import { TransactionsContext } from "../../Context/TransactionsContext";
+import { UserInfoContext } from "../Context/UserInfoContext";
+import {
+  type Transactions,
+  TransactionsContext,
+} from "../Context/TransactionsContext";
 
-type TransactionsReceiptProps = {
-  formData: TransactionForm;
+type TransactionsReceiptProps<T> = {
+  formData: T;
 };
 
-function TransactionsReceipt({ formData }: TransactionsReceiptProps) {
+function TransactionsReceipt<T extends Partial<Transactions>>({
+  formData,
+}: TransactionsReceiptProps<T>) {
   const { user } = useContext(UserInfoContext);
   const { allTransactions } = useContext(TransactionsContext);
 

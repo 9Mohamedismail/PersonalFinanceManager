@@ -1,11 +1,12 @@
 import { useContext, useEffect, useState } from "react";
 import axios from "axios";
-import EditTransactionsForm from "./EditTransactionsForm";
+import TransactionForm from "./TransactionForm";
 import {
   TransactionsContext,
   type Transactions,
-} from "../../Context/TransactionsContext";
+} from "../Context/TransactionsContext";
 import type { GridRowId } from "@mui/x-data-grid";
+import { AccountsContext } from "../Context/AccountsContext";
 
 function EditTransactionModal({
   id,
@@ -18,6 +19,7 @@ function EditTransactionModal({
     useContext(TransactionsContext);
 
   const [formData, setFormData] = useState<Partial<Transactions>>({});
+  const { accounts } = useContext(AccountsContext);
 
   useEffect(() => {
     if (id) {
@@ -27,7 +29,7 @@ function EditTransactionModal({
   }, [id, allTransactions]);
 
   const [loading, setLoading] = useState<boolean>(false);
-  const [serverError, setServerError] = useState<string | null>(null);
+  const [serverMessage, setServerMessage] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -72,31 +74,34 @@ function EditTransactionModal({
       );
 
       console.log("Transaction edited successfully!");
+      handleClose();
     } catch (err: any) {
       const serverMsg = err?.response?.data?.message;
       const fallbackMsg = err?.message || "Transaction edit failed";
-      setServerError(serverMsg || fallbackMsg);
+      setServerMessage(serverMsg || fallbackMsg);
     } finally {
       setLoading(false);
-      handleClose();
     }
   };
 
   return (
     <div className="">
-      {serverError && (
-        <div className="border bg-secondary-100 rounded shadow-sm border-primary py-4 mb-4 2xl:w-1/2 ">
+      {serverMessage && (
+        <div className="border bg-secondary-100 rounded shadow-sm border-primary py-4 mb-4 2xl:w-1/2">
           <p className="text-base text-primary mx-4 font-semibold">
-            {serverError}
+            {serverMessage}
           </p>
         </div>
       )}
 
-      <EditTransactionsForm
+      <TransactionForm
         formData={formData}
         setFormData={setFormData}
         handleSubmit={handleSubmit}
         loading={loading}
+        buttonText="Update Transaction"
+        loadingText="Updating Transaction..."
+        accounts={accounts ?? []}
       />
     </div>
   );

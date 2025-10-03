@@ -2,6 +2,12 @@ import { createContext } from "react";
 
 export type TransactionType = "expense" | "income";
 export type TransactionStatus = "pending" | "posted";
+export type TransactionCategory =
+  | "Restaurants"
+  | "Supermarkets"
+  | "Transportation"
+  | "Gasoline"
+  | "Merchandise";
 
 export type Transactions = {
   id: number;
@@ -12,7 +18,7 @@ export type Transactions = {
   amount: string;
   type: TransactionType;
   status: TransactionStatus;
-  category: string;
+  category: TransactionCategory;
   createdAt: string;
   updatedAt: string;
 };

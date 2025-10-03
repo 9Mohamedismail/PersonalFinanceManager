@@ -4,7 +4,7 @@ import columns from "./TransactionsColumns";
 import { TransactionsContext } from "../../Context/TransactionsContext";
 import { useContext, useState } from "react";
 import axios from "axios";
-import EditTransactionModal from "../EditTransactionModal/EditTransactionModal";
+import EditTransactionModal from "../EditTransactionModal";
 
 function Transactions({ grid }: { grid: boolean }) {
   const { setAllTransactions, allTransactions } =

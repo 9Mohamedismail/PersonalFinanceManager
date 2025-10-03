@@ -1,34 +1,16 @@
 import { useContext, useState } from "react";
-import AddTransactionForm from "../components/AddTransactions/AddTransactionsForm";
-import TransactionsReceipt from "../components/AddTransactions/TransactionsReceipt";
+import TransactionForm from "../components/TransactionForm";
+import TransactionsReceipt from "../components/TransactionsReceipt";
 import axios from "axios";
-import { TransactionsContext } from "../Context/TransactionsContext";
+import {
+  TransactionsContext,
+  type Transactions,
+} from "../Context/TransactionsContext";
 import { AccountsContext } from "../Context/AccountsContext";
 import { useNavigate } from "react-router-dom";
 
-type Type = "Income" | "Expense";
-
-type Category =
-  | "Restaurants"
-  | "Supermarkets"
-  | "Transportation"
-  | "Gasoline"
-  | "Merchandise";
-
-type Transaction = {
-  accountId: string;
-  date: string;
-  description: string;
-  amount: number;
-  type: Type;
-  category: Category;
-  status: "pending" | "posted";
-};
-
-export type TransactionForm = Partial<Transaction>;
-
 function AddTransactionPage() {
-  const [formData, setFormData] = useState<TransactionForm>({});
+  const [formData, setFormData] = useState<Partial<Transactions>>({});
   const [loading, setLoading] = useState<boolean>(false);
   const [resetKey, setResetKey] = useState(0);
   const [serverMessage, setServerMessage] = useState<string | null>(null);
@@ -98,13 +80,15 @@ function AddTransactionPage() {
 
       {accounts && accounts.length > 0 ? (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 items-start">
-          <AddTransactionForm
+          <TransactionForm
             key={resetKey}
             formData={formData}
-            accounts={accounts}
             setFormData={setFormData}
             handleSubmit={handleSubmit}
             loading={loading}
+            buttonText="Add Transaction"
+            loadingText="Adding Transaction..."
+            accounts={accounts}
           />
           <TransactionsReceipt formData={formData} />
         </div>

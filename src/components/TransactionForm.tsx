@@ -1,33 +1,38 @@
 import { useState } from "react";
-import { type Accounts } from "../../Context/AccountsContext";
-import type { TransactionForm } from "../../Pages/AddTransactionPage";
+import { type Accounts } from "../Context/AccountsContext";
+import { type Transactions } from "../Context/TransactionsContext";
 
-type AddTransactionFormProps = {
-  formData: TransactionForm;
-  accounts: Accounts[];
-  setFormData: React.Dispatch<React.SetStateAction<TransactionForm>>;
+type TransactionFormProps<T> = {
+  formData: T;
+  setFormData: React.Dispatch<React.SetStateAction<T>>;
   handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
   loading: boolean;
+  buttonText: string;
+  loadingText: string;
+  accounts: Accounts[];
 };
 
-function AddTransactionForm({
+function TransactionForm<T extends Partial<Transactions>>({
   formData,
-  accounts,
   setFormData,
   handleSubmit,
   loading,
-}: AddTransactionFormProps) {
+  buttonText,
+  loadingText,
+  accounts,
+}: TransactionFormProps<T>) {
+  const [touched, setTouched] = useState<Record<string, boolean>>({});
+  const [submitted, setSubmitted] = useState(false);
+
   const handleChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
     >
   ): void => {
     const { name, value } = e.target;
-    const newFormData: TransactionForm = { ...formData, [name]: value };
-    setFormData(newFormData);
+    setFormData({ ...formData, [name]: value });
   };
-  const [touched, setTouched] = useState<Record<string, boolean>>({});
-  const [submitted, setSubmitted] = useState(false);
+
   const handleBlur = (
     e: React.FocusEvent<
       HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
@@ -80,7 +85,13 @@ function AddTransactionForm({
              focus:outline-none focus:bg-white focus:border-primary"
             name="date"
             type="date"
-            value={formData.date ?? ""}
+            value={
+              formData.date
+                ? formData.date.includes("T")
+                  ? formData.date.split("T")[0]
+                  : formData.date
+                : ""
+            }
             onBlur={handleBlur}
             onChange={handleChange}
           />
@@ -130,9 +141,9 @@ function AddTransactionForm({
             <option disabled hidden value="">
               Choose an Account
             </option>
-            {accounts?.map((account) => (
+            {accounts.map((account) => (
               <option key={account.id} value={account.id}>
-                {account.accountName}
+                {account.accountName.toLocaleUpperCase()}
               </option>
             ))}
           </select>
@@ -222,6 +233,7 @@ function AddTransactionForm({
           <textarea
             name="description"
             placeholder="Description of Transaction"
+            value={formData.description ?? ""}
             onChange={handleChange}
             onBlur={handleBlur}
             maxLength={256}
@@ -250,11 +262,11 @@ function AddTransactionForm({
               : "text-primary cursor-pointer"
           }`}
         >
-          {loading ? "Adding Transaction..." : "Add Transaction"}
+          {loading ? loadingText : buttonText}
         </button>
       </div>
     </form>
   );
 }
 
-export default AddTransactionForm;
+export default TransactionForm;
