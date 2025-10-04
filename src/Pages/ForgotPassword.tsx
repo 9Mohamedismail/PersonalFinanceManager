@@ -1,6 +1,9 @@
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
+import { validatePassword } from "../utils/passwordRules";
+import { PasswordRulesList } from "../components/PasswordRulesList";
+import { IoIosCheckmarkCircle } from "react-icons/io";
 
 type Info = {
   username: string;
@@ -27,12 +30,18 @@ function ForgotPasswordForm() {
     success: false,
   });
 
+  const [touched, setTouched] = useState({ password: false, confirm: false });
+
+  const [loading, setLoading] = useState(false);
+
   const onChangeInfo = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInfo((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    setResult({ message: "", success: false });
   };
 
   const onChangePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPassword((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    setResult({ message: "", success: false });
   };
 
   const handleRequestSubmit = async (
@@ -73,7 +82,12 @@ function ForgotPasswordForm() {
       return;
     }
 
+    const failedRules = validatePassword(password.password);
+
+    if (failedRules.length !== 0 || loading) return;
+
     try {
+      setLoading(true);
       await axios.put("http://localhost:3000/api/user/reset", {
         email: info.email,
         newPassword: password.password,
@@ -84,6 +98,8 @@ function ForgotPasswordForm() {
         success: true,
       });
       setStep("done");
+      setPassword({ password: "", confirm: "" });
+      setTouched({ password: false, confirm: false });
     } catch (err: any) {
       const serverMsg = err?.response?.data?.message;
       const fallbackMsg = err?.message || "Could not update password";
@@ -91,6 +107,8 @@ function ForgotPasswordForm() {
         message: serverMsg || fallbackMsg,
         success: false,
       });
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -177,12 +195,22 @@ function ForgotPasswordForm() {
               <div className="relative w-full">
                 <input
                   className="appearance-none block w-full bg-white rounded shadow-sm border border-primary py-3 px-4 mb-3 leading-tight 
-                              focus:outline-none focus:bg-white focus:border-primary"
+                              focus:outline-none focus:bg-white focus:border-primary text-primary"
                   type="password"
                   name="password"
                   value={password.password ?? ""}
                   onChange={onChangePassword}
+                  onFocus={(e) =>
+                    setTouched((prev) => ({ ...prev, [e.target.name]: true }))
+                  }
                 />
+                {password.password.length > 0 &&
+                  validatePassword(password.password).length === 0 && (
+                    <IoIosCheckmarkCircle
+                      color="4BB543"
+                      className="absolute inset-y-0 right-0 h-full w-10 p-2 "
+                    />
+                  )}
               </div>
               <div className="">
                 <label className="block text-lg text-primary uppercase tracking-wide mb-2">
@@ -191,21 +219,47 @@ function ForgotPasswordForm() {
                 <div className="relative w-full">
                   <input
                     className="appearance-none block w-full bg-white rounded shadow-sm border border-primary py-3 px-4 mb-3 leading-tight 
-                              focus:outline-none focus:bg-white focus:border-primary"
+                              focus:outline-none focus:bg-white focus:border-primary text-primary"
                     type="password"
                     name="confirm"
                     value={password.confirm ?? ""}
                     onChange={onChangePassword}
+                    onFocus={(e) =>
+                      setTouched((prev) => ({ ...prev, [e.target.name]: true }))
+                    }
                   />
+                  {password.confirm === password.password &&
+                    validatePassword(password.password).length === 0 && (
+                      <IoIosCheckmarkCircle
+                        color="4BB543"
+                        className="absolute inset-y-0 right-0 h-full w-10 p-2 "
+                      />
+                    )}
                 </div>
               </div>
+              <ul className="-mt-2 mb-2 space-y-1">
+                {touched.password && password.password.length > 0 && (
+                  <PasswordRulesList
+                    password={password.password}
+                    confirmPassword={password.confirm}
+                    confirmPasswordRule
+                  />
+                )}
+              </ul>
             </div>
 
             <button
               type="submit"
-              className="border-2 bg-white rounded shadow-sm border-primary py-2 w-full px-4 text-lg font-semibold text-primary uppercase tracking-wide cursor-pointer"
+              disabled={
+                validatePassword(password.password).length !== 0 || loading
+              }
+              className={`border-2 bg-white rounded shadow-sm border-primary py-2 w-full px-4 text-lg font-semibold text-primary uppercase tracking-wide cursor-pointer ${
+                validatePassword(password.password).length !== 0 || loading
+                  ? "opacity-50 cursor-not-allowed"
+                  : "text-primary cursor-pointer"
+              }`}
             >
-              Update Password
+              {loading ? "Updating Password..." : "Update Password"}
             </button>
           </form>
         </>

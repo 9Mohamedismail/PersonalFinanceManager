@@ -30,15 +30,25 @@ export const passwordRules: PasswordRule[] = [
     message: "8 characters minimum",
     test: (value) => value.length >= 8,
   },
-  {
-    id: "no-username",
-    message: "Must not contain username",
-    test: (value, username = "") =>
-      username.length > 0
-        ? !value.toLowerCase().includes(username.toLowerCase())
-        : true,
-  },
 ];
+
+export const noUsername: PasswordRule = {
+  id: "no-username",
+  message: "Must not contain username",
+  test: (value, username = "") =>
+    username.length > 0
+      ? !value.toLowerCase().includes(username.toLowerCase())
+      : true,
+};
+
+export const matchPassword = (
+  password: string,
+  confirm: string
+): PasswordRule => ({
+  id: "confirm",
+  message: "Passwords must match",
+  test: () => password === confirm,
+});
 
 export function validatePassword(password: string, username = "") {
   return passwordRules.filter((rule) => !rule.test(password, username));

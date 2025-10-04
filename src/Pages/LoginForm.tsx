@@ -104,7 +104,7 @@ function LoginForm() {
             </label>
             <input
               className="appearance-none block w-full bg-white rounded shadow-sm border border-primary py-3 px-4 mb-3 leading-tight 
-             focus:outline-none focus:bg-white focus:border-primary"
+             focus:outline-none focus:bg-white focus:border-primary text-primary"
               type="password"
               name="password"
               value={login.password ?? ""}

@@ -4,16 +4,13 @@ import { FcMoneyTransfer } from "react-icons/fc";
 import { IoIosCheckmarkCircle } from "react-icons/io";
 import type { InsertUser } from "../db/schema";
 import { useNavigate } from "react-router-dom";
+import { validatePassword } from "../utils/passwordRules";
+import { PasswordRulesList } from "../components/PasswordRulesList";
 
 type Field = "email" | "username" | "password";
 type ValidatableField = "email" | "username";
 type TouchedState = Record<Field, boolean>;
 type ErrorState = Record<ValidatableField, string>;
-type PasswordRule = {
-  id: string;
-  message: string;
-  test: (value: string, username: string) => boolean;
-};
 
 function SignUpForm() {
   const navigate = useNavigate();
@@ -58,46 +55,6 @@ function SignUpForm() {
     },
   };
 
-  const passwordRules: PasswordRule[] = [
-    {
-      id: "lower",
-      message: "One lowercase character",
-      test: (value) => /[a-z]/.test(value),
-    },
-    {
-      id: "upper",
-      message: "One uppercase character",
-      test: (value) => /[A-Z]/.test(value),
-    },
-    {
-      id: "digit",
-      message: "One number",
-      test: (value) => /\d/.test(value),
-    },
-    {
-      id: "special",
-      message: "One special character",
-      test: (value) => /[^a-zA-Z0-9]/.test(value),
-    },
-    {
-      id: "len8",
-      message: "8 characters minimum",
-      test: (value) => value.length >= 8,
-    },
-    {
-      id: "no-username",
-      message: "Must not contain username",
-      test: (value, username) =>
-        username.length > 0
-          ? !value.toLowerCase().includes(username.toLowerCase())
-          : true,
-    },
-  ];
-
-  const allPasswordRulesPassed = passwordRules.every((rule) =>
-    rule.test(newUser.password, newUser.username)
-  );
-
   const showCheck = (field: Field) => {
     return touched[field] && newUser[field].length > 0;
   };
@@ -118,7 +75,7 @@ function SignUpForm() {
   const formValid =
     validators.email(newUser.email) === "" &&
     validators.username(newUser.username) === "" &&
-    allPasswordRulesPassed;
+    validatePassword(newUser.password, newUser.username).length === 0;
 
   const handleSubmit = async (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -240,7 +197,7 @@ function SignUpForm() {
             <div className="relative w-full">
               <input
                 className="appearance-none block w-full bg-white rounded shadow-sm border border-primary  py-3 px-4 mb-3 leading-tight 
-             focus:outline-none focus:bg-white focus:border-primary"
+             focus:outline-none focus:bg-white focus:border-primary text-primary"
                 type="password"
                 name="password"
                 value={newUser.password ?? ""}
@@ -249,32 +206,25 @@ function SignUpForm() {
                 }
                 onChange={handleChange}
               />
-              {showCheck("password") && allPasswordRulesPassed && (
-                <IoIosCheckmarkCircle
-                  color="4BB543"
-                  className="absolute inset-y-0 right-0 h-full w-10 p-2 "
-                />
-              )}
+              {showCheck("password") &&
+                validatePassword(newUser.password, newUser.username).length ===
+                  0 && (
+                  <IoIosCheckmarkCircle
+                    color="4BB543"
+                    className="absolute inset-y-0 right-0 h-full w-10 p-2 "
+                  />
+                )}
             </div>
           </div>
         </div>
         <ul className="-mt-2 mb-2 space-y-1">
-          {showCheck("password") &&
-            passwordRules.map((rule) => {
-              const passed = rule.test(newUser.password, newUser.username);
-              return (
-                <li key={rule.id} className="flex items-center text-sm">
-                  {passed ? (
-                    <IoIosCheckmarkCircle className="mr-2" color="4BB543" />
-                  ) : (
-                    <span className="w-3 h-3 mr-2 rounded-full border border-gray-400 inline-block" />
-                  )}
-                  <span className={passed ? "text-green-600" : "text-gray-700"}>
-                    {rule.message}
-                  </span>
-                </li>
-              );
-            })}
+          {showCheck("password") && (
+            <PasswordRulesList
+              password={newUser.password}
+              username={newUser.username}
+              usernameRule
+            />
+          )}
         </ul>
         <button
           type="submit"

@@ -75,6 +75,7 @@ function App() {
   }, []);
 
   useEffect(() => {
+    if (!user) return;
     const fetchAccounts = async () => {
       try {
         const res = await axios.get("http://localhost:3000/api/accounts", {
@@ -93,7 +94,7 @@ function App() {
     };
 
     fetchAccounts();
-  }, []);
+  }, [user]);
 
   useEffect(() => {
     if (!user) return;

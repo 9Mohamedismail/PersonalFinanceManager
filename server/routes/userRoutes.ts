@@ -4,6 +4,7 @@ import { eq, and } from "drizzle-orm";
 import passport from "passport";
 import { usersTable } from "../../src/db/schema";
 import { hashPassword } from "../utils/helpers";
+import { comparePassword } from "../utils/helpers";
 
 const router = Router();
 
@@ -174,7 +175,49 @@ router.put("/user/reset", async (req, res) => {
 
     return res
       .status(200)
-      .json({ message: "User's password has been updated", userId: user.id });
+      .json({ message: "User's password has been reset", userId: user.id });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ message: "Server error" });
+  }
+});
+
+router.put("/user/change", async (req, res) => {
+  const user = req.user as { id: number } | undefined;
+
+  if (!user) return res.status(401).json({ message: "Unauthorized" });
+
+  const { password, newPassword } = req.body;
+
+  if (!password || !newPassword) {
+    return res
+      .status(404)
+      .json({ message: "Current or new password is missing" });
+  }
+
+  try {
+    const [fetchUser] = await db
+      .select()
+      .from(usersTable)
+      .where(eq(usersTable.id, user.id))
+      .limit(1);
+
+    if (!fetchUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    if (!(await comparePassword(password, fetchUser.password))) {
+      return res.status(403).json({ message: "Current password is incorrect" });
+    }
+
+    await db
+      .update(usersTable)
+      .set({ password: await hashPassword(newPassword) })
+      .where(eq(usersTable.id, user.id));
+
+    return res
+      .status(200)
+      .json({ message: "User's password has been changed", userId: user.id });
   } catch (err) {
     console.error(err);
     return res.status(500).json({ message: "Server error" });
