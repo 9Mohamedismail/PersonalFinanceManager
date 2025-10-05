@@ -58,7 +58,7 @@ function LoginForm() {
   };
 
   return (
-    <div className="h-screen flex flex-col max-w-sm sm:max-w-md mx-auto justify-center">
+    <div className="min-h-screen flex flex-col max-w-sm sm:max-w-md mx-auto justify-center">
       {serverError && (
         <div className="border bg-secondary-100 rounded shadow-sm border-primary py-4 mb-4">
           <p className="text-base text-primary mx-4 font-semibold">

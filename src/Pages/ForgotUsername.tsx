@@ -48,7 +48,7 @@ function ForgotUsernameForm() {
   };
 
   return (
-    <div className="h-screen flex flex-col max-w-sm sm:max-w-md mx-auto justify-center">
+    <div className="min-h-screen flex flex-col max-w-sm sm:max-w-md mx-auto justify-center">
       {result.success ? (
         <>
           <p className="text-5xl mb-4 text-primary tracking-wide">

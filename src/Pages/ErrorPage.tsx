@@ -5,7 +5,7 @@ function ErrorPage() {
 
   return (
     <div className="px-4 lg:px-8">
-      <div className="h-screen flex flex-col max-w-lg mx-auto items-center justify-center">
+      <div className="min-h-screen flex flex-col max-w-lg mx-auto items-center justify-center">
         <p className="text-9xl text-center mb-4 text-primary tracking-wide">
           OOPS!
         </p>
