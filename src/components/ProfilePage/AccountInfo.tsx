@@ -2,6 +2,7 @@ import { useContext, useState } from "react";
 import InfoRow from "./InfoRow";
 import { AccountsContext } from "../../Context/AccountsContext";
 import axios from "axios";
+import ConfirmDialog from "../ConfirmDialog";
 
 export type NewAccount = {
   accountName: string;
@@ -19,6 +20,8 @@ function AccountInfo() {
   });
 
   const [loading, setLoading] = useState(false);
+  const [confirmOpen, setConfirmOpen] = useState(false);
+  const [deleteId, setDeleteId] = useState<number | null>(null);
   const [serverError, setServerError] = useState("");
 
   const handleChange = (
@@ -37,6 +40,17 @@ function AccountInfo() {
       accountType: undefined,
     });
     setServerError("");
+  };
+
+  const handleDeleteClick = (id: number) => {
+    setDeleteId(id);
+    setConfirmOpen(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    if (deleteId) await handleDelete(deleteId);
+    setConfirmOpen(false);
+    setDeleteId(null);
   };
 
   const handleDelete = async (id: number) => {
@@ -148,8 +162,14 @@ function AccountInfo() {
                 >
                   {account.accountName?.toUpperCase()}
                 </div>
-                <div className="text-sm text-gray-600 tracking-wide leading-snug truncate">
-                  {account.accountType}
+                <div className="flex items-center justify-between text-sm text-gray-600 tracking-wide leading-snug truncate">
+                  <span>{account.accountType}</span>
+                  <span className="flex items-center gap-1">
+                    <span className="text-gray-500">Transactions:</span>
+                    <span className="text-base font-bold text-secondary">
+                      {account.transactionCount ?? 0}
+                    </span>
+                  </span>
                 </div>
               </div>
             </div>
@@ -169,12 +189,20 @@ function AccountInfo() {
             </button>
             <button
               className="border-2 bg-white rounded-md shadow-sm border-red-500 px-3 text-base font-semibold text-red-500 uppercase tracking-wide cursor-pointer whitespace-nowrap"
-              onClick={() => handleDelete(account.id)}
+              onClick={() => handleDeleteClick(account.id)}
             >
               Delete
             </button>
           </div>
         ))}
+
+        <ConfirmDialog
+          open={confirmOpen}
+          onCancel={() => setConfirmOpen(false)}
+          onConfirm={handleConfirmDelete}
+          title="Delete account?"
+          message="Deleting this account will also remove its transactions. This action cannot be undone."
+        />
 
         {!add && !editId && accounts && accounts.length < 6 && (
           <button

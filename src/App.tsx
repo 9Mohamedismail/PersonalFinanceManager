@@ -78,9 +78,12 @@ function App() {
     if (!user) return;
     const fetchAccounts = async () => {
       try {
-        const res = await axios.get("http://localhost:3000/api/accounts", {
-          withCredentials: true,
-        });
+        const res = await axios.get(
+          "http://localhost:3000/api/accounts/with-count",
+          {
+            withCredentials: true,
+          }
+        );
 
         console.log("ALL User's accounts fetched:", res.data.payload);
         setAccounts(res.data.payload);

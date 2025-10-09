@@ -6,6 +6,7 @@ export type Accounts = {
   id: number;
   accountName: string;
   accountType: AccountType;
+  transactionCount: number;
 };
 
 type AccountsContextType = {
