@@ -26,6 +26,7 @@ function AccountInfo() {
   ) => {
     const { name, value } = e.target;
     setAccountData((prev) => ({ ...prev, [name]: value }));
+    setServerError("");
   };
 
   const handleCancel = () => {
@@ -57,6 +58,21 @@ function AccountInfo() {
     e.preventDefault();
 
     if (!accountData.accountName || !accountData.accountType) {
+      setServerError("Please fill out all fields.");
+      return;
+    }
+
+    const accountNameRegex = /^[a-zA-Z0-9\s-_]+$/;
+
+    if (accountData.accountName.length > 100) {
+      setServerError("Account name cannot exceed 100 characters.");
+      return;
+    }
+
+    if (!accountNameRegex.test(accountData.accountName)) {
+      setServerError(
+        "Account name can only contain letters, numbers, spaces, hyphens, or underscores."
+      );
       return;
     }
 
@@ -124,19 +140,22 @@ function AccountInfo() {
       <div className="w-full flex flex-col gap-2">
         {accounts?.map((account) => (
           <div key={account.id} className="flex gap-2">
-            <div className="w-full bg-white rounded shadow-sm border border-primary py-1 px-3">
+            <div className="flex-1 min-w-0 bg-white rounded shadow-sm border border-primary py-1 px-3">
               <div className="flex flex-col leading-none">
-                <div className="text-lg text-primary uppercase tracking-wide font-medium leading-tight">
+                <div
+                  className="text-lg text-primary uppercase tracking-wide font-medium leading-tight truncate"
+                  title={account.accountName?.toUpperCase()}
+                >
                   {account.accountName?.toUpperCase()}
                 </div>
-                <div className="text-sm text-gray-600 tracking-wide leading-snug">
+                <div className="text-sm text-gray-600 tracking-wide leading-snug truncate">
                   {account.accountType}
                 </div>
               </div>
             </div>
 
             <button
-              className="border-2 bg-white rounded-md shadow-sm border-orange-500 px-3 text-base font-semibold text-orange-500 uppercase tracking-wide cursor-pointer"
+              className="border-2 bg-white rounded-md shadow-sm border-orange-500 px-3 text-base font-semibold text-orange-500 uppercase tracking-wide cursor-pointer whitespace-nowrap"
               onClick={() => {
                 setEditId(account.id);
                 setAccountData({
@@ -149,7 +168,7 @@ function AccountInfo() {
               Edit
             </button>
             <button
-              className="border-2 bg-white rounded-md shadow-sm border-red-500 px-3 text-base font-semibold text-red-500 uppercase tracking-wide cursor-pointer"
+              className="border-2 bg-white rounded-md shadow-sm border-red-500 px-3 text-base font-semibold text-red-500 uppercase tracking-wide cursor-pointer whitespace-nowrap"
               onClick={() => handleDelete(account.id)}
             >
               Delete
@@ -159,7 +178,7 @@ function AccountInfo() {
 
         {!add && !editId && accounts && accounts.length < 6 && (
           <button
-            className="border-2 bg-white rounded-md shadow-sm border-secondary px-3 text-base font-semibold text-secondary uppercase tracking-wide cursor-pointer"
+            className="border-2 bg-white rounded-md shadow-sm border-secondary px-3 text-base font-semibold text-secondary uppercase tracking-wide cursor-pointer whitespace-nowrap"
             onClick={() => setAdd(true)}
           >
             Add Account

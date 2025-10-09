@@ -24,12 +24,14 @@ function LoginForm() {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setLogin((prev) => ({ ...prev, [name]: value }));
+    setServerError("");
   };
 
   const handleSubmit = async (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (!login.identifier || !login.password) {
+      setServerError("Please fill out all fields.");
       return;
     }
 
