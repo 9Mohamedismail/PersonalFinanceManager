@@ -63,25 +63,37 @@ function SideBar() {
         <ul>
           <SideBarItem
             icon={<AiOutlineDashboard size={32} />}
-            onClick={() => navigate("/dashboard")}
+            onClick={() => {
+              navigate("/dashboard");
+              if (window.innerWidth < 768) setExpanded(false);
+            }}
           >
             Dashboard
           </SideBarItem>
           <SideBarItem
             icon={<HiOutlinePresentationChartLine size={32} />}
-            onClick={() => navigate("/metrics")}
+            onClick={() => {
+              navigate("/metrics");
+              if (window.innerWidth < 768) setExpanded(false);
+            }}
           >
             Metrics
           </SideBarItem>
           <SideBarItem
             icon={<LiaFileInvoiceDollarSolid size={32} />}
-            onClick={() => navigate("/transactions")}
+            onClick={() => {
+              navigate("/transactions");
+              if (window.innerWidth < 768) setExpanded(false);
+            }}
           >
             Transactions
           </SideBarItem>
           <SideBarItem
             icon={<TbReportMoney size={32} />}
-            onClick={() => navigate("/addtransaction")}
+            onClick={() => {
+              navigate("/addtransaction");
+              if (window.innerWidth < 768) setExpanded(false);
+            }}
           >
             Add Transaction
           </SideBarItem>
