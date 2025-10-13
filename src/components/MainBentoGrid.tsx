@@ -7,7 +7,7 @@ import WeekTransactionsGrid from "./WeeklyTransactionsGrid/WeekTransactions";
 function MainBentoGrid() {
   return (
     <div className="py-10 px-4 lg:px-8">
-      <div className="grid xl:bg-amber-700 2xl:bg-green-700 xl:grid-cols-3 xl:grid-rows-[auto,auto] gap-4">
+      <div className="grid xl:grid-cols-3 xl:grid-rows-[auto,auto] gap-4">
         <div className="flex flex-col xl:col-span-2 xl:flex-row items-start gap-4 min-w-0">
           <div className="xl:w-[300px] w-full shrink min-w-0 ">
             <BalanceGrid />
