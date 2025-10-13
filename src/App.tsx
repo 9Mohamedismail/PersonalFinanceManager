@@ -170,7 +170,7 @@ function App() {
   }, [user]);
 
   return (
-    <div className="flex min-h-screen bg-gray-50">
+    <div className="flex min-h-screen min-w-[360px]  bg-gray-50">
       <UserInfoContext.Provider
         value={{ user, authStatus, setAuthStatus, setUser }}
       >
