@@ -22,7 +22,7 @@ function TransactionsPie({ grid }: TransactionsPieProps) {
     <div className="bg-white rounded-lg shadow-sm border border-primary p-6 lg:flex-1">
       <div className="xl:flex justify-between">
         <p className="text-lg font-semibold text-gray-900 uppercase mb-2">
-          Weekly Spending by Category
+          Weekly Spending
         </p>
         {grid && (
           <p
