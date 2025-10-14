@@ -155,7 +155,18 @@ router.put("/accounts/update/:id", async (req, res) => {
       .where(eq(accountsTable.id, Number(req.params.id)))
       .returning();
 
-    return res.status(200).json({ message: "Account updated!", account });
+    const [{ count }] = await db
+      .select({ count: sql<number>`count(*)` })
+      .from(transactionsTable)
+      .where(eq(transactionsTable.accountId, Number(req.params.id)));
+
+    return res.status(200).json({
+      message: "Account updated!",
+      account: {
+        ...account,
+        transactionCount: Number(count),
+      },
+    });
   } catch (err) {
     console.error(err);
     return res.status(500).json({ message: "Server error", err: err });

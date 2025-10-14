@@ -117,8 +117,8 @@ function TransactionForm<T extends Partial<Transactions>>({
             <option disabled hidden value="">
               Choose a Transaction Type
             </option>
-            <option value="Income">Income</option>
-            <option value="Expense">Expense</option>
+            <option value="income">Income</option>
+            <option value="expense">Expense</option>
           </select>
           {(submitted || touched.type) && !formData.type && (
             <p className="-mt-2 text-sm  text-[#fc100d] ">

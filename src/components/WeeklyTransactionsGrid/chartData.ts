@@ -1,17 +1,14 @@
 import type { ChartData } from "chart.js";
 import { useContext } from "react";
 import { parseISO, getDay } from "date-fns";
-import { TransactionsContext } from "../../Context/TransactionsContext";
-
-type Transaction = {
-  date: string;
-  amount: number | string;
-  type: "expense" | "income";
-};
+import {
+  TransactionsContext,
+  type Transactions,
+} from "../../Context/TransactionsContext";
 
 const labels: string[] = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
-function weeklyTotals(transactions: Transaction[]): number[] {
+function weeklyTotals(transactions: Transactions[]): number[] {
   const totals = Array(7).fill(0) as number[];
 
   for (const transaction of transactions) {
