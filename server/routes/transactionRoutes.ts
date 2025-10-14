@@ -32,33 +32,9 @@ router.get("/transaction", async (req, res) => {
 
   if (!user) return res.status(401).json({ message: "Unauthorized" });
 
-  const period = String(req.query.period ?? "month");
-
-  const now = new Date();
-  let start: Date, end: Date;
-
-  if (period === "month") {
-    start = new Date(Date.UTC(now.getFullYear(), now.getMonth(), 1));
-    end = new Date(Date.UTC(now.getFullYear(), now.getMonth() + 1, 1));
-  } else if (period === "week") {
-    const dayOfWeek = now.getUTCDay();
-    const daysSinceMonday = (dayOfWeek + 6) % 7;
-    const thisMonday = new Date(
-      Date.UTC(
-        now.getUTCFullYear(),
-        now.getUTCMonth(),
-        now.getUTCDate() - daysSinceMonday
-      )
-    );
-
-    start = new Date(thisMonday);
-    start.setUTCDate(thisMonday.getUTCDate() - 7);
-    end = thisMonday;
-  } else {
-    return res
-      .status(400)
-      .json({ message: "Invalid period. Use 'week' or 'month'" });
-  }
+  const { start, end } = req.query;
+  if (!start || !end)
+    return res.status(400).json({ message: "start and end required" });
 
   try {
     const transactions = await db
@@ -67,13 +43,14 @@ router.get("/transaction", async (req, res) => {
       .where(
         and(
           eq(transactionsTable.userId, user.id),
-          gte(transactionsTable.date, start),
-          lt(transactionsTable.date, end)
+          gte(transactionsTable.date, new Date(start as string)),
+          lt(transactionsTable.date, new Date(end as string))
         )
-      );
+      )
+      .orderBy(desc(transactionsTable.date));
 
     return res.status(200).json({
-      message: `${period.toUpperCase()} user's transactions fetched`,
+      message: `user's transactions fetched for range of ${start} - ${end}`,
       payload: toPayload(transactions),
     });
   } catch (err) {

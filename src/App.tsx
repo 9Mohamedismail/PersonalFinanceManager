@@ -11,6 +11,7 @@ import SignUpForm from "./Pages/SignUpForm";
 import LoginForm from "./Pages/LoginForm";
 import ForgotPasswordForm from "./Pages/ForgotPassword";
 import ForgotUsernameForm from "./Pages/ForgotUsername";
+import { getTransactions } from "./utils/getTransactions";
 import {
   UserInfoContext,
   type User,
@@ -101,72 +102,28 @@ function App() {
 
   useEffect(() => {
     if (!user) return;
-    const fetchAllTransactions = async () => {
+
+    const fetchTransactions = async () => {
       try {
-        const res = await axios.get(
-          `http://localhost:3000/api/transaction/all`,
-          {
-            withCredentials: true,
-          }
-        );
+        const [all, week, month] = await Promise.all([
+          getTransactions("all"),
+          getTransactions("week"),
+          getTransactions("month"),
+        ]);
 
-        console.log("ALL User's transactions fetched:", res.data.payload);
-
-        setAllTransactions(res.data.payload);
+        setAllTransactions(all);
+        setWeeklyTransactions(week);
+        setMonthlyTransactions(month);
       } catch (err: any) {
         if (err?.response?.status === 401) {
           console.log(err.response.data.message);
         } else {
-          console.error("Unexpected error fetching user's transactions:", err);
+          console.error("Error fetching transactions:", err);
         }
       }
     };
 
-    const fetchWeeklyTransactions = async () => {
-      try {
-        const res = await axios.get(
-          `http://localhost:3000/api/transaction?period=week`,
-          {
-            withCredentials: true,
-          }
-        );
-
-        console.log("WEEK User's transactions fetched:", res.data.payload);
-
-        setWeeklyTransactions(res.data.payload);
-      } catch (err: any) {
-        if (err?.response?.status === 401) {
-          console.log(err.response.data.message);
-        } else {
-          console.error("Unexpected error fetching user's transactions:", err);
-        }
-      }
-    };
-
-    const fetchMonthlyTransactions = async () => {
-      try {
-        const res = await axios.get(
-          `http://localhost:3000/api/transaction?period=month`,
-          {
-            withCredentials: true,
-          }
-        );
-
-        console.log("MONTH User's transactions fetched:", res.data.payload);
-
-        setMonthlyTransactions(res.data.payload);
-      } catch (err: any) {
-        if (err?.response?.status === 401) {
-          console.log(err.response.data.message);
-        } else {
-          console.error("Unexpected error fetching user's transactions:", err);
-        }
-      }
-    };
-
-    fetchAllTransactions();
-    fetchWeeklyTransactions();
-    fetchMonthlyTransactions();
+    fetchTransactions();
   }, [user]);
 
   return (
