@@ -1,8 +1,8 @@
 import BalanceGrid from "./BalanceGrid";
-import BudgetProgressBar from "./BudgetProgressBarGrid/BudgetProgress";
+import BudgetProgressBar from "./BudgetProgressBar/BudgetProgress";
 import Transactions from "./TransactionsTable/Transactions";
-import TransactionsPie from "./TransactionsPieGrid/TransactionsPie";
-import WeekTransactionsGrid from "./WeeklyTransactionsGrid/WeekTransactions";
+import TransactionsPie from "./TransactionsPieChart/TransactionsPie";
+import WeekTransactionsGrid from "./TransactionsLineChart/TransactionsLine";
 
 function MainBentoGrid() {
   return (

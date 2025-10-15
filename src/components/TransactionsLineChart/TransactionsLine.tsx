@@ -1,23 +1,39 @@
-import { Doughnut } from "react-chartjs-2";
-import { Chart as ChartJS, type ChartData } from "chart.js";
-import { ArcElement, Tooltip, Legend } from "chart.js";
+import { Line } from "react-chartjs-2";
+import { Chart as ChartJS } from "chart.js";
 import { useNavigate } from "react-router";
-import options from "./pieConfig";
-import { useWeeklyCategoryChartData, labels } from "./pieData";
-import { useEffect, useState } from "react";
+import {
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Legend,
+  Title,
+  Tooltip,
+} from "chart.js";
+import options from "./chartConfig";
+import { TransactionsLineChartData } from "./chartData";
+import { useState } from "react";
 
-ChartJS.register(ArcElement, Tooltip, Legend);
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
-type TransactionsPieProps = {
+type WeekTransactionsGrid = {
   grid: boolean;
 };
 
-function TransactionsPie({ grid }: TransactionsPieProps) {
+function TransactionsLine({ grid }: WeekTransactionsGrid) {
   const [dataRange, setDataRange] = useState<
     "all" | "week" | "lastWeek" | "month" | "lastMonth"
   >("week");
 
-  const data = useWeeklyCategoryChartData(dataRange);
+  const data = TransactionsLineChartData(dataRange);
 
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>): void => {
     setDataRange(
@@ -27,18 +43,17 @@ function TransactionsPie({ grid }: TransactionsPieProps) {
 
   const navigate = useNavigate();
   const values = (data.datasets?.[0]?.data as number[]) ?? [];
-
   const isEmpty = values.every((value) => value === 0);
 
   return (
-    <div className="bg-white rounded-lg shadow-sm border border-primary p-6 lg:flex-1">
+    <div className="bg-white rounded-lg shadow-sm border border-primary p-6 w-full text-start h-full flex flex-col">
       <div className="xl:flex justify-between">
-        <p className="text-lg font-semibold text-gray-900 uppercase mb-2">
+        <p className="text-lg font-semibold text-gray-900 uppercase mb-2 ">
           {data.datasets?.[0]?.label}
         </p>
         {grid ? (
           <p
-            className="text-primary align-center cursor-pointer"
+            className="text-primary mb-2 align-center cursor-pointer"
             onClick={() => navigate("/metrics")}
           >
             View Details
@@ -66,31 +81,17 @@ function TransactionsPie({ grid }: TransactionsPieProps) {
         )}
       </div>
 
-      <div className="mt-4 w-full h-[400px] min-w-0 flex items-center justify-center">
+      <div className="mt-4 w-full h-[220px]">
         {isEmpty ? (
-          <p className="text-2xl text-primary tracking-wide">
+          <p className="text-2xl text-primary tracking-wide flex items-center justify-center h-full">
             No data available
           </p>
         ) : (
-          <Doughnut options={options} data={data} />
+          <Line options={options} data={data} />
         )}
       </div>
-
-      {!grid &&
-        !isEmpty &&
-        labels.map((label, i) => (
-          <p
-            key={label}
-            className="text-lg font-semibold text-gray-900 mb-2 flex gap-x-2 "
-          >
-            {label}:
-            <p className="text-lg font-semibold text-gray-900 tracking-wide">
-              ${values[i]}
-            </p>
-          </p>
-        ))}
     </div>
   );
 }
 
-export default TransactionsPie;
+export default TransactionsLine;

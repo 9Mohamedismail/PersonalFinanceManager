@@ -1,6 +1,6 @@
-import BudgetProgressBar from "../components/BudgetProgressBarGrid/BudgetProgress";
-import TransactionsPie from "../components/TransactionsPieGrid/TransactionsPie";
-import WeekTransactionsGrid from "../components/WeeklyTransactionsGrid/WeekTransactions";
+import BudgetProgressBar from "../components/BudgetProgressBar/BudgetProgress";
+import TransactionsPie from "../components/TransactionsPieChart/TransactionsPie";
+import WeekTransactionsGrid from "../components/TransactionsLineChart/TransactionsLine";
 import { FaAngleDoubleUp } from "react-icons/fa";
 
 function MetricsPage() {
