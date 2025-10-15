@@ -27,9 +27,9 @@ function weeklyTotals(transactions: Transactions[]): number[] {
 }
 
 export function useWeeklyChartData(): ChartData<"line", number[], string> {
-  const { weeklyTransactions } = useContext(TransactionsContext);
+  const { currentWeekTransactions } = useContext(TransactionsContext);
 
-  const dataArray = weeklyTotals(weeklyTransactions ?? []);
+  const dataArray = weeklyTotals(currentWeekTransactions ?? []);
 
   return {
     labels,

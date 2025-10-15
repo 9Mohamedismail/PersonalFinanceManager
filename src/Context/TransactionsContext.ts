@@ -25,24 +25,24 @@ export type Transactions = {
 
 type TransactionsContextType = {
   allTransactions: Transactions[] | null;
-  weeklyTransactions: Transactions[] | null;
-  monthlyTransactions: Transactions[] | null;
+  currentWeekTransactions: Transactions[] | null;
+  currentMonthTransactions: Transactions[] | null;
   setAllTransactions: React.Dispatch<
     React.SetStateAction<Transactions[] | null>
   >;
-  setWeeklyTransactions: React.Dispatch<
+  setCurrentWeekTransactions: React.Dispatch<
     React.SetStateAction<Transactions[] | null>
   >;
-  setMonthlyTransactions: React.Dispatch<
+  setCurrentMonthTransactions: React.Dispatch<
     React.SetStateAction<Transactions[] | null>
   >;
 };
 
 export const TransactionsContext = createContext<TransactionsContextType>({
   allTransactions: null,
-  weeklyTransactions: null,
-  monthlyTransactions: null,
+  currentWeekTransactions: null,
+  currentMonthTransactions: null,
   setAllTransactions: () => {},
-  setWeeklyTransactions: () => {},
-  setMonthlyTransactions: () => {},
+  setCurrentWeekTransactions: () => {},
+  setCurrentMonthTransactions: () => {},
 });

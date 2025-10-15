@@ -35,10 +35,10 @@ function App() {
   const [allTransactions, setAllTransactions] = useState<Transactions[] | null>(
     null
   );
-  const [weeklyTransactions, setWeeklyTransactions] = useState<
+  const [currentWeekTransactions, setCurrentWeekTransactions] = useState<
     Transactions[] | null
   >(null);
-  const [monthlyTransactions, setMonthlyTransactions] = useState<
+  const [currentMonthTransactions, setCurrentMonthTransactions] = useState<
     Transactions[] | null
   >(null);
 
@@ -105,21 +105,36 @@ function App() {
 
     const fetchTransactions = async () => {
       try {
-        const [all, week, month] = await Promise.all([
-          getTransactions("all"),
-          getTransactions("week"),
-          getTransactions("month"),
-        ]);
+        const transactionTypes = ["all", "week", "month"] as const;
 
-        setAllTransactions(all);
-        setWeeklyTransactions(week);
-        setMonthlyTransactions(month);
-      } catch (err: any) {
-        if (err?.response?.status === 401) {
-          console.log(err.response.data.message);
-        } else {
-          console.error("Error fetching transactions:", err);
-        }
+        const results = await Promise.allSettled(
+          transactionTypes.map((type) => getTransactions(type))
+        );
+
+        results.forEach((result, index) => {
+          const type = transactionTypes[index];
+
+          if (result.status === "fulfilled") {
+            switch (type) {
+              case "all":
+                setAllTransactions(result.value);
+                break;
+              case "week":
+                setCurrentWeekTransactions(result.value);
+                break;
+              case "month":
+                setCurrentMonthTransactions(result.value);
+                break;
+            }
+          } else {
+            console.error(
+              `Failed to load ${type} transactions:`,
+              result.reason
+            );
+          }
+        });
+      } catch (err) {
+        console.error("Unexpected error while fetching transactions:", err);
       }
     };
 
@@ -135,11 +150,11 @@ function App() {
           <TransactionsContext.Provider
             value={{
               allTransactions,
-              weeklyTransactions,
-              monthlyTransactions,
+              currentWeekTransactions,
+              currentMonthTransactions,
               setAllTransactions,
-              setWeeklyTransactions,
-              setMonthlyTransactions,
+              setCurrentWeekTransactions,
+              setCurrentMonthTransactions,
             }}
           >
             <SidebarContext.Provider value={{ expanded, setExpanded }}>

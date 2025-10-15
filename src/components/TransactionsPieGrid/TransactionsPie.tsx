@@ -1,9 +1,10 @@
 import { Doughnut } from "react-chartjs-2";
-import { Chart as ChartJS } from "chart.js";
+import { Chart as ChartJS, type ChartData } from "chart.js";
 import { ArcElement, Tooltip, Legend } from "chart.js";
 import { useNavigate } from "react-router";
 import options from "./pieConfig";
 import { useWeeklyCategoryChartData, labels } from "./pieData";
+import { useEffect, useState } from "react";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -12,8 +13,19 @@ type TransactionsPieProps = {
 };
 
 function TransactionsPie({ grid }: TransactionsPieProps) {
+  const [dataRange, setDataRange] = useState<
+    "all" | "week" | "lastWeek" | "month" | "lastMonth"
+  >("week");
+
+  const data = useWeeklyCategoryChartData(dataRange);
+
+  const handleChange = (e: React.ChangeEvent<HTMLSelectElement>): void => {
+    setDataRange(
+      e.target.value as "all" | "week" | "lastWeek" | "month" | "lastMonth"
+    );
+  };
+
   const navigate = useNavigate();
-  const data = useWeeklyCategoryChartData();
   const values = (data.datasets?.[0]?.data as number[]) ?? [];
 
   const isEmpty = values.every((value) => value === 0);
@@ -22,15 +34,35 @@ function TransactionsPie({ grid }: TransactionsPieProps) {
     <div className="bg-white rounded-lg shadow-sm border border-primary p-6 lg:flex-1">
       <div className="xl:flex justify-between">
         <p className="text-lg font-semibold text-gray-900 uppercase mb-2">
-          Weekly Spending
+          {data.datasets?.[0]?.label}
         </p>
-        {grid && (
+        {grid ? (
           <p
-            className="text-primary mb-2 align-center cursor-pointer"
+            className="text-primary align-center cursor-pointer"
             onClick={() => navigate("/metrics")}
           >
             View Details
           </p>
+        ) : (
+          <>
+            <select
+              name="range"
+              className="align-center appearance-none block bg-white rounded shadow-sm border border-primary p-2 leading-tight 
+             focus:outline-none focus:bg-white focus:border-primary text-xs sm:text-base cursor-pointer"
+              onChange={handleChange}
+              value={dataRange}
+            >
+              <option disabled hidden value="">
+                Choose a Date Range
+              </option>
+              <option value="all">All</option>
+              <option value="week">This Week</option>
+              <option value="lastWeek">Last Week</option>
+              <option value="month">This Month</option>
+              <option value="lastMonth">Last Month</option>
+              <option value="custom">Custom Range</option>
+            </select>
+          </>
         )}
       </div>
 
