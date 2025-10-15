@@ -9,6 +9,7 @@ const toPayload = (transactions: any[]) =>
   transactions.map((transaction) => ({
     ...transaction,
     amount: Number(transaction.amount),
+    date: transaction.date?.toISOString().split("T")[0],
   }));
 
 const validateTransaction = (body: any) => {
