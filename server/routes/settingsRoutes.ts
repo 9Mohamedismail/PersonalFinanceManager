@@ -29,9 +29,9 @@ router.put("/settings/update", async (req, res) => {
   const user = req.user as { id: number } | undefined;
   if (!user) return res.status(401).json({ message: "Unauthorized" });
 
-  const { bugetTotal } = req.body;
+  const { budgetTotal } = req.body;
 
-  if (!bugetTotal) {
+  if (!budgetTotal) {
     return res.status(400).send("Required fields missing");
   }
 
@@ -40,7 +40,7 @@ router.put("/settings/update", async (req, res) => {
       .update(settingsTable)
       .set({
         userId: user.id,
-        budgetTotal: bugetTotal,
+        budgetTotal: budgetTotal,
       })
       .where(eq(settingsTable.userId, user.id))
       .returning();

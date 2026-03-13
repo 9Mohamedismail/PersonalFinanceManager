@@ -1,14 +1,17 @@
 import LinearProgress from "@mui/material/LinearProgress";
 import { TransactionsContext } from "../../Context/TransactionsContext";
 import { SettingsContext } from "../../Context/SettingsContext";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router";
+import EditBudgetModal from "../EditBudgetModal";
+import Modal from "@mui/material/Modal";
 
 type BudgetProgressProps = {
   grid: boolean;
 };
 
 export default function BudgetProgress({ grid }: BudgetProgressProps) {
+  const [open, setOpen] = useState(false);
   const { currentMonthTransactions } = useContext(TransactionsContext);
   const { settings } = useContext(SettingsContext);
   const navigate = useNavigate();
@@ -34,13 +37,20 @@ export default function BudgetProgress({ grid }: BudgetProgressProps) {
         <p className="text-lg font-semibold text-gray-900 uppercase mb-2">
           Budget Progress
         </p>
-        {grid && (
+        {grid ? (
           <p
             className="text-primary mb-2 align-center cursor-pointer"
             onClick={() => navigate("/metrics")}
           >
             View Details
           </p>
+        ) : (
+          <button
+            className="border-2 bg-white rounded-md shadow-sm border-orange-500 px-3 text-base font-semibold text-orange-500 uppercase tracking-wide cursor-pointer"
+            onClick={() => setOpen(!open)}
+          >
+            Edit
+          </button>
         )}
       </div>
       <div className="flex justify-between">
@@ -64,9 +74,22 @@ export default function BudgetProgress({ grid }: BudgetProgressProps) {
           }}
         />
         <p className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-4xl  text-white tracking-wide mb-2">
-          {total ? `${Math.round(value)}%` : "No budget set"}
+          {total
+            ? `${Math.min(Number(value.toFixed(2)), 100)}%`
+            : "No budget set"}
         </p>
       </div>
+      <Modal open={open} onClose={() => setOpen(!open)}>
+        <div
+          className="
+    flex min-h-screen justify-center items-center   
+    lg:block lg:min-h-0 lg:absolute lg:top-1/2 lg:left-1/2 lg:-translate-x-1/2 lg:-translate-y-1/2
+    py-10 px-4 lg:px-8 lg:w-1/2
+  "
+        >
+          <EditBudgetModal handleClose={() => setOpen(!open)} />
+        </div>
+      </Modal>
     </div>
   );
 }

@@ -10,7 +10,7 @@ function MetricsPage() {
         <TransactionsPie grid={false} />
 
         <div className="lg:col-span-2 grid grid-cols-2 gap-4">
-          <BudgetProgressBar number={70} total={100} grid={false} />
+          <BudgetProgressBar grid={false} />
 
           <div className="bg-secondary-100 rounded p-4">
             <p className="text-2xl font-semibold text-gray-900 mb-2">
