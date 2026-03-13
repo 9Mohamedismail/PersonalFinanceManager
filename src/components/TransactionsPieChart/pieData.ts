@@ -35,13 +35,15 @@ function categoryTotals(transactions: Transaction[]): number[] {
   return totals;
 }
 
-export function useWeeklyCategoryChartData(
+export function TransactionsPieChartData(
   rangeType: "all" | "week" | "lastWeek" | "month" | "lastMonth"
 ): ChartData<"doughnut", number[], string> {
   const { allTransactions, currentWeekTransactions, currentMonthTransactions } =
     useContext(TransactionsContext);
 
-  const defaultData: ChartData<"doughnut", number[], string> = {
+  const [chartData, setChartData] = useState<
+    ChartData<"doughnut", number[], string>
+  >({
     labels,
     datasets: [
       {
@@ -57,9 +59,7 @@ export function useWeeklyCategoryChartData(
         hoverOffset: 6,
       },
     ],
-  };
-
-  const [chartData, setChartData] = useState(defaultData);
+  });
 
   useEffect(() => {
     async function fetchData() {

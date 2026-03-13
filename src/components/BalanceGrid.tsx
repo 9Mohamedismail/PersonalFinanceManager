@@ -3,7 +3,7 @@ import { TransactionsContext } from "../Context/TransactionsContext";
 import { useContext } from "react";
 
 function BalanceGrid() {
-  const { allTransactions, monthlyTransactions } =
+  const { allTransactions, currentMonthTransactions } =
     useContext(TransactionsContext);
 
   const findBalance = () => {
@@ -15,9 +15,9 @@ function BalanceGrid() {
   };
 
   const balanceThisMonth = () => {
-    const totalMonthBal = !monthlyTransactions
+    const totalMonthBal = !currentMonthTransactions
       ? 0
-      : monthlyTransactions.reduce(
+      : currentMonthTransactions.reduce(
           (prev, curr) => prev + Number(curr.amount),
           0
         );
@@ -48,8 +48,8 @@ function BalanceGrid() {
   };
 
   const expensesThisMonth = () => {
-    if (!monthlyTransactions) return 0;
-    return monthlyTransactions.reduce((prev, curr) => {
+    if (!currentMonthTransactions) return 0;
+    return currentMonthTransactions.reduce((prev, curr) => {
       if (curr.type === "expense") {
         return Math.abs(prev + Number(curr.amount));
       }
@@ -98,7 +98,7 @@ function BalanceGrid() {
 
             <div className="flex items-baseline gap-2 xl:block">
               <p className="text-2xl text-primary tracking-wide">
-                {monthlyTransactions?.length}
+                {currentMonthTransactions?.length}
               </p>
               <p className="text-xl xl:text-lg text-gray-900">Transactions</p>
             </div>

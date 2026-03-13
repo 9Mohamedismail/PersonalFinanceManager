@@ -7,7 +7,7 @@ type BudgetProgressProps = {
   grid: boolean;
 };
 
-export default function BudgetProgressBar({
+export default function BudgetProgress({
   number,
   total,
   grid,
@@ -56,4 +56,3 @@ export default function BudgetProgressBar({
     </div>
   );
 }
-BudgetProgressBar;
