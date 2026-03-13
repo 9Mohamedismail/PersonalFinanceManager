@@ -31,6 +31,14 @@ export const accountsTable = pgTable("accounts_table", {
   accountType: text("account_type").notNull(),
 });
 
+export const settingsTable = pgTable("settings_table", {
+  id: serial("id").primaryKey(),
+  userId: integer("user_id")
+    .notNull()
+    .references(() => usersTable.id),
+  budgetTotal: numeric("amount", { precision: 10, scale: 2 }),
+});
+
 export const typeEnum = pgEnum("type", ["expense", "income"]);
 export const statusEnum = pgEnum("status", ["pending", "posted"]);
 
@@ -70,6 +78,13 @@ export const accountRelations = relations(accountsTable, ({ one }) => ({
   }),
 }));
 
+export const settingsRelations = relations(settingsTable, ({ one }) => ({
+  user: one(usersTable, {
+    fields: [settingsTable.userId],
+    references: [usersTable.id],
+  }),
+}));
+
 export const transactionsRelations = relations(
   transactionsTable,
   ({ one }) => ({
@@ -81,7 +96,7 @@ export const transactionsRelations = relations(
       fields: [transactionsTable.accountId],
       references: [accountsTable.id],
     }),
-  })
+  }),
 );
 
 export type InsertUser = typeof usersTable.$inferInsert;
