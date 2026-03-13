@@ -11,11 +11,15 @@ import {
 } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm/relations";
 
+export const authEnum = pgEnum("auth", ["local", "google"]);
+
 export const usersTable = pgTable("users_table", {
   id: serial("id").primaryKey(),
   username: text("username").notNull().unique(),
   email: text("email").notNull().unique(),
-  password: text("password").notNull(),
+  password: text("password"),
+  google_id: text("google_id").unique(),
+  auth_provider: authEnum().notNull(),
 });
 
 export const accountsTable = pgTable("accounts_table", {

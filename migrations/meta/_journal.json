@@ -8,6 +8,20 @@
       "when": 1759359008547,
       "tag": "0000_purple_warbird",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1766193650489,
+      "tag": "0001_flashy_maggott",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1766193804658,
+      "tag": "0002_breezy_the_leader",
+      "breakpoints": true
     }
   ]
 }

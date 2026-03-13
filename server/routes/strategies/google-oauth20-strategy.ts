@@ -4,7 +4,7 @@ import {
   Profile,
   VerifyCallback,
 } from "passport-google-oauth20";
-import { eq, or } from "drizzle-orm";
+import { and, eq, or } from "drizzle-orm";
 import { db } from "../../../src/db/db";
 import { usersTable } from "../../../src/db/schema";
 import { comparePassword } from "../../utils/helpers";
@@ -12,10 +12,9 @@ import { comparePassword } from "../../utils/helpers";
 passport.use(
   new GoogleStrategy(
     {
-      clientID: process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: process.env.GOOGLE_REDIRECT_URL,
-      scope: ["email", "profile"],
+      clientID: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+      callbackURL: process.env.GOOGLE_REDIRECT_URL!,
     },
     async (
       accessToken: string,
@@ -24,44 +23,49 @@ passport.use(
       done: VerifyCallback
     ) => {
       try {
-        const [user] = await db
+        const email = profile.emails?.[0]?.value;
+
+        if (!email) return done(new Error("No email"));
+
+        let [user] = await db
           .select()
           .from(usersTable)
-          .where(
-            or(
-              eq(usersTable.username, `${profile.id}`),
-              eq(usersTable.email, `${profile.id}`)
-            )
-          )
+          .where(eq(usersTable.google_id, `${profile.id}`))
           .limit(1);
 
-        if (!user) {
-          return done(null, false, { message: "Google OAuth failed" });
+        if (user) return done(null, user);
+
+        const [emailUser] = await db
+          .select()
+          .from(usersTable)
+          .where(eq(usersTable.email, email))
+          .limit(1);
+
+        if (emailUser) {
+          return done(null, false, {
+            message: "Account exists. Log in to link Google.",
+          });
         }
 
-        /*if (!(await comparePassword(password, user.password))) {
-          return done(null, false, { message: "Incorrect password" });
-        }*/
+        if (!user) {
+          [user] = await db
+            .insert(usersTable)
+            .values({
+              username: profile.displayName.toLowerCase(),
+              email,
+              password: null,
+              google_id: profile.id,
+              auth_provider: "google",
+            })
+            .returning();
+        }
+
+        console.log(accessToken);
+        console.log(refreshToken);
         return done(null, user);
-      } catch (err) {}
+      } catch (err) {
+        return done(err);
+      }
     }
   )
 );
-
-passport.serializeUser((user, done) => {
-  done(null, user.id);
-});
-
-passport.deserializeUser(async (id: number, done) => {
-  try {
-    const [user] = await db
-      .select()
-      .from(usersTable)
-      .where(eq(usersTable.id, id))
-      .limit(1);
-
-    done(null, user);
-  } catch (err) {
-    done(err);
-  }
-});

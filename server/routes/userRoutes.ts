@@ -26,6 +26,8 @@ router.post("/signup", async (req, res, next) => {
         username: username.toLowerCase(),
         email: email.toLowerCase(),
         password: await hashPassword(password),
+        google_id: null,
+        auth_provider: "local",
       })
       .returning();
 
