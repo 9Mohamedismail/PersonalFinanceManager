@@ -1,15 +1,16 @@
 import LinearProgress from "@mui/material/LinearProgress";
 import { TransactionsContext } from "../../Context/TransactionsContext";
+import { SettingsContext } from "../../Context/SettingsContext";
 import { useContext } from "react";
 import { useNavigate } from "react-router";
 
 type BudgetProgressProps = {
-  total: number;
   grid: boolean;
 };
 
-export default function BudgetProgress({ total, grid }: BudgetProgressProps) {
+export default function BudgetProgress({ grid }: BudgetProgressProps) {
   const { currentMonthTransactions } = useContext(TransactionsContext);
+  const { settings } = useContext(SettingsContext);
   const navigate = useNavigate();
 
   const expensesThisMonth = () => {
@@ -24,7 +25,8 @@ export default function BudgetProgress({ total, grid }: BudgetProgressProps) {
     );
   };
 
-  const value = total === 0 ? 0 : (expensesThisMonth() / total) * 100;
+  const total = settings === null ? 0 : settings.budgetTotal;
+  const value = total ? (expensesThisMonth() / total) * 100 : 0;
 
   return (
     <div className="flex flex-col bg-white rounded-lg shadow-sm border border-primary p-6">
@@ -43,15 +45,15 @@ export default function BudgetProgress({ total, grid }: BudgetProgressProps) {
       </div>
       <div className="flex justify-between">
         <p className="text-2xl  text-primary tracking-wide mb-2">
-          {`$${expensesThisMonth().toFixed(2)}`}
+          {`$${total ? expensesThisMonth().toFixed(2) : 0}`}
         </p>
 
-        <p className="text-2xl text-primary tracking-wide mb-2">{`$${total.toFixed(2)}`}</p>
+        <p className="text-2xl text-primary tracking-wide mb-2">{`$${total ? total : 0}`}</p>
       </div>
       <div className="relative">
         <LinearProgress
           variant="determinate"
-          value={value}
+          value={Math.min(value, 100)}
           sx={{
             height: 100,
             backgroundColor: "#4d8370",
@@ -62,7 +64,7 @@ export default function BudgetProgress({ total, grid }: BudgetProgressProps) {
           }}
         />
         <p className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-4xl  text-white tracking-wide mb-2">
-          {`${Math.round(value)}%`}
+          {total ? `${Math.round(value)}%` : "No budget set"}
         </p>
       </div>
     </div>

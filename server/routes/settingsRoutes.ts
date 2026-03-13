@@ -10,7 +10,7 @@ router.get("/settings", async (req, res) => {
   if (!user) return res.status(401).json({ message: "Unauthorized" });
 
   try {
-    const settings = await db
+    const [settings] = await db
       .select()
       .from(settingsTable)
       .where(eq(settingsTable.userId, user.id));
