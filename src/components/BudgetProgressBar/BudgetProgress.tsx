@@ -1,19 +1,31 @@
 import LinearProgress from "@mui/material/LinearProgress";
+import { TransactionsContext } from "../../Context/TransactionsContext";
+import { useContext } from "react";
 import { useNavigate } from "react-router";
 
 type BudgetProgressProps = {
-  number: number;
   total: number;
   grid: boolean;
 };
 
-export default function BudgetProgress({
-  number,
-  total,
-  grid,
-}: BudgetProgressProps) {
-  const value = total === 0 ? 0 : (number / total) * 100;
+export default function BudgetProgress({ total, grid }: BudgetProgressProps) {
+  const { currentMonthTransactions } = useContext(TransactionsContext);
   const navigate = useNavigate();
+
+  const expensesThisMonth = () => {
+    if (!currentMonthTransactions) return 0;
+    return Math.abs(
+      currentMonthTransactions.reduce((prev, curr) => {
+        if (curr.type === "expense") {
+          return prev + Number(curr.amount);
+        }
+        return prev;
+      }, 0),
+    );
+  };
+
+  const value = total === 0 ? 0 : (expensesThisMonth() / total) * 100;
+
   return (
     <div className="flex flex-col bg-white rounded-lg shadow-sm border border-primary p-6">
       <div className="xl:flex justify-between">
@@ -31,10 +43,10 @@ export default function BudgetProgress({
       </div>
       <div className="flex justify-between">
         <p className="text-2xl  text-primary tracking-wide mb-2">
-          {`$${value}.00`}
+          {`$${expensesThisMonth().toFixed(2)}`}
         </p>
 
-        <p className="text-2xl text-primary tracking-wide mb-2">{`$${total}.00`}</p>
+        <p className="text-2xl text-primary tracking-wide mb-2">{`$${total.toFixed(2)}`}</p>
       </div>
       <div className="relative">
         <LinearProgress

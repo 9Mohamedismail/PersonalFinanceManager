@@ -10,7 +10,7 @@ function BalanceGrid() {
     if (!allTransactions) return 0;
     return allTransactions.reduce(
       (prev, curr) => prev + Number(curr.amount),
-      0
+      0,
     );
   };
 
@@ -19,7 +19,7 @@ function BalanceGrid() {
       ? 0
       : currentMonthTransactions.reduce(
           (prev, curr) => prev + Number(curr.amount),
-          0
+          0,
         );
 
     return (
@@ -49,12 +49,14 @@ function BalanceGrid() {
 
   const expensesThisMonth = () => {
     if (!currentMonthTransactions) return 0;
-    return currentMonthTransactions.reduce((prev, curr) => {
-      if (curr.type === "expense") {
-        return Math.abs(prev + Number(curr.amount));
-      }
-      return prev;
-    }, 0);
+    return Math.abs(
+      currentMonthTransactions.reduce((prev, curr) => {
+        if (curr.type === "expense") {
+          return prev + Number(curr.amount);
+        }
+        return prev;
+      }, 0),
+    );
   };
 
   return (

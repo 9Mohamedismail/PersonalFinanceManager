@@ -23,7 +23,7 @@ function MainBentoGrid() {
         <div className="xl:col-start-3 xl:row-start-1 xl:row-span-2 flex flex-col gap-4 min-w-0">
           <TransactionsPie grid />
           <div className="xl:h-[225px]">
-            <BudgetProgressBar number={70} total={100} grid />
+            <BudgetProgressBar total={1000} grid />
           </div>
         </div>
       </div>
