@@ -1,9 +1,11 @@
 import express from "express";
 import cors from "cors";
 import userRoutes from "./routes/userRoutes";
+import authRoutes from "./routes/authRoutes";
 import transactionRoutes from "./routes/transactionRoutes";
 import accountRoutes from "./routes/accountRoutes";
 import "./routes/strategies/local-strategy";
+import "./routes/strategies/google-oauth20-strategy";
 import session from "express-session";
 import connectPgSimple from "connect-pg-simple";
 import passport from "passport";
@@ -40,6 +42,7 @@ app.use(passport.session());
 app.use("/api", userRoutes);
 app.use("/api", transactionRoutes);
 app.use("/api", accountRoutes);
+app.use("/api", authRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
