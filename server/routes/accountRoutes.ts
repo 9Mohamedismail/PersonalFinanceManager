@@ -1,13 +1,12 @@
 import { Router } from "express";
 import { db } from "../../src/db/db";
-import { eq, and, gte, lt, desc, sql } from "drizzle-orm";
+import { eq, and, sql } from "drizzle-orm";
 import { accountsTable, transactionsTable } from "../../src/db/schema";
 
 const router = Router();
 
 router.get("/accounts", async (req, res) => {
   const user = req.user as { id: number } | undefined;
-
   if (!user) return res.status(401).json({ message: "Unauthorized" });
 
   try {
@@ -42,7 +41,7 @@ router.get("/accounts/with-count", async (req, res) => {
       .from(accountsTable)
       .leftJoin(
         transactionsTable,
-        eq(transactionsTable.accountId, accountsTable.id)
+        eq(transactionsTable.accountId, accountsTable.id),
       )
       .where(eq(accountsTable.userId, user.id))
       .groupBy(accountsTable.id);
@@ -85,8 +84,8 @@ router.post("/accounts/add", async (req, res) => {
       .where(
         and(
           eq(accountsTable.userId, user.id),
-          eq(accountsTable.accountName, accountName)
-        )
+          eq(accountsTable.accountName, accountName),
+        ),
       )
       .limit(1);
 
@@ -134,8 +133,8 @@ router.put("/accounts/update/:id", async (req, res) => {
         and(
           eq(accountsTable.userId, user.id),
           eq(accountsTable.accountName, accountName.toLowerCase()),
-          sql`${accountsTable.id} <> ${req.params.id}`
-        )
+          sql`${accountsTable.id} <> ${req.params.id}`,
+        ),
       )
       .limit(1);
 

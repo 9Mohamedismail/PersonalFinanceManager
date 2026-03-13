@@ -18,6 +18,7 @@ import {
   type AuthStatus,
 } from "./Context/UserInfoContext";
 import { AccountsContext, type Accounts } from "./Context/AccountsContext";
+import { SettingsContext, type Settings } from "./Context/SettingsContext";
 import {
   TransactionsContext,
   type Transactions,
@@ -32,8 +33,9 @@ function App() {
   const [user, setUser] = useState<User | null>(null);
   const [authStatus, setAuthStatus] = useState<AuthStatus>("loading");
   const [accounts, setAccounts] = useState<Accounts[] | null>(null);
+  const [settings, setSettings] = useState<Settings | null>(null);
   const [allTransactions, setAllTransactions] = useState<Transactions[] | null>(
-    null
+    null,
   );
   const [currentWeekTransactions, setCurrentWeekTransactions] = useState<
     Transactions[] | null
@@ -83,7 +85,7 @@ function App() {
           "http://localhost:3000/api/accounts/with-count",
           {
             withCredentials: true,
-          }
+          },
         );
 
         console.log("ALL User's accounts fetched:", res.data.payload);
@@ -102,13 +104,35 @@ function App() {
 
   useEffect(() => {
     if (!user) return;
+    const fetchSettings = async () => {
+      try {
+        const res = await axios.get("http://localhost:3000/api/settings", {
+          withCredentials: true,
+        });
+
+        console.log("User's settings fetched:", res.data.payload);
+        setSettings(res.data.payload);
+      } catch (err: any) {
+        if (err?.response?.status === 401) {
+          console.log(err.response.data.message);
+        } else {
+          console.error("Unexpected error fetching user's settings:", err);
+        }
+      }
+    };
+
+    fetchSettings();
+  }, [user]);
+
+  useEffect(() => {
+    if (!user) return;
 
     const fetchTransactions = async () => {
       try {
         const transactionTypes = ["all", "week", "month"] as const;
 
         const results = await Promise.allSettled(
-          transactionTypes.map((type) => getTransactions(type))
+          transactionTypes.map((type) => getTransactions(type)),
         );
 
         results.forEach((result, index) => {
@@ -129,7 +153,7 @@ function App() {
           } else {
             console.error(
               `Failed to load ${type} transactions:`,
-              result.reason
+              result.reason,
             );
           }
         });
@@ -147,64 +171,66 @@ function App() {
         value={{ user, authStatus, setAuthStatus, setUser }}
       >
         <AccountsContext.Provider value={{ accounts, setAccounts }}>
-          <TransactionsContext.Provider
-            value={{
-              allTransactions,
-              currentWeekTransactions,
-              currentMonthTransactions,
-              setAllTransactions,
-              setCurrentWeekTransactions,
-              setCurrentMonthTransactions,
-            }}
-          >
-            <SidebarContext.Provider value={{ expanded, setExpanded }}>
-              {authStatus === "loading" ? (
-                <div className="flex-1 flex items-center justify-center">
-                  <p className="text-5xl text-primary tracking-wide">
-                    Loading...
-                  </p>
-                </div>
-              ) : (
-                <>
-                  {authStatus === "authenticated" && <SideBar />}
-                  <div className="flex flex-col flex-1 min-h-0 min-w-0">
-                    {authStatus === "authenticated" && <TopBar />}
-                    <div className="flex-1">
-                      <Routes>
-                        <Route element={<ProtectedRoute />}>
-                          <Route
-                            path="/dashboard"
-                            element={<MainBentoGrid />}
-                          />
-                          <Route path="/profile" element={<Profile />} />
-                          <Route
-                            path="/transactions"
-                            element={<TransactionsPage />}
-                          />
-                          <Route
-                            path="/addtransaction"
-                            element={<AddTransactionPage />}
-                          />
-                          <Route path="/metrics" element={<MetricsPage />} />
-                        </Route>
-                        <Route path="/signup" element={<SignUpForm />} />
-                        <Route path="/login" element={<LoginForm />} />
-                        <Route
-                          path="/login/forgot"
-                          element={<ForgotPasswordForm />}
-                        />
-                        <Route
-                          path="/login/forgot-username"
-                          element={<ForgotUsernameForm />}
-                        />
-                        <Route path="/*" element={<ErrorPage />} />
-                      </Routes>
-                    </div>
+          <SettingsContext.Provider value={{ settings, setSettings }}>
+            <TransactionsContext.Provider
+              value={{
+                allTransactions,
+                currentWeekTransactions,
+                currentMonthTransactions,
+                setAllTransactions,
+                setCurrentWeekTransactions,
+                setCurrentMonthTransactions,
+              }}
+            >
+              <SidebarContext.Provider value={{ expanded, setExpanded }}>
+                {authStatus === "loading" ? (
+                  <div className="flex-1 flex items-center justify-center">
+                    <p className="text-5xl text-primary tracking-wide">
+                      Loading...
+                    </p>
                   </div>
-                </>
-              )}
-            </SidebarContext.Provider>
-          </TransactionsContext.Provider>
+                ) : (
+                  <>
+                    {authStatus === "authenticated" && <SideBar />}
+                    <div className="flex flex-col flex-1 min-h-0 min-w-0">
+                      {authStatus === "authenticated" && <TopBar />}
+                      <div className="flex-1">
+                        <Routes>
+                          <Route element={<ProtectedRoute />}>
+                            <Route
+                              path="/dashboard"
+                              element={<MainBentoGrid />}
+                            />
+                            <Route path="/profile" element={<Profile />} />
+                            <Route
+                              path="/transactions"
+                              element={<TransactionsPage />}
+                            />
+                            <Route
+                              path="/addtransaction"
+                              element={<AddTransactionPage />}
+                            />
+                            <Route path="/metrics" element={<MetricsPage />} />
+                          </Route>
+                          <Route path="/signup" element={<SignUpForm />} />
+                          <Route path="/login" element={<LoginForm />} />
+                          <Route
+                            path="/login/forgot"
+                            element={<ForgotPasswordForm />}
+                          />
+                          <Route
+                            path="/login/forgot-username"
+                            element={<ForgotUsernameForm />}
+                          />
+                          <Route path="/*" element={<ErrorPage />} />
+                        </Routes>
+                      </div>
+                    </div>
+                  </>
+                )}
+              </SidebarContext.Provider>
+            </TransactionsContext.Provider>
+          </SettingsContext.Provider>
         </AccountsContext.Provider>
       </UserInfoContext.Provider>
     </div>

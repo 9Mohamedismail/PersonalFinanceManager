@@ -5,6 +5,7 @@ import passport from "passport";
 import { usersTable } from "../../src/db/schema";
 import { hashPassword } from "../utils/helpers";
 import { comparePassword } from "../utils/helpers";
+import { settingsTable } from "../../src/db/schema";
 
 const router = Router();
 
@@ -31,6 +32,14 @@ router.post("/signup", async (req, res, next) => {
       })
       .returning();
 
+    const [settings] = await db
+      .insert(settingsTable)
+      .values({
+        userId: user.id,
+        budgetTotal: null,
+      })
+      .returning();
+
     req.login(user, (err) => {
       if (err) return next(err);
       return res.status(201).json({
@@ -38,6 +47,7 @@ router.post("/signup", async (req, res, next) => {
         id: user.id,
         username: user.username,
         email: user.email,
+        settings: settings,
       });
     });
   } catch (err: any) {
@@ -88,7 +98,7 @@ router.post("/login", (req, res, next) => {
           user: { id: user.id, username: user.username, email: user.email },
         });
       });
-    }
+    },
   )(req, res, next);
 });
 
@@ -139,8 +149,8 @@ router.post("/user", async (req, res) => {
       .where(
         and(
           eq(usersTable.username, username.toLowerCase()),
-          eq(usersTable.email, email.toLowerCase())
-        )
+          eq(usersTable.email, email.toLowerCase()),
+        ),
       )
       .limit(1);
 

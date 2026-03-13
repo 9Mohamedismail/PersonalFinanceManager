@@ -4,6 +4,7 @@ import userRoutes from "./routes/userRoutes";
 import authRoutes from "./routes/authRoutes";
 import transactionRoutes from "./routes/transactionRoutes";
 import accountRoutes from "./routes/accountRoutes";
+import settingsRoutes from "./routes/settingsRoutes";
 import "./routes/strategies/local-strategy";
 import "./routes/strategies/google-oauth20-strategy";
 import session from "express-session";
@@ -33,7 +34,7 @@ app.use(
     store: new PGStore({
       createTableIfMissing: true,
     }),
-  })
+  }),
 );
 
 app.use(passport.initialize());
@@ -43,6 +44,7 @@ app.use("/api", userRoutes);
 app.use("/api", transactionRoutes);
 app.use("/api", accountRoutes);
 app.use("/api", authRoutes);
+app.use("/api", settingsRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);

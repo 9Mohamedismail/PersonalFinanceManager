@@ -36,7 +36,7 @@ export const settingsTable = pgTable("settings_table", {
   userId: integer("user_id")
     .notNull()
     .references(() => usersTable.id),
-  budgetTotal: numeric("amount", { precision: 10, scale: 2 }),
+  budgetTotal: numeric("budget_total", { precision: 10, scale: 2 }),
 });
 
 export const typeEnum = pgEnum("type", ["expense", "income"]);
