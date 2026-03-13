@@ -27,6 +27,7 @@ function AddTransactionPage() {
       !formData.date ||
       !formData.description ||
       !formData.amount ||
+      Number(formData.amount) < 0 ||
       !formData.type ||
       !formData.category ||
       !formData.status
@@ -50,7 +51,7 @@ function AddTransactionPage() {
         payload,
         {
           withCredentials: true,
-        }
+        },
       );
 
       const newTransaction = res.data.transaction;

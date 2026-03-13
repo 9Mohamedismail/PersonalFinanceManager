@@ -27,7 +27,7 @@ function TransactionForm<T extends Partial<Transactions>>({
   const handleChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
-    >
+    >,
   ): void => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -36,7 +36,7 @@ function TransactionForm<T extends Partial<Transactions>>({
   const handleBlur = (
     e: React.FocusEvent<
       HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
-    >
+    >,
   ) => {
     setTouched((prev) => ({ ...prev, [e.target.name]: true }));
   };
@@ -49,8 +49,8 @@ function TransactionForm<T extends Partial<Transactions>>({
   const descError = !formData.description
     ? "Description is required"
     : !/^[a-zA-Z0-9\s.,'"/()-]+$/.test(formData.description)
-    ? "Description contains invalid characters"
-    : null;
+      ? "Description contains invalid characters"
+      : null;
 
   return (
     <form
@@ -72,9 +72,12 @@ function TransactionForm<T extends Partial<Transactions>>({
             onChange={handleChange}
             onBlur={handleBlur}
           />
-          {(submitted || touched.amount) && !formData.amount && (
-            <p className="-mt-2 text-sm text-[#fc100d]">Please add an amount</p>
-          )}
+          {(submitted || touched.amount) &&
+            (!formData.amount || Number(formData.amount) < 0) && (
+              <p className="-mt-2 text-sm text-[#fc100d]">
+                Please add a postive amount.
+              </p>
+            )}
         </div>
         <div className="w-1/2 pl-2 lg:w-full lg:pl-0">
           <label className="block text-lg font-bold text-primary uppercase tracking-wide mb-2">

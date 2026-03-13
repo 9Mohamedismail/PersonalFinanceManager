@@ -45,8 +45,8 @@ router.get("/transaction", async (req, res) => {
         and(
           eq(transactionsTable.userId, user.id),
           gte(transactionsTable.date, new Date(start as string)),
-          lt(transactionsTable.date, new Date(end as string))
-        )
+          lt(transactionsTable.date, new Date(end as string)),
+        ),
       )
       .orderBy(desc(transactionsTable.date));
 
@@ -97,7 +97,10 @@ router.post("/transaction/add", async (req, res) => {
         accountId: req.body.accountId,
         date: new Date(req.body.date),
         description: req.body.description,
-        amount: String(req.body.amount),
+        amount:
+          req.body.type === "expense"
+            ? String(-req.body.amount)
+            : String(req.body.amount),
         type: req.body.type.toLowerCase() as "income" | "expense",
         status: req.body.status.toLowerCase() as "pending" | "posted",
         category: req.body.category,
