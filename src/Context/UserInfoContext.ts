@@ -4,6 +4,7 @@ export type User = {
   id: number;
   username: string;
   email: string;
+  createdAt: Date;
 };
 
 export type AuthStatus = "loading" | "authenticated" | "unauthenticated";

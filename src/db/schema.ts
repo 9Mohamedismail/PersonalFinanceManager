@@ -20,6 +20,10 @@ export const usersTable = pgTable("users_table", {
   password: text("password"),
   google_id: text("google_id").unique(),
   auth_provider: authEnum().notNull(),
+  createdAt: timestamp("created_at", {
+    precision: 6,
+    withTimezone: true,
+  }).notNull(),
 });
 
 export const accountsTable = pgTable("accounts_table", {
@@ -96,7 +100,7 @@ export const transactionsRelations = relations(
       fields: [transactionsTable.accountId],
       references: [accountsTable.id],
     }),
-  }),
+  })
 );
 
 export type InsertUser = typeof usersTable.$inferInsert;

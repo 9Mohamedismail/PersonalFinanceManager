@@ -29,6 +29,7 @@ router.post("/signup", async (req, res, next) => {
         password: await hashPassword(password),
         google_id: null,
         auth_provider: "local",
+        createdAt: new Date(),
       })
       .returning();
 
@@ -48,6 +49,7 @@ router.post("/signup", async (req, res, next) => {
         username: user.username,
         email: user.email,
         settings: settings,
+        createdAt: user.createdAt,
       });
     });
   } catch (err: any) {
@@ -95,10 +97,15 @@ router.post("/login", (req, res, next) => {
         }
         return res.status(200).json({
           message: "Logged in successfully",
-          user: { id: user.id, username: user.username, email: user.email },
+          user: {
+            id: user.id,
+            username: user.username,
+            email: user.email,
+            createdAt: user.createdAt,
+          },
         });
       });
-    },
+    }
   )(req, res, next);
 });
 
@@ -149,8 +156,8 @@ router.post("/user", async (req, res) => {
       .where(
         and(
           eq(usersTable.username, username.toLowerCase()),
-          eq(usersTable.email, email.toLowerCase()),
-        ),
+          eq(usersTable.email, email.toLowerCase())
+        )
       )
       .limit(1);
 
@@ -254,6 +261,7 @@ router.get("/user/me", (req, res) => {
       id: req.user.id,
       username: req.user.username,
       email: req.user.email,
+      createdAt: req.user.createdAt,
     },
   });
 });

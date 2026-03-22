@@ -5,6 +5,7 @@ import InfoRow from "./InfoRow";
 type GeneralInfoProps = {
   username: string | undefined;
   email: string | undefined;
+  createdAt: Date | undefined;
 };
 
 type Result = {
@@ -12,7 +13,7 @@ type Result = {
   success: boolean;
 };
 
-function GeneralInfo({ username, email }: GeneralInfoProps) {
+function GeneralInfo({ username, email, createdAt }: GeneralInfoProps) {
   const [edit, setEdit] = useState(false);
   const [result, setResult] = useState<Result>({
     message: "",
@@ -45,10 +46,12 @@ function GeneralInfo({ username, email }: GeneralInfoProps) {
             className="w-32 h-32 rounded-full mb-2"
           />
           <h2 className="text-2xl text-primary font-semibold uppercase tracking-wide mb-8">
-            FULL NAME
+            {username}
           </h2>
         </div>
-        <InfoRow label="Date join:">23 Aug, 2023</InfoRow>
+        <InfoRow label="Date join:">
+          {createdAt ? new Date(createdAt).toLocaleDateString("en-US") : "—"}
+        </InfoRow>
         <InfoRow label="Email:">{email}</InfoRow>
         <InfoRow label="Username:">{username}</InfoRow>
         {!edit ? (
