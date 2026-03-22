@@ -24,11 +24,16 @@ const columns: GridColDef[] = [
     flex: 1,
     minWidth: 200,
     type: "number",
-    valueFormatter: (params) => {
-      return Number(params).toLocaleString("en-US", {
-        style: "currency",
-        currency: "USD",
-      });
+    renderCell: (params) => {
+      const text = params.value > 0 ? "text-[#4BB543]" : "text-[#fc100d]";
+      return (
+        <div className={text}>
+          {Number(params.value).toLocaleString("en-US", {
+            style: "currency",
+            currency: "USD",
+          })}
+        </div>
+      );
     },
   },
   { field: "category", headerName: "Category", width: 200 },

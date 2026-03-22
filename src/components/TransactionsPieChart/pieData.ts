@@ -16,6 +16,7 @@ export const labels: string[] = [
   "Transportation",
   "Gasoline",
   "Merchandise",
+  "Other",
 ];
 
 function categoryTotals(transactions: Transaction[]): number[] {

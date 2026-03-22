@@ -27,7 +27,7 @@ function TransactionForm<T extends Partial<Transactions>>({
   const handleChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
-    >,
+    >
   ): void => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -36,7 +36,7 @@ function TransactionForm<T extends Partial<Transactions>>({
   const handleBlur = (
     e: React.FocusEvent<
       HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
-    >,
+    >
   ) => {
     setTouched((prev) => ({ ...prev, [e.target.name]: true }));
   };
@@ -49,8 +49,27 @@ function TransactionForm<T extends Partial<Transactions>>({
   const descError = !formData.description
     ? "Description is required"
     : !/^[a-zA-Z0-9\s.,'"/()-]+$/.test(formData.description)
-      ? "Description contains invalid characters"
-      : null;
+    ? "Description contains invalid characters"
+    : null;
+
+  const categories = {
+    expense: [
+      "Restaurants",
+      "Supermarkets",
+      "Transportation",
+      "Gasoline",
+      "Merchandise",
+      "Other",
+    ],
+    income: [
+      "Salary",
+      "Investments",
+      "Refunds",
+      "Gifts",
+      "Side Hustle",
+      "Other",
+    ],
+  };
 
   return (
     <form
@@ -171,11 +190,11 @@ function TransactionForm<T extends Partial<Transactions>>({
             <option disabled hidden value="">
               Choose a Category Type
             </option>
-            <option value="Restaurants">Restaurants</option>
-            <option value="Supermarkets">Supermarkets</option>
-            <option value="Transportation">Transportation</option>
-            <option value="Gasoline">Gasoline</option>
-            <option value="Merchandise">Merchandise</option>
+            {categories[formData.type ?? "expense"].map((value, index) => (
+              <option key={index} value={value}>
+                {value}
+              </option>
+            ))}
           </select>
           {(submitted || touched.category) && !formData.category && (
             <p className="-mt-2 text-sm  text-[#fc100d] ">

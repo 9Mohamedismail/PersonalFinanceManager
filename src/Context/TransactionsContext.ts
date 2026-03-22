@@ -7,7 +7,13 @@ export type TransactionCategory =
   | "Supermarkets"
   | "Transportation"
   | "Gasoline"
-  | "Merchandise";
+  | "Merchandise"
+  | "Salary"
+  | "Invesments"
+  | "Refunds"
+  | "Gifts"
+  | "Side Hustle"
+  | "Other";
 
 export type Transactions = {
   id: number;
