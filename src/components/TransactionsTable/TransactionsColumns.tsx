@@ -1,7 +1,11 @@
-import type { GridColDef } from "@mui/x-data-grid";
+import type { GridColDef, GridRowId } from "@mui/x-data-grid";
 import { format, parseISO } from "date-fns";
 
-const columns: GridColDef[] = [
+type ColumnsProps = {
+  handleOpenDetails: (id: GridRowId) => void;
+};
+
+const columns = ({ handleOpenDetails }: ColumnsProps): GridColDef[] => [
   {
     field: "date",
     headerName: "Date",
@@ -44,8 +48,12 @@ const columns: GridColDef[] = [
     sortable: false,
     filterable: false,
     disableColumnMenu: true,
-    renderCell: () => (
-      <button className="border-2 bg-white rounded-md shadow-sm border-secondary px-3 text-base font-semibold text-secondary uppercase tracking-wide cursor-pointer">
+    renderCell: (params: { row: { id: GridRowId } }) => (
+      <button
+        name="openDetails"
+        className="border-2 bg-white rounded-md shadow-sm border-secondary px-3 text-base font-semibold text-secondary uppercase tracking-wide cursor-pointer"
+        onClick={() => handleOpenDetails(params.row.id)}
+      >
         Details
       </button>
     ),

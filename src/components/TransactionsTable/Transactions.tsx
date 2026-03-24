@@ -5,19 +5,29 @@ import { TransactionsContext } from "../../Context/TransactionsContext";
 import { useContext, useState } from "react";
 import axios from "axios";
 import EditTransactionModal from "../EditTransactionModal";
+import ViewDetailsModal from "../ViewDetailsModal";
 
 function Transactions({ grid }: { grid: boolean }) {
   const { setAllTransactions, allTransactions } =
     useContext(TransactionsContext);
 
-  const [open, setOpen] = useState(false);
+  const [openEdit, setOpenEdit] = useState(false);
+  const [openDetails, setOpenDetails] = useState(false);
   const [rowId, setRowId] = useState<GridRowId | null>(null);
-  const handleOpen = (id: GridRowId) => {
-    setOpen(true);
+
+  const handleOpenEdit = (id: GridRowId) => {
     setRowId(id);
+    setOpenEdit(true);
   };
+
+  const handleOpenDetails = (id: GridRowId) => {
+    setRowId(id);
+    setOpenDetails(true);
+  };
+
   const handleClose = () => {
-    setOpen(false);
+    setOpenEdit(false);
+    setOpenDetails(false);
     setRowId(null);
   };
 
@@ -29,7 +39,7 @@ function Transactions({ grid }: { grid: boolean }) {
 
       console.log("Transaction deleted successfully!");
       setAllTransactions((prev) =>
-        prev ? prev.filter((row) => row.id !== id) : []
+        prev ? prev.filter((row) => row.id !== id) : [],
       );
     } catch (err: any) {
       const serverMsg = err?.response?.data?.message;
@@ -38,7 +48,9 @@ function Transactions({ grid }: { grid: boolean }) {
     }
   };
 
-  const actionColumns = columns
+  const baseColumns = columns({ handleOpenDetails });
+
+  const actionColumns = baseColumns
     .filter((col) => (grid ? col.field !== "actions" : true))
     .map((col) => {
       if (col.field === "actions" && !grid) {
@@ -56,8 +68,9 @@ function Transactions({ grid }: { grid: boolean }) {
                 Delete
               </button>
               <button
+                name="openEdit"
                 className="border-2 bg-white rounded-md shadow-sm border-orange-500 px-3 text-base font-semibold text-orange-500 uppercase tracking-wide cursor-pointer"
-                onClick={() => handleOpen(params.row.id)}
+                onClick={() => handleOpenEdit(params.row.id)}
               >
                 Edit
               </button>
@@ -78,7 +91,9 @@ function Transactions({ grid }: { grid: boolean }) {
     <div className="h-full">
       <DataGrid
         getRowId={(row) => row.id}
-        rows={!grid ? allTransactions ?? [] : (allTransactions ?? []).slice(-7)}
+        rows={
+          !grid ? (allTransactions ?? []) : (allTransactions ?? []).slice(-7)
+        }
         columns={actionColumns}
         hideFooter={grid}
         disableColumnResize={true}
@@ -139,7 +154,7 @@ function Transactions({ grid }: { grid: boolean }) {
           fontFamily: "Inter, sans-serif",
         }}
       />
-      <Modal open={open} onClose={handleClose}>
+      <Modal open={openEdit || openDetails} onClose={handleClose}>
         <div
           className="
     flex min-h-screen justify-center items-center   
@@ -147,7 +162,12 @@ function Transactions({ grid }: { grid: boolean }) {
     py-10 px-4 lg:px-8 lg:w-1/2
   "
         >
-          <EditTransactionModal id={rowId} handleClose={handleClose} />
+          {openEdit && (
+            <EditTransactionModal id={rowId} handleClose={handleClose} />
+          )}
+          {openDetails && (
+            <ViewDetailsModal id={rowId} handleClose={handleClose} />
+          )}
         </div>
       </Modal>
     </div>

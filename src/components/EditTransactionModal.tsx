@@ -60,7 +60,7 @@ function EditTransactionModal({
       const res = await axios.put(
         `http://localhost:3000/api/transaction/update/${id}`,
         payload,
-        { withCredentials: true }
+        { withCredentials: true },
       );
 
       const updatedTransaction: Transactions = res.data.transaction;
@@ -68,9 +68,9 @@ function EditTransactionModal({
       setAllTransactions((prev) =>
         prev
           ? prev.map((t) =>
-              t.id === updatedTransaction.id ? updatedTransaction : t
+              t.id === updatedTransaction.id ? updatedTransaction : t,
             )
-          : [updatedTransaction]
+          : [updatedTransaction],
       );
 
       console.log("Transaction edited successfully!");
@@ -85,7 +85,7 @@ function EditTransactionModal({
   };
 
   return (
-    <div className="">
+    <div className="flex flex-col">
       {serverMessage && (
         <div className="border bg-secondary-100 rounded shadow-sm border-primary py-4 mb-4 2xl:w-1/2">
           <p className="text-base text-primary mx-4 font-semibold">
@@ -93,6 +93,13 @@ function EditTransactionModal({
           </p>
         </div>
       )}
+
+      <button
+        className="ml-auto border-2 bg-white rounded-md shadow-sm border-red-500 px-3 text-base font-semibold text-red-500 uppercase tracking-wide cursor-pointer"
+        onClick={handleClose}
+      >
+        Close
+      </button>
 
       <TransactionForm
         formData={formData}

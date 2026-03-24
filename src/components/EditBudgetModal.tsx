@@ -60,7 +60,7 @@ function EditBudgetModal({ handleClose }: { handleClose: () => void }) {
   };
 
   return (
-    <div className="">
+    <div className="flex flex-col">
       {serverMessage && (
         <div className="border bg-secondary-100 rounded shadow-sm border-primary py-4 mb-4 2xl:w-1/2">
           <p className="text-base text-primary mx-4 font-semibold">
@@ -68,6 +68,13 @@ function EditBudgetModal({ handleClose }: { handleClose: () => void }) {
           </p>
         </div>
       )}
+
+      <button
+        className="ml-auto border-2 bg-white rounded-md shadow-sm border-red-500 px-3 text-base font-semibold text-red-500 uppercase tracking-wide cursor-pointer"
+        onClick={handleClose}
+      >
+        Close
+      </button>
 
       <form
         className="bg-white rounded-lg shadow-sm border border-primary p-6"
