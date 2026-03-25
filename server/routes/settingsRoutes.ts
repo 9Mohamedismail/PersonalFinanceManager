@@ -31,8 +31,14 @@ router.put("/settings/update", async (req, res) => {
 
   const { budgetTotal } = req.body;
 
-  if (!budgetTotal) {
-    return res.status(400).send("Required fields missing");
+  if (
+    budgetTotal === undefined ||
+    budgetTotal === null ||
+    Number(budgetTotal) < 0
+  ) {
+    return res
+      .status(400)
+      .json({ message: "budgetTotal must be 0 or greater" });
   }
 
   try {

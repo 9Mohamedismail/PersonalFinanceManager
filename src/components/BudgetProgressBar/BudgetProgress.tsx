@@ -46,8 +46,8 @@ export default function BudgetProgress({ grid }: BudgetProgressProps) {
           </p>
         ) : (
           <button
-            className="border-2 bg-white rounded-md shadow-sm border-orange-500 px-3 text-base font-semibold text-orange-500 uppercase tracking-wide cursor-pointer"
             onClick={() => setOpen(!open)}
+            className="border-2 bg-white rounded shadow-sm border-orange-500 py-1 px-4 sm:text-base font-semibold text-orange-500 uppercase tracking-wide cursor-pointer mb-2 align-center"
           >
             Edit
           </button>

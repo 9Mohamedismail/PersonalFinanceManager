@@ -6,7 +6,7 @@ function EditBudgetModal({ handleClose }: { handleClose: () => void }) {
   const { settings, setSettings } = useContext(SettingsContext);
 
   const [budgetTotal, setBudgetTotal] = useState<string>(
-    String(settings?.budgetTotal) ?? "",
+    settings?.budgetTotal !== undefined ? String(settings.budgetTotal) : "",
   );
   const [touched, setTouched] = useState<boolean>(false);
   const [submitted, setSubmitted] = useState(false);
@@ -91,6 +91,7 @@ function EditBudgetModal({ handleClose }: { handleClose: () => void }) {
               type="number"
               name="budgetTotal"
               placeholder="0"
+              step="any"
               value={budgetTotal}
               onChange={(e) => setBudgetTotal(e.target.value)}
               onBlur={() => setTouched(true)}
@@ -98,7 +99,7 @@ function EditBudgetModal({ handleClose }: { handleClose: () => void }) {
             {(submitted || touched) &&
               (!budgetTotal || Number(budgetTotal) < 0) && (
                 <p className="-mt-2 text-sm text-[#fc100d]">
-                  Please add a postive amount.
+                  Please enter 0 or a positive amount.
                 </p>
               )}
           </div>
