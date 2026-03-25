@@ -28,6 +28,15 @@ export const labels: string[] = [
   "Other",
 ];
 
+const chartColors = [
+  "#e06666",
+  "#4d8370",
+  "#4f81bd",
+  "#d6a354",
+  "#8e7cc3",
+  "#6fa8dc",
+];
+
 function categoryTotals(transactions: Transaction[]): number[] {
   const index = new Map(labels.map((lable, index) => [lable, index]));
   const totals = Array(labels.length).fill(0) as number[];
@@ -46,7 +55,7 @@ function categoryTotals(transactions: Transaction[]): number[] {
 }
 
 export function TransactionsPieChartData(
-  rangeType: RangeType,
+  rangeType: RangeType | null,
 ): ChartData<"doughnut", number[], string> {
   const { allTransactions, currentWeekTransactions, currentMonthTransactions } =
     useContext(TransactionsContext);
@@ -59,13 +68,7 @@ export function TransactionsPieChartData(
       {
         label: "Spent this week:",
         data: categoryTotals(currentWeekTransactions ?? []),
-        backgroundColor: [
-          "#e06666",
-          "#4d8370",
-          "#4f81bd",
-          "#d6a354",
-          "#8e7cc3",
-        ],
+        backgroundColor: chartColors,
         hoverOffset: 6,
       },
     ],
@@ -75,6 +78,22 @@ export function TransactionsPieChartData(
     async function fetchData() {
       let dataArray: number[] = [];
       let title: string = "";
+
+      if (rangeType === null) {
+        setChartData({
+          labels,
+          datasets: [
+            {
+              label: "Spent during custom range:",
+              data: Array(labels.length).fill(0),
+              realData: Array(labels.length).fill(0) as any,
+              backgroundColor: chartColors,
+              hoverOffset: 6,
+            },
+          ],
+        });
+        return;
+      }
 
       switch (rangeType) {
         case "all":
@@ -106,7 +125,19 @@ export function TransactionsPieChartData(
       const total = dataArray.reduce((a, b) => a + b, 0);
 
       if (total === 0) {
-        return dataArray;
+        setChartData({
+          labels,
+          datasets: [
+            {
+              label: title,
+              data: dataArray,
+              realData: dataArray as any,
+              backgroundColor: chartColors,
+              hoverOffset: 6,
+            },
+          ],
+        });
+        return;
       }
 
       let percentages = dataArray.map((v) => (v / total) * 100);
@@ -126,13 +157,7 @@ export function TransactionsPieChartData(
             label: title,
             data: scaledData,
             realData: dataArray as any,
-            backgroundColor: [
-              "#e06666",
-              "#4d8370",
-              "#4f81bd",
-              "#d6a354",
-              "#8e7cc3",
-            ],
+            backgroundColor: chartColors,
             hoverOffset: 6,
           },
         ],

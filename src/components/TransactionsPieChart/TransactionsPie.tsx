@@ -25,7 +25,10 @@ type RangeType =
   | [Dayjs, Dayjs];
 
 function TransactionsPie({ grid }: TransactionsPieProps) {
-  const [dataRange, setDataRange] = useState<RangeType>("week");
+  const [dataRange, setDataRange] = useState<RangeType | null>("week");
+  const [selectedRange, setSelectedRange] = useState<
+    "all" | "week" | "lastWeek" | "month" | "lastMonth" | "custom"
+  >("week");
   const [custom, setCustom] = useState<boolean>(false);
   const [startDate, setStartDate] = useState<Dayjs | null>(null);
   const [endDate, setEndDate] = useState<Dayjs | null>(null);
@@ -33,12 +36,21 @@ function TransactionsPie({ grid }: TransactionsPieProps) {
   const data = TransactionsPieChartData(dataRange);
 
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>): void => {
-    if (e.target.value === "custom") {
+    const value = e.target.value as
+      | "all"
+      | "week"
+      | "lastWeek"
+      | "month"
+      | "lastMonth"
+      | "custom";
+
+    setSelectedRange(value);
+
+    if (value === "custom") {
       setCustom(true);
+      setDataRange(null);
     } else {
-      setDataRange(
-        e.target.value as "all" | "week" | "lastWeek" | "month" | "lastMonth",
-      );
+      setDataRange(value);
       setCustom(false);
     }
   };
@@ -101,7 +113,7 @@ function TransactionsPie({ grid }: TransactionsPieProps) {
               className="align-center appearance-none block bg-white rounded shadow-sm border border-primary p-2 leading-tight 
              focus:outline-none focus:bg-white focus:border-primary text-xs sm:text-base cursor-pointer"
               onChange={handleChange}
-              value={typeof dataRange === "string" ? dataRange : "custom"}
+              value={selectedRange}
             >
               <option disabled hidden value="">
                 Choose a Date Range
