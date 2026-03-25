@@ -43,7 +43,7 @@ router.get("/transaction", async (req, res) => {
     .startOf("day")
     .toDate();
   const endDate = dayjs(end as string)
-    .endOf("day")
+    .startOf("day")
     .toDate();
 
   try {
@@ -54,7 +54,7 @@ router.get("/transaction", async (req, res) => {
         and(
           eq(transactionsTable.userId, user.id),
           gte(transactionsTable.date, startDate),
-          lte(transactionsTable.date, endDate),
+          lt(transactionsTable.date, endDate),
         ),
       )
       .orderBy(desc(transactionsTable.date));

@@ -23,7 +23,7 @@ export async function getTransactions(rangeType: RangeType) {
 
   if (Array.isArray(rangeType)) {
     start = rangeType[0].startOf("day");
-    end = rangeType[1].endOf("day");
+    end = rangeType[1].add(1, "day").startOf("day");
   } else {
     ({ start, end } = getDateRange(rangeType));
   }
