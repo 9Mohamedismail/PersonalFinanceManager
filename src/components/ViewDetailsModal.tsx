@@ -1,6 +1,4 @@
 import { useContext, useEffect, useState } from "react";
-import axios from "axios";
-import TransactionForm from "./TransactionForm";
 import {
   TransactionsContext,
   type Transactions,
@@ -30,7 +28,7 @@ function ViewDetailsModal({
     }
   }, [id, allTransactions]);
 
-  const findAccountById = (id) => {
+  const findAccountById = (id: Number | undefined) => {
     const found = accounts?.find((value) => value.id === id);
     return found?.accountName;
   };
@@ -94,7 +92,7 @@ function ViewDetailsModal({
           </div>
 
           <div>
-            <span className="block text-xl xl:text-lg text-primary uppercase tracking-wide font-bold uppercase">
+            <span className="block text-xl xl:text-lg text-primary tracking-wide font-bold uppercase">
               Account
             </span>
             <p className="text-lg text-gray-900 font-normal uppercase">

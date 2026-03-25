@@ -1,5 +1,6 @@
 import type { GridColDef, GridRowId } from "@mui/x-data-grid";
 import { format, parseISO } from "date-fns";
+import dayjs from "dayjs";
 
 type ColumnsProps = {
   handleOpenDetails: (id: GridRowId) => void;
@@ -11,7 +12,8 @@ const columns = ({ handleOpenDetails }: ColumnsProps): GridColDef[] => [
     headerName: "Date",
     width: 150,
     valueFormatter: (params) => {
-      return format(parseISO(params), "MMM d, yyyy");
+      const date = params.split("T")[0];
+      return format(parseISO(date), "MMM d, yyyy");
     },
   },
   {

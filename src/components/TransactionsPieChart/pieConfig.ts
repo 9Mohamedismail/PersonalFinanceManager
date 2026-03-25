@@ -21,8 +21,11 @@ const options: ChartOptions<"doughnut"> = {
     tooltip: {
       callbacks: {
         label: function (context) {
-          const value = context.raw as number;
-          return `$${value.toLocaleString()}`;
+          const dataset = context.dataset as any;
+
+          const realValue = dataset.realData[context.dataIndex];
+
+          return `$${realValue.toLocaleString()}`;
         },
       },
     },

@@ -1,6 +1,8 @@
 import { Router } from "express";
 import { db } from "../../src/db/db";
-import { eq, and, gte, lt, desc } from "drizzle-orm";
+import { eq, and, gte, lt, desc, lte } from "drizzle-orm";
+import { addDays } from "date-fns";
+import dayjs from "dayjs";
 import { transactionsTable } from "../../src/db/schema";
 
 const router = Router();
@@ -9,7 +11,7 @@ const toPayload = (transactions: any[]) =>
   transactions.map((transaction) => ({
     ...transaction,
     amount: Number(transaction.amount),
-    date: transaction.date?.toISOString().split("T")[0],
+    date: transaction.date,
   }));
 
 const validateTransaction = (body: any) => {
@@ -37,6 +39,13 @@ router.get("/transaction", async (req, res) => {
   if (!start || !end)
     return res.status(400).json({ message: "start and end required" });
 
+  const startDate = dayjs(start as string)
+    .startOf("day")
+    .toDate();
+  const endDate = dayjs(end as string)
+    .endOf("day")
+    .toDate();
+
   try {
     const transactions = await db
       .select()
@@ -44,8 +53,8 @@ router.get("/transaction", async (req, res) => {
       .where(
         and(
           eq(transactionsTable.userId, user.id),
-          gte(transactionsTable.date, new Date(start as string)),
-          lt(transactionsTable.date, new Date(end as string)),
+          gte(transactionsTable.date, startDate),
+          lte(transactionsTable.date, endDate),
         ),
       )
       .orderBy(desc(transactionsTable.date));
@@ -95,7 +104,7 @@ router.post("/transaction/add", async (req, res) => {
       .values({
         userId: user.id,
         accountId: req.body.accountId,
-        date: new Date(req.body.date),
+        date: dayjs(req.body.date).toDate(),
         description: req.body.description,
         amount:
           req.body.type === "expense"
@@ -134,7 +143,7 @@ router.put("/transaction/update/:id", async (req, res) => {
       .set({
         userId: user.id,
         accountId: req.body.accountId,
-        date: new Date(req.body.date),
+        date: dayjs(req.body.date).toDate(),
         description: req.body.description,
         amount: String(req.body.amount),
         type: req.body.type.toLowerCase() as "income" | "expense",

@@ -1,7 +1,6 @@
 import {
-  endOfMonth,
-  endOfWeek,
-  format,
+  addMonths,
+  addWeeks,
   startOfMonth,
   startOfWeek,
   subMonths,
@@ -9,32 +8,33 @@ import {
 } from "date-fns";
 
 export function getDateRange(
-  period: "week" | "month" | "lastWeek" | "lastMonth"
+  period: "week" | "month" | "lastWeek" | "lastMonth",
 ) {
   const now = new Date();
 
   switch (period) {
     case "week":
       return {
-        start: format(startOfWeek(now, { weekStartsOn: 1 }), "yyyy-MM-dd"),
-        end: format(endOfWeek(now, { weekStartsOn: 1 }), "yyyy-MM-dd"),
+        start: startOfWeek(now, { weekStartsOn: 1 }),
+        end: addWeeks(startOfWeek(now, { weekStartsOn: 1 }), 1),
       };
     case "month":
+      const start = startOfMonth(now);
       return {
-        start: format(startOfMonth(now), "yyyy-MM-dd"),
-        end: format(endOfMonth(now), "yyyy-MM-dd"),
+        start,
+        end: addMonths(start, 1),
       };
     case "lastWeek":
-      const lw = subWeeks(now, 1);
+      const thisWeekStart = startOfWeek(now, { weekStartsOn: 1 });
       return {
-        start: format(startOfWeek(lw, { weekStartsOn: 1 }), "yyyy-MM-dd"),
-        end: format(endOfWeek(lw, { weekStartsOn: 1 }), "yyyy-MM-dd"),
+        start: subWeeks(thisWeekStart, 1),
+        end: thisWeekStart,
       };
     case "lastMonth":
-      const lm = subMonths(now, 1);
+      const thisMonthStart = startOfMonth(now);
       return {
-        start: format(startOfMonth(lm), "yyyy-MM-dd"),
-        end: format(endOfMonth(lm), "yyyy-MM-dd"),
+        start: subMonths(thisMonthStart, 1),
+        end: thisMonthStart,
       };
   }
 }

@@ -2,6 +2,7 @@ import type { ChartData } from "chart.js";
 import { useContext, useEffect, useState } from "react";
 import { TransactionsContext } from "../../Context/TransactionsContext";
 import { getTransactions } from "../../utils/getTransactions";
+import type { Dayjs } from "dayjs";
 
 type Transaction = {
   date: string;
@@ -9,6 +10,14 @@ type Transaction = {
   type: "expense" | "income";
   category: string;
 };
+
+type RangeType =
+  | "all"
+  | "week"
+  | "lastWeek"
+  | "month"
+  | "lastMonth"
+  | [Dayjs, Dayjs];
 
 export const labels: string[] = [
   "Restaurants",
@@ -37,7 +46,7 @@ function categoryTotals(transactions: Transaction[]): number[] {
 }
 
 export function TransactionsPieChartData(
-  rangeType: "all" | "week" | "lastWeek" | "month" | "lastMonth"
+  rangeType: RangeType,
 ): ChartData<"doughnut", number[], string> {
   const { allTransactions, currentWeekTransactions, currentMonthTransactions } =
     useContext(TransactionsContext);
@@ -88,14 +97,35 @@ export function TransactionsPieChartData(
           dataArray = categoryTotals(await getTransactions("lastMonth"));
           title = "Spent last month:";
           break;
+        default:
+          dataArray = categoryTotals(await getTransactions(rangeType));
+          title = "Spent during custom range";
+          break;
       }
+
+      const total = dataArray.reduce((a, b) => a + b, 0);
+
+      if (total === 0) {
+        return dataArray;
+      }
+
+      let percentages = dataArray.map((v) => (v / total) * 100);
+
+      percentages = percentages.map((p, i) => {
+        return dataArray[i] > 0 && p < 1 ? 1 : p;
+      });
+
+      const adjustedTotal = percentages.reduce((a, b) => a + b, 0);
+
+      const scaledData = percentages.map((p) => (p / adjustedTotal) * 100);
 
       setChartData({
         labels,
         datasets: [
           {
             label: title,
-            data: dataArray,
+            data: scaledData,
+            realData: dataArray as any,
             backgroundColor: [
               "#e06666",
               "#4d8370",

@@ -1,9 +1,16 @@
 import axios from "axios";
 import { getDateRange } from "./getDateRange";
+import type { Dayjs } from "dayjs";
 
-export async function getTransactions(
-  rangeType: "all" | "week" | "lastWeek" | "month" | "lastMonth"
-) {
+type RangeType =
+  | "all"
+  | "week"
+  | "lastWeek"
+  | "month"
+  | "lastMonth"
+  | [Dayjs, Dayjs];
+
+export async function getTransactions(rangeType: RangeType) {
   const baseUrl = "http://localhost:3000/api/transaction";
 
   if (rangeType === "all") {
@@ -12,9 +19,19 @@ export async function getTransactions(
     return res.data.payload;
   }
 
-  const { start, end } = getDateRange(rangeType);
+  let start, end;
+
+  if (Array.isArray(rangeType)) {
+    start = rangeType[0].startOf("day");
+    end = rangeType[1].endOf("day");
+  } else {
+    ({ start, end } = getDateRange(rangeType));
+  }
   const res = await axios.get(baseUrl, {
-    params: { start, end },
+    params: {
+      start: start.toISOString(),
+      end: end.toISOString(),
+    },
     withCredentials: true,
   });
   console.log(`${rangeType} User's transactions fetched:`, res.data.payload);
