@@ -12,7 +12,10 @@ import {
 } from "chart.js";
 import options from "./chartConfig";
 import { TransactionsLineChartData } from "./chartData";
-import { useState } from "react";
+import { useRef, useState } from "react";
+import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import type { Dayjs } from "dayjs";
 
 ChartJS.register(
   CategoryScale,
@@ -21,25 +24,85 @@ ChartJS.register(
   LineElement,
   Title,
   Tooltip,
-  Legend
+  Legend,
 );
 
 type WeekTransactionsGrid = {
   grid: boolean;
 };
 
+type RangeType =
+  | "all"
+  | "week"
+  | "lastWeek"
+  | "month"
+  | "lastMonth"
+  | [Dayjs, Dayjs];
+
 function TransactionsLine({ grid }: WeekTransactionsGrid) {
-  const [dataRange, setDataRange] = useState<
-    "all" | "week" | "lastWeek" | "month" | "lastMonth"
+  const [dataRange, setDataRange] = useState<RangeType | null>("week");
+  const [selectedRange, setSelectedRange] = useState<
+    "all" | "week" | "lastWeek" | "month" | "lastMonth" | "custom"
   >("week");
+  const [custom, setCustom] = useState<boolean>(false);
+  const [startDate, setStartDate] = useState<Dayjs | null>(null);
+  const [endDate, setEndDate] = useState<Dayjs | null>(null);
 
   const data = TransactionsLineChartData(dataRange);
 
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>): void => {
-    setDataRange(
-      e.target.value as "all" | "week" | "lastWeek" | "month" | "lastMonth"
-    );
+    const value = e.target.value as
+      | "all"
+      | "week"
+      | "lastWeek"
+      | "month"
+      | "lastMonth"
+      | "custom";
+
+    setSelectedRange(value);
+
+    if (value === "custom") {
+      setCustom(true);
+      setDataRange(null);
+    } else {
+      setDataRange(value);
+      setCustom(false);
+    }
   };
+
+  const isSubmitting = useRef(false);
+  const lastRange = useRef<[Dayjs, Dayjs] | null>(null);
+
+  const handleCustom = () => {
+    if (isSubmitting.current) return;
+    if (!startDate || !endDate) return;
+
+    const isSameRange =
+      lastRange.current &&
+      startDate.isSame(lastRange.current[0], "day") &&
+      endDate.isSame(lastRange.current[1], "day");
+
+    if (isSameRange) return;
+
+    if (endDate.isBefore(startDate, "day")) return;
+
+    isSubmitting.current = true;
+
+    setDataRange([startDate, endDate]);
+    lastRange.current = [startDate, endDate];
+
+    setTimeout(() => {
+      isSubmitting.current = false;
+    }, 0);
+  };
+
+  const isDisabled =
+    !startDate ||
+    !endDate ||
+    (lastRange.current &&
+      startDate?.isSame(lastRange.current[0], "day") &&
+      endDate?.isSame(lastRange.current[1], "day")) ||
+    endDate.isBefore(startDate, "day");
 
   const navigate = useNavigate();
   const values = (data.datasets?.[0]?.data as number[]) ?? [];
@@ -65,7 +128,7 @@ function TransactionsLine({ grid }: WeekTransactionsGrid) {
               className="align-center appearance-none block bg-white rounded shadow-sm border border-primary p-2 leading-tight 
              focus:outline-none focus:bg-white focus:border-primary text-xs sm:text-base cursor-pointer"
               onChange={handleChange}
-              value={dataRange}
+              value={selectedRange}
             >
               <option disabled hidden value="">
                 Choose a Date Range
@@ -80,6 +143,47 @@ function TransactionsLine({ grid }: WeekTransactionsGrid) {
           </>
         )}
       </div>
+
+      {custom && (
+        <div className="flex gap-3 mt-2">
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DatePicker
+              label="Start Date"
+              value={startDate}
+              disableFuture
+              onChange={(newValue) => setStartDate(newValue)}
+              slotProps={{
+                textField: {
+                  size: "small",
+                },
+              }}
+            />
+            <DatePicker
+              label="End Date"
+              value={endDate}
+              disableFuture
+              minDate={startDate ?? undefined}
+              onChange={(newValue) => setEndDate(newValue)}
+              slotProps={{
+                textField: {
+                  size: "small",
+                },
+              }}
+            />
+          </LocalizationProvider>
+          <button
+            disabled={isDisabled}
+            onClick={handleCustom}
+            className={`border-2 bg-white rounded shadow-sm border-primary py-1 px-2 sm:text-base font-semibold text-primary uppercase tracking-wide cursor-pointer ${
+              isDisabled
+                ? "opacity-50 cursor-not-allowed"
+                : "text-primary cursor-pointer"
+            }`}
+          >
+            Search
+          </button>
+        </div>
+      )}
 
       <div className="mt-4 w-full h-[220px]">
         {isEmpty ? (
