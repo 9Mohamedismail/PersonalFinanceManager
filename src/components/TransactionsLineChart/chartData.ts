@@ -252,7 +252,7 @@ export function TransactionsLineChartData(
     labels: getLabels(rangeType),
     datasets: [
       {
-        label: "This Week Transactions:",
+        label: "This Week:",
         data: [],
         borderColor: "#4d8370",
         borderWidth: 3,
@@ -275,7 +275,7 @@ export function TransactionsLineChartData(
           labels: [],
           datasets: [
             {
-              label: "Transactions during custom range:",
+              label: "Custom Range:",
               data: [],
               borderColor: "#4d8370",
               borderWidth: 3,
@@ -293,12 +293,12 @@ export function TransactionsLineChartData(
       switch (rangeType) {
         case "all":
           dataArray = categoryTotals(allTransactions ?? [], "all");
-          title = "All-Time Transactions:";
+          title = "All-Time:";
           break;
 
         case "week":
           dataArray = categoryTotals(currentWeekTransactions ?? [], "week");
-          title = "This Week Transactions:";
+          title = "This Week:";
           break;
 
         case "lastWeek":
@@ -306,12 +306,12 @@ export function TransactionsLineChartData(
             await getTransactions("lastWeek"),
             "lastWeek",
           );
-          title = "Last Week Transactions:";
+          title = "Last Week:";
           break;
 
         case "month":
           dataArray = categoryTotals(currentMonthTransactions ?? [], "month");
-          title = "This Month Transactions:";
+          title = "This Month:";
           break;
 
         case "lastMonth":
@@ -319,7 +319,7 @@ export function TransactionsLineChartData(
             await getTransactions("lastMonth"),
             "lastMonth",
           );
-          title = "Last Month Transactions:";
+          title = "Last Month:";
           break;
 
         default:
@@ -327,7 +327,7 @@ export function TransactionsLineChartData(
             await getTransactions(rangeType),
             rangeType,
           );
-          title = "Transactions during custom range:";
+          title = "Custom Range:";
           break;
       }
 

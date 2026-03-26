@@ -95,7 +95,7 @@ function TransactionsPie({ grid }: TransactionsPieProps) {
 
   return (
     <div className="bg-white rounded-lg shadow-sm border border-primary p-6 lg:flex-1">
-      <div className="xl:flex justify-between">
+      <div className="2xl:flex justify-between">
         <p className="text-lg font-semibold text-gray-900 uppercase mb-2">
           {data.datasets?.[0]?.label}
         </p>
@@ -111,7 +111,7 @@ function TransactionsPie({ grid }: TransactionsPieProps) {
             <select
               name="range"
               className="align-center appearance-none block bg-white rounded shadow-sm border border-primary p-2 leading-tight 
-             focus:outline-none focus:bg-white focus:border-primary text-xs sm:text-base cursor-pointer"
+             focus:outline-none focus:bg-white focus:border-primary text-base cursor-pointer lg:w-full 2xl:w-auto"
               onChange={handleChange}
               value={selectedRange}
             >
@@ -130,7 +130,7 @@ function TransactionsPie({ grid }: TransactionsPieProps) {
       </div>
 
       {custom && (
-        <div className="flex gap-3 mt-2">
+        <div className="flex gap-2 mt-3 lg:flex-wrap 2xl:flex-nowrap">
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DatePicker
               label="Start Date"
@@ -140,6 +140,7 @@ function TransactionsPie({ grid }: TransactionsPieProps) {
               slotProps={{
                 textField: {
                   size: "small",
+                  fullWidth: true,
                 },
               }}
             />
@@ -152,6 +153,7 @@ function TransactionsPie({ grid }: TransactionsPieProps) {
               slotProps={{
                 textField: {
                   size: "small",
+                  fullWidth: true,
                 },
               }}
             />
@@ -159,7 +161,7 @@ function TransactionsPie({ grid }: TransactionsPieProps) {
           <button
             disabled={isDisabled}
             onClick={handleCustom}
-            className={`border-2 bg-white rounded shadow-sm border-primary py-1 px-2 sm:text-base font-semibold text-primary uppercase tracking-wide cursor-pointer ${
+            className={`border-2 bg-white rounded shadow-sm border-primary lg:w-full 2xl:w-auto py-1 px-2 sm:text-base font-semibold text-primary uppercase tracking-wide cursor-pointer ${
               isDisabled
                 ? "opacity-50 cursor-not-allowed"
                 : "text-primary cursor-pointer"

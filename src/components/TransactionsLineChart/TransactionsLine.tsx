@@ -126,7 +126,7 @@ function TransactionsLine({ grid }: WeekTransactionsGrid) {
             <select
               name="range"
               className="align-center appearance-none block bg-white rounded shadow-sm border border-primary p-2 leading-tight 
-             focus:outline-none focus:bg-white focus:border-primary text-xs sm:text-base cursor-pointer"
+             focus:outline-none focus:bg-white focus:border-primary text-base cursor-pointer"
               onChange={handleChange}
               value={selectedRange}
             >
@@ -145,7 +145,7 @@ function TransactionsLine({ grid }: WeekTransactionsGrid) {
       </div>
 
       {custom && (
-        <div className="flex gap-3 mt-2">
+        <div className="flex gap-3 mt-3">
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DatePicker
               label="Start Date"
@@ -155,6 +155,7 @@ function TransactionsLine({ grid }: WeekTransactionsGrid) {
               slotProps={{
                 textField: {
                   size: "small",
+                  fullWidth: true,
                 },
               }}
             />
@@ -167,6 +168,7 @@ function TransactionsLine({ grid }: WeekTransactionsGrid) {
               slotProps={{
                 textField: {
                   size: "small",
+                  fullWidth: true,
                 },
               }}
             />

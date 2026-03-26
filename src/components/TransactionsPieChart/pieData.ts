@@ -84,7 +84,7 @@ export function TransactionsPieChartData(
           labels,
           datasets: [
             {
-              label: "Spent during custom range:",
+              label: "Custom Range:",
               data: Array(labels.length).fill(0),
               realData: Array(labels.length).fill(0) as any,
               backgroundColor: chartColors,
@@ -98,27 +98,27 @@ export function TransactionsPieChartData(
       switch (rangeType) {
         case "all":
           dataArray = categoryTotals(allTransactions ?? []);
-          title = "Overall transactions:";
+          title = "All-Time:";
           break;
         case "week":
           dataArray = categoryTotals(currentWeekTransactions ?? []);
-          title = "Spent this week:";
+          title = "This week:";
           break;
         case "lastWeek":
           dataArray = categoryTotals(await getTransactions("lastWeek"));
-          title = "Spent last week:";
+          title = "Last week:";
           break;
         case "month":
           dataArray = categoryTotals(currentMonthTransactions ?? []);
-          title = "Spent this month:";
+          title = "This month:";
           break;
         case "lastMonth":
           dataArray = categoryTotals(await getTransactions("lastMonth"));
-          title = "Spent last month:";
+          title = "Last month:";
           break;
         default:
           dataArray = categoryTotals(await getTransactions(rangeType));
-          title = "Spent during custom range";
+          title = "Custom range";
           break;
       }
 

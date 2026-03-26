@@ -33,7 +33,7 @@ export default function BudgetProgress({ grid }: BudgetProgressProps) {
 
   return (
     <div className="flex flex-col bg-white rounded-lg shadow-sm border border-primary p-6">
-      <div className="xl:flex justify-between">
+      <div className="flex justify-between">
         <p className="text-lg font-semibold text-gray-900 uppercase mb-2">
           Budget Progress
         </p>
