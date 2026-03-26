@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import SidebarContext from "../Context/SideBarContext";
-import { FiChevronDown } from "react-icons/fi";
+import { FiLogOut, FiLogIn } from "react-icons/fi";
 import { IoIosMenu } from "react-icons/io";
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
@@ -18,7 +18,7 @@ function TopBar() {
       const res = await axios.post(
         "http://localhost:3000/api/logout",
         {},
-        { withCredentials: true }
+        { withCredentials: true },
       );
       console.log(res.data.message);
     } catch (err) {
@@ -40,9 +40,13 @@ function TopBar() {
   return (
     <div className="flex items-center justify-between text-primary py-4 px-4 md:px-8">
       <div className="flex items-center space-x-4">
-        <IoIosMenu size="2rem" onClick={handleExpand} />
-        <h1 className="hidden sm:block text-base md:text-lg tracking-wide px-2 py-1 md:px-4 bg-white rounded-lg shadow-sm border border-primary">
-          Good morning {user ? user.username : ""}
+        <IoIosMenu
+          size="2rem"
+          onClick={handleExpand}
+          className="cursor-pointer"
+        />
+        <h1 className="hidden lg:block text-base md:text-lg tracking-wide px-2 py-1 md:px-4 bg-white rounded-lg shadow-sm border border-primary">
+          Welcome {user ? user.username : ""}
         </h1>
       </div>
       <h1 className="text-base md:text-lg tracking-wide px-2 py-1 md:px-4 bg-white rounded-lg shadow-sm border border-primary uppercase">
@@ -53,21 +57,19 @@ function TopBar() {
         <img
           src="https://placehold.co/16x16"
           alt="User avatar"
-          className="w-6 h-6 md:w-8 md:h-8 rounded-full"
+          className="w-6 h-6 md:w-8 md:h-8 rounded-full cursor-pointer"
+          onClick={() => navigate("/profile")}
         />
 
         {user ? (
-          <div className="flex items-center cursor-pointer">
-            <h1
-              className="text-base md:text-lg tracking-wide uppercase"
-              onClick={handleLogout}
-            >
+          <div
+            className="flex items-center cursor-pointer gap-2"
+            onClick={handleLogout}
+          >
+            <h1 className="text-base md:text-lg tracking-wide uppercase">
               Logout
             </h1>
-            <FiChevronDown
-              className="w-6 h-6"
-              onClick={() => navigate("/profile")}
-            />
+            <FiLogOut className="w-6 h-6" />
           </div>
         ) : (
           <div
@@ -77,7 +79,7 @@ function TopBar() {
             <h1 className="text-base md:text-lg tracking-wide uppercase ">
               Login
             </h1>
-            <FiChevronDown className="w-6 h-6" />
+            <FiLogIn className="w-6 h-6" />
           </div>
         )}
       </div>

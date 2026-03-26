@@ -1,6 +1,8 @@
 import { useContext } from "react";
-import { HiOutlinePresentationChartLine } from "react-icons/hi2";
-import { MdOutlinePayments, MdAddShoppingCart } from "react-icons/md";
+import {
+  HiOutlinePresentationChartLine,
+  HiOutlineUserCircle,
+} from "react-icons/hi2";
 import { IoSettingsOutline } from "react-icons/io5";
 import { AiOutlineDashboard } from "react-icons/ai";
 import { LiaFileInvoiceDollarSolid } from "react-icons/lia";
@@ -37,12 +39,27 @@ function SideBar() {
      md:static md:transform md:transition-all md:duration-300 md:ease-in-out`}
     >
       <div className="flex flex-row items-center px-4">
-        <img className="w-8 h-8" src="https://placehold.co/16x16" />
+        <img
+          className="w-8 h-8 cursor-pointer"
+          src="https://placehold.co/16x16"
+          onClick={() => {
+            navigate("/dashboard");
+            if (window.innerWidth < 768) setExpanded(false);
+          }}
+        />
         {expanded && (
           <div
-            className={`transition-all text-base tracking-wide font-semibold flex gap-x-2 items-center ml-4 `}
+            className={`transition-all text-base tracking-wide font-semibold flex gap-x-2 items-center ml-4 cursor-pointer `}
           >
-            <p> Acme Finance </p>
+            <p
+              onClick={() => {
+                navigate("/dashboard");
+                if (window.innerWidth < 768) setExpanded(false);
+              }}
+            >
+              {" "}
+              Acme Finance{" "}
+            </p>
             <div className="md:hidden">
               <IoIosMenu size="2rem" onClick={handleExpand} />
             </div>
@@ -97,7 +114,15 @@ function SideBar() {
           >
             Add Transaction
           </SideBarItem>
-
+          <SideBarItem
+            icon={<HiOutlineUserCircle size={32} />}
+            onClick={() => {
+              navigate("/profile");
+              if (window.innerWidth < 768) setExpanded(false);
+            }}
+          >
+            Profile
+          </SideBarItem>
           <SideBarItem icon={<IoSettingsOutline size={32} />}>
             Settings
           </SideBarItem>
