@@ -24,7 +24,12 @@ function EditTransactionModal({
   useEffect(() => {
     if (id) {
       const found = allTransactions?.find((t) => t.id === id);
-      if (found) setFormData(found);
+      if (found) {
+        setFormData({
+          ...found,
+          amount: String(Math.abs(Number(found.amount))),
+        });
+      }
     }
   }, [id, allTransactions]);
 
@@ -39,6 +44,7 @@ function EditTransactionModal({
       !formData.date ||
       !formData.description ||
       !formData.amount ||
+      Number(formData.amount) < 0 ||
       !formData.type ||
       !formData.category ||
       !formData.status

@@ -145,7 +145,10 @@ router.put("/transaction/update/:id", async (req, res) => {
         accountId: req.body.accountId,
         date: dayjs(req.body.date).toDate(),
         description: req.body.description,
-        amount: String(req.body.amount),
+        amount:
+          req.body.type === "expense"
+            ? String(-req.body.amount)
+            : String(req.body.amount),
         type: req.body.type.toLowerCase() as "income" | "expense",
         status: req.body.status.toLowerCase() as "pending" | "posted",
         category: req.body.category,
