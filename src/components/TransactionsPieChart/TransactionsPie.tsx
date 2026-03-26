@@ -170,7 +170,7 @@ function TransactionsPie({ grid }: TransactionsPieProps) {
         </div>
       )}
 
-      <div className="mt-4 w-full h-[400px] min-w-0 flex items-center justify-center">
+      <div className="mt-4 w-full h-[400px] min-w-0 flex items-center justify-center mb-2">
         {isEmpty ? (
           <p className="text-2xl text-primary tracking-wide">
             No data available
@@ -183,15 +183,12 @@ function TransactionsPie({ grid }: TransactionsPieProps) {
       {!grid &&
         !isEmpty &&
         labels.map((label, i) => (
-          <p
-            key={label}
-            className="text-lg font-semibold text-gray-900 mb-2 flex gap-x-2 "
-          >
-            {label}:
-            <p className="text-lg font-semibold text-gray-900 tracking-wide">
-              ${values[i]}
+          <div className="flex items-center gap-2 justify-center">
+            <p key={label} className="text-2xl text-gray-900">
+              {label}:
             </p>
-          </p>
+            <p className="text-2xl text-primary tracking-wide">{values[i]}</p>
+          </div>
         ))}
     </div>
   );
