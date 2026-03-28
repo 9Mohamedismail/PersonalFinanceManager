@@ -105,7 +105,7 @@ router.post("/login", (req, res, next) => {
           },
         });
       });
-    }
+    },
   )(req, res, next);
 });
 
@@ -118,7 +118,10 @@ router.post("/user/by-email", async (req, res) => {
 
   try {
     const [user] = await db
-      .select({ username: usersTable.username })
+      .select({
+        username: usersTable.username,
+        auth_provider: usersTable.auth_provider,
+      })
       .from(usersTable)
       .where(eq(usersTable.email, email.toLowerCase()))
       .limit(1);
@@ -127,6 +130,12 @@ router.post("/user/by-email", async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
+    if (user.auth_provider === "google") {
+      return res.status(403).json({
+        message:
+          "This account uses Google sign-in. Please continue with Google.",
+      });
+    }
     return res
       .status(200)
       .json({ message: "User fetched", username: user.username });
@@ -151,18 +160,26 @@ router.post("/user", async (req, res) => {
         id: usersTable.id,
         username: usersTable.username,
         email: usersTable.email,
+        auth_provider: usersTable.auth_provider,
       })
       .from(usersTable)
       .where(
         and(
           eq(usersTable.username, username.toLowerCase()),
-          eq(usersTable.email, email.toLowerCase())
-        )
+          eq(usersTable.email, email.toLowerCase()),
+        ),
       )
       .limit(1);
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });
+    }
+
+    if (user.auth_provider === "google") {
+      return res.status(403).json({
+        message:
+          "This account uses Google sign-in. Please continue with Google.",
+      });
     }
 
     return res.status(200).json({ message: "User fetched", user });
@@ -183,18 +200,34 @@ router.put("/user/reset", async (req, res) => {
 
   try {
     const [user] = await db
-      .update(usersTable)
-      .set({ password: await hashPassword(newPassword) })
+      .select({
+        auth_provider: usersTable.auth_provider,
+      })
+      .from(usersTable)
       .where(eq(usersTable.email, email.toLowerCase()))
-      .returning({ id: usersTable.id });
+      .limit(1);
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
 
-    return res
-      .status(200)
-      .json({ message: "User's password has been reset", userId: user.id });
+    if (user.auth_provider === "google") {
+      return res.status(403).json({
+        message:
+          "This account uses Google sign-in. Please continue with Google.",
+      });
+    }
+
+    const [existingUser] = await db
+      .update(usersTable)
+      .set({ password: await hashPassword(newPassword) })
+      .where(eq(usersTable.email, email.toLowerCase()))
+      .returning({ id: usersTable.id });
+
+    return res.status(200).json({
+      message: "User's password has been reset",
+      userId: existingUser.id,
+    });
   } catch (err) {
     console.error(err);
     return res.status(500).json({ message: "Server error" });

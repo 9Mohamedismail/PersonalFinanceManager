@@ -17,8 +17,8 @@ passport.use(
           .where(
             or(
               eq(usersTable.username, `${username}`),
-              eq(usersTable.email, `${username}`)
-            )
+              eq(usersTable.email, `${username}`),
+            ),
           )
           .limit(1);
 
@@ -26,13 +26,20 @@ passport.use(
           return done(null, false, { message: "Incorrect email or password" });
         }
 
+        if (user.auth_provider === "google" || !user.password) {
+          return done(null, false, {
+            message:
+              "This account uses Google sign-in. Please continue with Google.",
+          });
+        }
+
         if (!(await comparePassword(password, user.password))) {
           return done(null, false, { message: "Incorrect password" });
         }
         return done(null, user);
       } catch (err) {}
-    }
-  )
+    },
+  ),
 );
 
 passport.serializeUser((user, done) => {
