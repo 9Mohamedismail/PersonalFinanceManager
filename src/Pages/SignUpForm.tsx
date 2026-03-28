@@ -15,23 +15,26 @@ type ErrorState = Record<ValidatableField, string>;
 function SignUpForm() {
   const navigate = useNavigate();
 
-  const [newUser, setNewUser] = useState<InsertUser>({
+  const defaultNewUser: InsertUser = {
     username: "",
     email: "",
     password: "",
-  });
+  };
 
-  const [touched, setTouched] = useState<TouchedState>({
+  const defaultTouched: TouchedState = {
     email: false,
     username: false,
     password: false,
-  });
+  };
 
-  const [error, setError] = useState<ErrorState>({
+  const defaultError: ErrorState = {
     email: "",
     username: "",
-  });
+  };
 
+  const [newUser, setNewUser] = useState<InsertUser>(defaultNewUser);
+  const [touched, setTouched] = useState<TouchedState>(defaultTouched);
+  const [error, setError] = useState<ErrorState>(defaultError);
   const [serverError, setServerError] = useState("");
 
   const [loading, setLoading] = useState(false);
@@ -57,6 +60,12 @@ function SignUpForm() {
 
   const showCheck = (field: Field) => {
     return touched[field] && newUser[field].length > 0;
+  };
+
+  const resetForm = () => {
+    setNewUser({ ...defaultNewUser });
+    setTouched({ ...defaultTouched });
+    setError({ ...defaultError });
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -95,7 +104,13 @@ function SignUpForm() {
       }
     } catch (err: any) {
       const serverMsg = err.response?.data?.error ?? "Login failed";
+
+      resetForm();
       setServerError(serverMsg);
+
+      setTimeout(() => {
+        setServerError("");
+      }, 3000);
     } finally {
       setLoading(false);
     }
