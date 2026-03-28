@@ -7,6 +7,10 @@ import {
 } from "../Context/TransactionsContext";
 import type { GridRowId } from "@mui/x-data-grid";
 import { AccountsContext } from "../Context/AccountsContext";
+import dayjs from "dayjs";
+import isoWeek from "dayjs/plugin/isoWeek";
+
+dayjs.extend(isoWeek);
 
 function EditTransactionModal({
   id,
@@ -15,8 +19,12 @@ function EditTransactionModal({
   id: GridRowId | null;
   handleClose: () => void;
 }) {
-  const { allTransactions, setAllTransactions } =
-    useContext(TransactionsContext);
+  const {
+    allTransactions,
+    setAllTransactions,
+    setCurrentWeekTransactions,
+    setCurrentMonthTransactions,
+  } = useContext(TransactionsContext);
 
   const [formData, setFormData] = useState<Partial<Transactions>>({});
   const { accounts } = useContext(AccountsContext);
@@ -36,6 +44,14 @@ function EditTransactionModal({
   const [loading, setLoading] = useState<boolean>(false);
   const [serverMessage, setServerMessage] = useState<string | null>(null);
 
+  function isInCurrentWeek(date: string) {
+    return dayjs(date).isSame(dayjs(), "isoWeek");
+  }
+
+  function isInCurrentMonth(date: string) {
+    return dayjs(date).isSame(dayjs(), "month");
+  }
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -51,8 +67,6 @@ function EditTransactionModal({
     ) {
       return;
     }
-
-    console.log(formData);
 
     const payload = {
       ...formData,
@@ -79,7 +93,54 @@ function EditTransactionModal({
           : [updatedTransaction],
       );
 
-      console.log("Transaction edited successfully!");
+      setCurrentWeekTransactions((prev) => {
+        const exists =
+          prev?.some((t) => t.id === updatedTransaction.id) ?? false;
+        const belongsNow = isInCurrentWeek(updatedTransaction.date);
+
+        if (!prev) return belongsNow ? [updatedTransaction] : [];
+
+        if (exists && belongsNow) {
+          return prev.map((t) =>
+            t.id === updatedTransaction.id ? updatedTransaction : t,
+          );
+        }
+
+        if (exists && !belongsNow) {
+          return prev.filter((t) => t.id !== updatedTransaction.id);
+        }
+
+        if (!exists && belongsNow) {
+          return [...prev, updatedTransaction];
+        }
+
+        return prev;
+      });
+
+      setCurrentMonthTransactions((prev) => {
+        const exists =
+          prev?.some((t) => t.id === updatedTransaction.id) ?? false;
+        const belongsNow = isInCurrentMonth(updatedTransaction.date);
+
+        if (!prev) return belongsNow ? [updatedTransaction] : [];
+
+        if (exists && belongsNow) {
+          return prev.map((t) =>
+            t.id === updatedTransaction.id ? updatedTransaction : t,
+          );
+        }
+
+        if (exists && !belongsNow) {
+          return prev.filter((t) => t.id !== updatedTransaction.id);
+        }
+
+        if (!exists && belongsNow) {
+          return [...prev, updatedTransaction];
+        }
+
+        return prev;
+      });
+
       handleClose();
     } catch (err: any) {
       const serverMsg = err?.response?.data?.message;

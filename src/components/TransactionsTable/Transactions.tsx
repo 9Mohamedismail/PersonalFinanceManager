@@ -8,8 +8,12 @@ import EditTransactionModal from "../EditTransactionModal";
 import ViewDetailsModal from "../ViewDetailsModal";
 
 function Transactions({ grid }: { grid: boolean }) {
-  const { setAllTransactions, allTransactions } =
-    useContext(TransactionsContext);
+  const {
+    allTransactions,
+    setAllTransactions,
+    setCurrentWeekTransactions,
+    setCurrentMonthTransactions,
+  } = useContext(TransactionsContext);
 
   const [openEdit, setOpenEdit] = useState(false);
   const [openDetails, setOpenDetails] = useState(false);
@@ -38,7 +42,16 @@ function Transactions({ grid }: { grid: boolean }) {
       });
 
       console.log("Transaction deleted successfully!");
+
       setAllTransactions((prev) =>
+        prev ? prev.filter((row) => row.id !== id) : [],
+      );
+
+      setCurrentWeekTransactions((prev) =>
+        prev ? prev.filter((row) => row.id !== id) : [],
+      );
+
+      setCurrentMonthTransactions((prev) =>
         prev ? prev.filter((row) => row.id !== id) : [],
       );
     } catch (err: any) {

@@ -8,6 +8,7 @@ import {
 } from "../Context/TransactionsContext";
 import { AccountsContext } from "../Context/AccountsContext";
 import { useNavigate } from "react-router-dom";
+import dayjs from "dayjs";
 
 function AddTransactionPage() {
   const [formData, setFormData] = useState<Partial<Transactions>>({});
@@ -15,7 +16,11 @@ function AddTransactionPage() {
   const [resetKey, setResetKey] = useState(0);
   const [serverMessage, setServerMessage] = useState<string | null>(null);
 
-  const { setAllTransactions } = useContext(TransactionsContext);
+  const {
+    setAllTransactions,
+    setCurrentWeekTransactions,
+    setCurrentMonthTransactions,
+  } = useContext(TransactionsContext);
   const { accounts } = useContext(AccountsContext);
   const navigate = useNavigate();
 
@@ -57,6 +62,21 @@ function AddTransactionPage() {
       const newTransaction = res.data.transaction;
 
       setAllTransactions((prev) => [...(prev ?? []), newTransaction]);
+
+      const transacationDate = dayjs(newTransaction.date);
+      const now = dayjs();
+
+      if (transacationDate.isSame(now, "week")) {
+        setCurrentWeekTransactions((prev) => [...(prev ?? []), newTransaction]);
+      }
+
+      if (transacationDate.isSame(now, "month")) {
+        setCurrentMonthTransactions((prev) => [
+          ...(prev ?? []),
+          newTransaction,
+        ]);
+      }
+
       setFormData({});
       console.log("Transaction added successfully!");
     } catch (err: any) {
@@ -114,3 +134,6 @@ function AddTransactionPage() {
 }
 
 export default AddTransactionPage;
+function setCurrentWeekTransactions(arg0: (prev: any) => any[]) {
+  throw new Error("Function not implemented.");
+}
