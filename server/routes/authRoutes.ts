@@ -5,17 +5,18 @@ const router = Router();
 
 router.get(
   "/google",
-  passport.authenticate("google", { scope: ["profile", "email"] })
+  passport.authenticate("google", { scope: ["profile", "email"] }),
 );
 
 router.get(
-  "/google/redirect",
+  "/google/callback",
   passport.authenticate("google", {
-    failureRedirect: "http://localhost:5173/login",
+    failureRedirect: "http://localhost:5173/login?error=google_auth_failed",
+    session: true,
   }),
   (req, res) => {
     res.redirect("http://localhost:5173/dashboard");
-  }
+  },
 );
 
 export default router;

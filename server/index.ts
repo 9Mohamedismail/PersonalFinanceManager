@@ -43,7 +43,7 @@ app.use(passport.session());
 app.use("/api", userRoutes);
 app.use("/api", transactionRoutes);
 app.use("/api", accountRoutes);
-app.use("/api", authRoutes);
+app.use("/api/auth", authRoutes);
 app.use("/api", settingsRoutes);
 
 app.listen(PORT, () => {

@@ -4,10 +4,9 @@ import {
   Profile,
   VerifyCallback,
 } from "passport-google-oauth20";
-import { and, eq, or } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 import { db } from "../../../src/db/db";
-import { usersTable } from "../../../src/db/schema";
-import { comparePassword } from "../../utils/helpers";
+import { settingsTable, usersTable } from "../../../src/db/schema";
 
 passport.use(
   new GoogleStrategy(
@@ -17,23 +16,27 @@ passport.use(
       callbackURL: process.env.GOOGLE_REDIRECT_URL!,
     },
     async (
-      accessToken: string,
-      refreshToken: string,
+      _accessToken: string,
+      _refreshToken: string,
       profile: Profile,
-      done: VerifyCallback
+      done: VerifyCallback,
     ) => {
       try {
         const email = profile.emails?.[0]?.value;
 
-        if (!email) return done(new Error("No email"));
+        if (!email) {
+          return done(new Error("No email provided by Google"));
+        }
 
         let [user] = await db
           .select()
           .from(usersTable)
-          .where(eq(usersTable.google_id, `${profile.id}`))
+          .where(eq(usersTable.google_id, profile.id))
           .limit(1);
 
-        if (user) return done(null, user);
+        if (user) {
+          return done(null, user);
+        }
 
         const [emailUser] = await db
           .select()
@@ -43,29 +46,41 @@ passport.use(
 
         if (emailUser) {
           return done(null, false, {
-            message: "Account exists. Log in to link Google.",
+            message: "Account with that email already exists.",
           });
         }
 
-        if (!user) {
-          [user] = await db
-            .insert(usersTable)
-            .values({
-              username: profile.displayName.toLowerCase(),
-              email,
-              password: null,
-              google_id: profile.id,
-              auth_provider: "google",
-            })
-            .returning();
-        }
+        const baseUsername = profile.displayName
+          .toLowerCase()
+          .replace(/\s+/g, "")
+          .replace(/[^a-z0-9_]/g, "");
 
-        console.log(accessToken);
-        console.log(refreshToken);
+        const generatedUsername = `${baseUsername}_${profile.id}`;
+
+        [user] = await db
+          .insert(usersTable)
+          .values({
+            username: generatedUsername,
+            email,
+            password: null,
+            google_id: profile.id,
+            auth_provider: "google",
+            createdAt: new Date(),
+          })
+          .returning();
+
+        await db
+          .insert(settingsTable)
+          .values({
+            userId: user.id,
+            budgetTotal: null,
+          })
+          .returning();
+
         return done(null, user);
       } catch (err) {
-        return done(err);
+        return done(err as Error);
       }
-    }
-  )
+    },
+  ),
 );
