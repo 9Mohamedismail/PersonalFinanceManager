@@ -27,16 +27,40 @@ function TransactionForm<T extends Partial<Transactions>>({
   const handleChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
-    >
+    >,
   ): void => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+
+    setFormData((prev) => {
+      if (name === "type") {
+        const newType = value as "income" | "expense";
+
+        const validCategories = categories[newType];
+        const currentCategory = prev.category;
+
+        const nextCategory =
+          currentCategory && validCategories.includes(currentCategory)
+            ? currentCategory
+            : "Other";
+
+        return {
+          ...prev,
+          type: newType,
+          category: nextCategory,
+        };
+      }
+
+      return {
+        ...prev,
+        [name]: value,
+      };
+    });
   };
 
   const handleBlur = (
     e: React.FocusEvent<
       HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
-    >
+    >,
   ) => {
     setTouched((prev) => ({ ...prev, [e.target.name]: true }));
   };
@@ -49,8 +73,8 @@ function TransactionForm<T extends Partial<Transactions>>({
   const descError = !formData.description
     ? "Description is required"
     : !/^[a-zA-Z0-9\s.,'"/()-]+$/.test(formData.description)
-    ? "Description contains invalid characters"
-    : null;
+      ? "Description contains invalid characters"
+      : null;
 
   const categories = {
     expense: [

@@ -94,7 +94,7 @@ function TransactionsPie({ grid }: TransactionsPieProps) {
   const isEmpty = values.every((value) => value === 0);
 
   return (
-    <div className="bg-white rounded-lg shadow-sm border border-primary p-6 lg:flex-1">
+    <div className="bg-white rounded-lg shadow-sm border border-primary p-6 w-full text-start h-full flex flex-col">
       <div className="2xl:flex justify-between">
         <p className="text-lg font-semibold text-gray-900 uppercase mb-2">
           {data.datasets?.[0]?.label}
@@ -128,7 +128,6 @@ function TransactionsPie({ grid }: TransactionsPieProps) {
           </>
         )}
       </div>
-
       {custom && (
         <div className="flex gap-2 mt-3 lg:flex-wrap 2xl:flex-nowrap">
           <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -171,17 +170,15 @@ function TransactionsPie({ grid }: TransactionsPieProps) {
           </button>
         </div>
       )}
-
-      <div className="mt-4 w-full h-[400px] min-w-0 flex items-center justify-center mb-2">
+      <div className="mt-4 w-full h-[400px] min-w-0 mb-2">
         {isEmpty ? (
-          <p className="text-2xl text-primary tracking-wide">
-            No data available
+          <p className="text-2xl text-primary tracking-wide flex items-center justify-center h-full w-full text-center">
+            No expenses recorded
           </p>
         ) : (
           <Doughnut options={options} data={data} />
         )}
       </div>
-
       {!grid &&
         !isEmpty &&
         labels.map((label, i) => (
