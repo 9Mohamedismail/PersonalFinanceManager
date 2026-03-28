@@ -46,7 +46,11 @@ function TopBar() {
           className="cursor-pointer"
         />
         <h1 className="hidden lg:block text-base md:text-lg tracking-wide px-2 py-1 md:px-4 bg-white rounded-lg shadow-sm border border-primary">
-          Welcome {user ? user.username : ""}
+          {user
+            ? user.username.includes("_")
+              ? user.username.split("_")[0]
+              : user.username
+            : ""}
         </h1>
       </div>
       <h1 className="text-base md:text-lg tracking-wide px-2 py-1 md:px-4 bg-white rounded-lg shadow-sm border border-primary uppercase">
