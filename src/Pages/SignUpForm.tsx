@@ -261,11 +261,14 @@ function SignUpForm() {
       </div>
 
       <div className="flex flex-col gap-2 ">
-        <button className="border-2 cursor-pointer bg-white rounded shadow-sm border-primary  py-2 px-4 text-lg font-semibold text-primary uppercase tracking-wide">
-          Google
+        <button
+          className="border-2 cursor-pointer bg-white rounded shadow-sm border-primary  py-2 px-4 text-lg font-semibold text-primary uppercase tracking-wide"
+          onClick={() => navigate("/login")}
+        >
+          Login
         </button>
         <button className="border-2 cursor-pointer bg-white rounded shadow-sm border-primary  py-2 px-4 text-lg font-semibold text-primary uppercase tracking-wide">
-          Github
+          Google
         </button>
       </div>
     </div>

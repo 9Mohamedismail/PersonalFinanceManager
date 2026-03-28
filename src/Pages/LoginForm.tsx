@@ -151,14 +151,17 @@ function LoginForm() {
       <div className="flex flex-col gap-2 ">
         <button
           className="border-2 bg-white rounded shadow-sm border-primary  py-2 px-4 text-lg font-semibold text-primary uppercase tracking-wide cursor-pointer"
+          onClick={() => navigate("/signup")}
+        >
+          Sign Up
+        </button>
+        <button
+          className="border-2 bg-white rounded shadow-sm border-primary  py-2 px-4 text-lg font-semibold text-primary uppercase tracking-wide cursor-pointer"
           onClick={() => {
             window.location.href = "http://localhost:3000/api/auth/google";
           }}
         >
           Google
-        </button>
-        <button className="border-2 bg-white rounded shadow-sm border-primary  py-2 px-4 text-lg font-semibold text-primary uppercase tracking-wide cursor-pointer">
-          Github
         </button>
       </div>
     </div>

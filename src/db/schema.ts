@@ -100,7 +100,7 @@ export const transactionsRelations = relations(
       fields: [transactionsTable.accountId],
       references: [accountsTable.id],
     }),
-  })
+  }),
 );
 
 export type InsertUser = typeof usersTable.$inferInsert;
