@@ -21,12 +21,12 @@ function TopBar() {
         { withCredentials: true },
       );
       console.log(res.data.message);
-    } catch (err) {
-      console.error("Logout failed:", err);
-    } finally {
+
       setUser(null);
       setAuthStatus("unauthenticated");
-      navigate("/login");
+      navigate("/login", { replace: true });
+    } catch (err) {
+      console.error("Logout failed:", err);
     }
   };
 
@@ -53,7 +53,7 @@ function TopBar() {
         {location.pathname.replace("/", "")}
       </h1>
 
-      <div className="flex items-center space-x-4 px-2 py-1 md:px-4bg-white rounded-lg shadow-sm border border-primary">
+      <div className="flex items-center space-x-4 px-2 py-1 md:px-4 bg-white rounded-lg shadow-sm border border-primary">
         <img
           src="https://placehold.co/16x16"
           alt="User avatar"

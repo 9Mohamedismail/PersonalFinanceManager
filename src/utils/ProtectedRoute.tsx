@@ -7,5 +7,9 @@ export default function ProtectedRoute() {
 
   if (authStatus === "loading") return null;
 
-  return authStatus === "authenticated" ? <Outlet /> : <Navigate to="/login" />;
+  return authStatus === "authenticated" ? (
+    <Outlet />
+  ) : (
+    <Navigate to="/login" replace />
+  );
 }
