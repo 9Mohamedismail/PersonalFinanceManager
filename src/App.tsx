@@ -25,6 +25,7 @@ import {
 } from "./Context/TransactionsContext";
 import axios from "axios";
 import ProtectedRoute from "./utils/ProtectedRoute";
+import PublicOnlyRoute from "./utils/PublicOnlyRoute";
 import ErrorPage from "./Pages/ErrorPage";
 import Profile from "./Pages/Profile";
 
@@ -212,16 +213,18 @@ function App() {
                             />
                             <Route path="/metrics" element={<MetricsPage />} />
                           </Route>
-                          <Route path="/signup" element={<SignUpForm />} />
-                          <Route path="/login" element={<LoginForm />} />
-                          <Route
-                            path="/login/forgot"
-                            element={<ForgotPasswordForm />}
-                          />
-                          <Route
-                            path="/login/forgot-username"
-                            element={<ForgotUsernameForm />}
-                          />
+                          <Route element={<PublicOnlyRoute />}>
+                            <Route path="/signup" element={<SignUpForm />} />
+                            <Route path="/login" element={<LoginForm />} />
+                            <Route
+                              path="/login/forgot"
+                              element={<ForgotPasswordForm />}
+                            />
+                            <Route
+                              path="/login/forgot-username"
+                              element={<ForgotUsernameForm />}
+                            />
+                          </Route>
                           <Route path="/*" element={<ErrorPage />} />
                         </Routes>
                       </div>
